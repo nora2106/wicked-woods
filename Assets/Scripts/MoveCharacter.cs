@@ -18,6 +18,11 @@ public class MoveCharacter : MonoBehaviour
         //maxHeight = (renderer.bounds.size.y + floor.transform.position.y - 0.2f) * -1;
     }
 
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        print("collision");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -35,15 +40,16 @@ public class MoveCharacter : MonoBehaviour
 
                 if (target.x > transform.position.x)
                 {
-                    transform.localScale = new Vector2(0.8f, transform.localScale.y);
+                    transform.localScale = new Vector2(0.5f, transform.localScale.y);
                 }
                 else
                 {
-                    transform.localScale = new Vector2(-0.8f, transform.localScale.y);
+                    transform.localScale = new Vector2(-0.5f, transform.localScale.y);
                 }
             }
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        }
+            //GetComponent<Rigidbody2D>().MovePosition(target * Time.deltaTime * speed);       
+            }
 
         else
         {

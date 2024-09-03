@@ -13,7 +13,7 @@ TagManager:
   - Background
   - Water
   - UI
-  - 
+  - Collision
   - 
   - Character
   - 
@@ -42,6 +42,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 3674909379
+    locked: 0
+  - name: Objects
+    uniqueID: 894804613
     locked: 0
   - name: Default
     uniqueID: 0

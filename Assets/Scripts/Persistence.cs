@@ -5,13 +5,12 @@ using UnityEngine;
 public class Persistence : MonoBehaviour
 {
 
-    private static GameObject[] persistentObjects = new GameObject[3];
+    private static GameObject[] persistentObjects = new GameObject[4];
     public int index;
 
     // Start is called before the first frame update
     public void Awake()
     {
-        print(persistentObjects[index]);
         if(persistentObjects[index] == null)
         {
             persistentObjects[index] = gameObject;

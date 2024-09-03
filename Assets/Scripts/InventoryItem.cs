@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
-                if(data.useOn == usableObj.name)
+                if(usableObj.GetComponent<UsableObject>().usableItemID == data.id)
                 {
                     usableObj.GetComponent<UsableObject>().Action();
                     if(data.reusable)
@@ -45,7 +45,8 @@ public class InventoryItem : MonoBehaviour
 
                 else
                 {
-                    displayText.text = ("I can't use " + data.name + " on " + usableObj.name);
+                    displayText.text = ("Ich kann " + data.displayName + " nicht mit " + usableObj.name + " benutzen.");
+                    //add english option
                 }
             }
         }

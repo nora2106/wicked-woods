@@ -7,43 +7,44 @@ using UnityEngine.UI;
 public class DoorBehavior : UsableObject
 {
     public Sprite newSprite;
-    private Text displayText;
     private static System.Timers.Timer aTimer;
-    public string clickText = "This door is locked.";
+    public string nextScene;
+    public bool locked;
 
     public void Start()
     {
-        displayText = GameObject.Find("ActionText").GetComponent<Text>();
+        
+    }
+
+    void Update() {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+            if (hit.collider != null && hit.collider.name == gameObject.name)
+            {
+                if(!locked) {
+                    Action();
+                }
+            }
+        }
     }
 
     override public void Action()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
-        clickText = "Level done!";
-        SceneManager.LoadScene("FirstScene", LoadSceneMode.Single);
-    }
-
-    override public void ClickAction()
-    {
-        displayText.text = clickText;
-        StartCoroutine(ResetText(2));
-    }
-
-    IEnumerator ResetText(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-        if(displayText.text == clickText)
-        {
-            displayText.text = "";
+        LoadNext(2);
+        usableItemID = null;
+        if(newSprite != null) {
+            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
     }
 
     IEnumerator LoadNext(float duration)
     {
+        print(nextScene);
         yield return new WaitForSeconds(duration);
-
-        SceneManager.LoadScene("FirstScene", LoadSceneMode.Single);
+        SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
     }
 
     private static void SetTimer(int time)
