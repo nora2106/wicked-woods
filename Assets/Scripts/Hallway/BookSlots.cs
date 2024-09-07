@@ -23,7 +23,6 @@ public class BookSlots : MonoBehaviour
             {
                 if (child.childCount == 0)
                 {
-                    print(child);
                     currentBook.transform.SetParent(child);
                     currentBook.transform.position = child.transform.position;
                     currentBook = gameObject.transform.GetChild(0).gameObject;

@@ -27,6 +27,7 @@ public class DraggableBook : MonoBehaviour
     {
         pos = transform.position;
         isDragged = true;
+        print("drag");
     }
 
     private void OnMouseUp()
