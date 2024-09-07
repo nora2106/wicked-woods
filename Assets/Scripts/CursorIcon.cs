@@ -19,9 +19,34 @@ public class CursorIcon : MonoBehaviour
     {
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = mousePosition;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+        if (hit.collider != null)
+        {
+            if(hit.collider.gameObject.GetComponent<InspectObject>())
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = inspectIcon;
+            }
+            else if(hit.collider.gameObject.tag == "grab")
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = grabIcon;
+            }
+
+            else
+            {
+                Reset();
+            }
+
+        }
+        else
+        {
+            Reset();
+        }
     }
 
-    public void ShowInspect() {
+    public void SetUse() {
         gameObject.GetComponent<SpriteRenderer>().sprite = inspectIcon;
     }
 

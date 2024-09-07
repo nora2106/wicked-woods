@@ -13,25 +13,26 @@ public class InventoryItem : MonoBehaviour
     private GameObject player;
     private Text displayText;
     private GameObject usableObj;
-
+    private GameObject cursorHandler;
     public void Start()
     {
         GetComponent<SpriteRenderer>().sprite = data.sprite;
         pos = transform.position;
-        player = GameObject.Find("Character");
-        displayText = GameObject.Find("ActionText").GetComponent<Text>();
+        player = GameObject.FindWithTag("Player");
+        displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
+        cursorHandler = GameObject.FindWithTag("Cursor");
     }
 
     public void Update()
     {
-        if(usableObj)
+        if (usableObj)
         {
-            if(Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                if(usableObj.GetComponent<UsableObject>().usableItemID == data.id)
+                if (usableObj.GetComponent<UsableObject>().usableItemID == data.id)
                 {
-                    usableObj.GetComponent<UsableObject>().Action();
-                    if(data.reusable)
+                    selected = false;
+                    if (data.reusable)
                     {
                         transform.position = pos;
                     }
@@ -39,8 +40,8 @@ public class InventoryItem : MonoBehaviour
                     {
                         Destroy(gameObject);
                     }
-                    selected = false;
                     player.GetComponent<MoveCharacter>().canMove = true;
+                    usableObj.GetComponent<UsableObject>().Action();
                 }
 
                 else
@@ -67,8 +68,9 @@ public class InventoryItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Usable")
+        if(collision.gameObject.GetComponent<UsableObject>())
         {
+            cursorHandler.GetComponent<CursorIcon>().SetUse();
             displayText.text = ("Use " + data.name + " on " + collision.name);
             usableObj = collision.gameObject;
         }

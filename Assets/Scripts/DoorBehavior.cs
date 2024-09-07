@@ -24,33 +24,33 @@ public class DoorBehavior : UsableObject
 
             if (hit.collider != null && hit.collider.name == gameObject.name)
             {
-                if(!locked) {
-                    Action();
-                }
+                OpenDoor();
             }
         }
     }
 
+    //unlock door
     override public void Action()
     {
-        LoadNext(2);
-        usableItemID = null;
-        if(newSprite != null) {
+        locked = false;
+        OpenDoor();
+    }
+
+    public void OpenDoor()
+    {
+        if (newSprite != null)
+        {
             gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
         }
-    }
 
+        if (!locked && nextScene != "")
+        {
+            StartCoroutine(LoadNext(1));
+        }
+    }
     IEnumerator LoadNext(float duration)
     {
-        print(nextScene);
         yield return new WaitForSeconds(duration);
         SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
-    }
-
-    private static void SetTimer(int time)
-    {
-        aTimer = new System.Timers.Timer(time);
-        aTimer.AutoReset = true;
-        aTimer.Enabled = true;
     }
 }

@@ -13,8 +13,8 @@ public class InspectObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        displayText = GameObject.Find("ActionText").GetComponent<Text>(); 
-        cursor = GameObject.Find("CursorIcon");
+        displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
+        cursor = GameObject.FindWithTag("Cursor");
     }
 
     // Update is called once per frame
@@ -32,32 +32,20 @@ public class InspectObject : MonoBehaviour
         }
     }
 
-    private void OnMouseOver()
-    {
-        cursor.GetComponent<CursorIcon>().ShowInspect();
-    }
+    //private void OnMouseOver()
+    //{
+    //    cursor.GetComponent<CursorIcon>().ShowInspect();
+    //}
 
-    private void OnMouseExit()
-    {
-        cursor.GetComponent<CursorIcon>().Reset();
-    }
+    //private void OnMouseExit()
+    //{
+    //    cursor.GetComponent<CursorIcon>().Reset();
+    //}
 
     public void Inspect() {
         if(inspectText != null) {
             displayText.text = inspectText;
-            StartCoroutine(ResetText(2));
             wasInspected = true;
-        }
-    }
-    
-    //todo: move resetting text to text component itself
-    IEnumerator ResetText(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-
-        if(displayText.text == inspectText)
-        {
-            displayText.text = "";
         }
     }
 }
