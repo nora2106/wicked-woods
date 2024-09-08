@@ -8,9 +8,8 @@ public abstract class UsableObject : MonoBehaviour
     protected Text displayText;
     public string usableItemID;
 
-    private void Update()
-    {
-
+    private void OnMouseDown() {
+        Action();
     }
 
     public abstract void Action();

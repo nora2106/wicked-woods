@@ -9,6 +9,8 @@ TagManager:
   - grab
   - Text
   - Cursor
+  - Bookslot
+  - Object
   layers:
   - Default
   - TransparentFX

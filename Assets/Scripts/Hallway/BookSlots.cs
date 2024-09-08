@@ -4,34 +4,24 @@ using UnityEngine;
 
 public class BookSlots : MonoBehaviour
 {
-    public GameObject currentBook;
     public GameObject correctBook;
     public bool correct;
+    public GameObject puzzle;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        currentBook = transform.GetChild(0).gameObject;
+        puzzle = transform.parent.transform.parent.gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.childCount > 1)
-        {
-            foreach (Transform child in transform.parent)
-            {
-                if (child.childCount == 0)
-                {
-                    currentBook.transform.SetParent(child);
-                    currentBook.transform.position = child.transform.position;
-                    currentBook = gameObject.transform.GetChild(0).gameObject;
-                }
-            }
-        }
 
-        if (currentBook == correctBook)
+        if (transform.GetChild(0).gameObject == correctBook)
         {
+            puzzle.GetComponent<BookPuzzle>().Success();
             correct = true;
         }
         else

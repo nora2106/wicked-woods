@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DraggableBook : MonoBehaviour
 {
-    private Vector2 pos;
+    public Vector2 pos;
     private bool isDragged;
     private GameObject slot;
     // Start is called before the first frame update
@@ -27,31 +27,33 @@ public class DraggableBook : MonoBehaviour
     {
         pos = transform.position;
         isDragged = true;
-        print("drag");
+        transform.GetComponent<SpriteRenderer>().sortingOrder = 3;
     }
 
     private void OnMouseUp()
     {
-        //print(slot);
+        transform.GetComponent<SpriteRenderer>().sortingOrder = 2;
         isDragged = false;
         if(slot != null)
         {
-            transform.SetParent(slot.transform);
-            pos = transform.parent.position;
+            Vector2 newPos = slot.transform.position;
+            Transform newParent = slot.transform.parent;
+            
+            slot.transform.SetParent(transform.parent);
+            slot.transform.position = pos;
+            slot.GetComponent<DraggableBook>().pos = pos;
+            
+            transform.SetParent(newParent);
+            pos = newPos;
         }
         transform.position = pos;
-    }
-
-    private void setParent(GameObject obj)
-    {
-        transform.SetParent(obj.transform);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(isDragged)
         {
-            if (collision.gameObject.GetComponent<BookSlots>())
+            if (collision.gameObject.GetComponent<DraggableBook>())
             {
                 slot = collision.gameObject;
             }

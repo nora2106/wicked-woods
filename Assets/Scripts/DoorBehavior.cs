@@ -17,7 +17,7 @@ public class DoorBehavior : UsableObject
     }
 
     void Update() {
-        if (Input.GetMouseButtonDown(0))
+        /* if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
@@ -26,14 +26,15 @@ public class DoorBehavior : UsableObject
             {
                 OpenDoor();
             }
-        }
+        } */
     }
 
     //unlock door
     override public void Action()
     {
-        locked = false;
-        OpenDoor();
+        if(locked == false) {
+            OpenDoor();
+        }
     }
 
     public void OpenDoor()
