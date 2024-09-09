@@ -17,6 +17,7 @@ public class InventoryItem : MonoBehaviour
     public void Start()
     {
         GetComponent<SpriteRenderer>().sprite = data.sprite;
+        GetComponent<SpriteRenderer>().size = new Vector2(20, 20);
         pos = transform.position;
         player = GameObject.FindWithTag("Player");
         displayText = GameObject.FindWithTag("Text").GetComponent<Text>();

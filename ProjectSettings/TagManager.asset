@@ -10,7 +10,8 @@ TagManager:
   - Text
   - Cursor
   - Bookslot
-  - Object
+  - inventory
+  - use
   layers:
   - Default
   - TransparentFX
