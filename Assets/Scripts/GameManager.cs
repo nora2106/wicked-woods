@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject overlay;
+    public GameObject player;
+    private GameObject[] objs;
+    private void Update()
+    {
+
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -11,12 +19,7 @@ public class GameManager : MonoBehaviour
             var pos = transform.position;
             gameObject.transform.position = new Vector3(pos.x, pos.y, 2);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        overlay.SetActive(false);
     }
 
     GameObject[] FindGameObjectsInLayer(int layer)
@@ -35,5 +38,22 @@ public class GameManager : MonoBehaviour
             return null;
         }
         return goList.ToArray();
+    }
+
+    public void OpenOverlay() {
+        overlay.SetActive(true);
+        player.GetComponent<MoveCharacter>().canMove = false;
+        objs = FindGameObjectsInLayer(6);
+        foreach(GameObject go in objs) {
+            go.layer = 2;
+        }
+    }
+
+    public void CloseOverlay() {
+        overlay.SetActive(false);
+        player.GetComponent<MoveCharacter>().canMove = true;
+        foreach(GameObject go in objs) {
+            go.layer = 6;
+        }
     }
 }

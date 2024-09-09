@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3402fd0b069d8c489fca16cae948445, type: 3}
   m_Name: Fork
   m_EditorClassIdentifier: 
-  id: fork1
+  id: fork
   displayName: Gabel
-  useOn: 
+  combineWith: hairpin
   reusable: 0
   sprite: {fileID: 22129139, guid: 01e89c82ed8a84411b068f45e28d9839, type: 3}
   prefab: {fileID: 642646720068566600, guid: b967f869d3aa1491f86842faff9c2a27, type: 3}
+  newItem: {fileID: 11400000, guid: 75b65c7b228ffa24aa418ffb780bbb34, type: 2}

@@ -7,8 +7,9 @@ public class ItemData : ScriptableObject
 {
     public string id;
     public string displayName;
-    public string useOn;
+    public string combineWith;
     public bool reusable;
     public Sprite sprite;
     public GameObject prefab;
+    public ItemData newItem;
 }

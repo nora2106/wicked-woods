@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3402fd0b069d8c489fca16cae948445, type: 3}
-  m_Name: Chest-Key
+  m_Name: Hairpin
   m_EditorClassIdentifier: 
-  id: chest_key
-  displayName: "Schl\xFCssel"
-  combineWith: 
+  id: hairpin
+  displayName: Haarnadel
+  combineWith: fork
   reusable: 0
-  sprite: {fileID: 21300000, guid: 7c60db4f3dcbce542bcb1efe478a69f3, type: 3}
-  prefab: {fileID: 5918996192978426799, guid: bb07462a59bf215439482841c44114d3, type: 3}
-  newItem: {fileID: 0}
+  sprite: {fileID: 22129139, guid: 01e89c82ed8a84411b068f45e28d9839, type: 3}
+  prefab: {fileID: 642646720068566600, guid: 9bca216ca88a14287b143eace0d3444d, type: 3}
+  newItem: {fileID: 11400000, guid: 75b65c7b228ffa24aa418ffb780bbb34, type: 2}

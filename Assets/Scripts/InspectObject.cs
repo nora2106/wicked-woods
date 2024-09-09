@@ -19,6 +19,7 @@ public class InspectObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
     }
 
     void OnMouseDown () {
@@ -27,7 +28,6 @@ public class InspectObject : MonoBehaviour
                 wasInspected = true;
             }
         if(viewObject != null) {
-            print("open");
             viewObject.GetComponent<DetailView>().Open();
         }
     }

@@ -7,6 +7,7 @@ public class CursorIcon : MonoBehaviour
     public Sprite inspectIcon; 
     public Sprite moveIcon;
     public Sprite grabIcon;
+    public Sprite useIcon;
     public GameObject player;
     // Start is called before the first frame update
     void Start()
@@ -25,15 +26,17 @@ public class CursorIcon : MonoBehaviour
 
         if (hit.collider != null)
         {
-            if(hit.collider.gameObject.GetComponent<InspectObject>())
+            if(hit.collider.gameObject.GetComponent<InspectObject>() || hit.collider.gameObject.tag == "inspect")
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = inspectIcon;
+            }
+            else if(hit.collider.gameObject.GetComponent<UsableObject>()) {
+                gameObject.GetComponent<SpriteRenderer>().sprite = useIcon;
             }
             else if(hit.collider.gameObject.tag == "grab")
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = grabIcon;
             }
-
             else
             {
                 Reset();
@@ -55,6 +58,6 @@ public class CursorIcon : MonoBehaviour
     }
 
     public void Reset() {
-        gameObject.GetComponent<SpriteRenderer>().sprite = moveIcon;
+        gameObject.GetComponent<SpriteRenderer>().sprite = null;
     }
 }

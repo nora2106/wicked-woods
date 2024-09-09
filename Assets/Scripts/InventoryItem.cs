@@ -13,7 +13,9 @@ public class InventoryItem : MonoBehaviour
     private GameObject player;
     private Text displayText;
     private GameObject usableObj;
+    private GameObject combineObj;
     private GameObject cursorHandler;
+    public string id;
     public void Start()
     {
         GetComponent<SpriteRenderer>().sprite = data.sprite;
@@ -22,16 +24,25 @@ public class InventoryItem : MonoBehaviour
         player = GameObject.FindWithTag("Player");
         displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
         cursorHandler = GameObject.FindWithTag("Cursor");
+        inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
+        id = data.id;
     }
 
     public void Update()
     {
         if (usableObj)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && selected)
             {
+                
                 if (usableObj.GetComponent<UsableObject>().usableItemID == data.id)
                 {
+                    if(usableObj.GetComponent<UsableObject>().locked == true) {
+                        usableObj.GetComponent<UsableObject>().Unlock();
+                    }
+                    else {
+                        usableObj.GetComponent<UsableObject>().Action();
+                    }
                     selected = false;
                     if (data.reusable)
                     {
@@ -42,12 +53,32 @@ public class InventoryItem : MonoBehaviour
                         Destroy(gameObject);
                     }
                     player.GetComponent<MoveCharacter>().canMove = true;
-                    usableObj.GetComponent<UsableObject>().Action();
                 }
 
                 else
                 {
                     displayText.text = ("Ich kann " + data.displayName + " nicht mit " + usableObj.name + " benutzen.");
+                    //add english option
+                }
+            }
+        }
+
+        if(combineObj){
+            if (Input.GetMouseButtonDown(0))
+            {
+               if (combineObj.GetComponent<InventoryItem>().id == data.combineWith)
+                {
+                    selected = false;
+                    Destroy(gameObject);
+                    Destroy(combineObj);
+                    player.GetComponent<MoveCharacter>().canMove = true;
+                    inventory.addItem(data.newItem);
+                }
+
+                else
+                {
+                    displayText.text = ("Ich kann " + data.displayName + " nicht mit " + combineObj.name + " kombinieren.");
+                    gameObject.transform.position = pos;
                     //add english option
                 }
             }
@@ -74,6 +105,13 @@ public class InventoryItem : MonoBehaviour
             cursorHandler.GetComponent<CursorIcon>().SetUse();
             displayText.text = ("Use " + data.name + " on " + collision.name);
             usableObj = collision.gameObject;
+        }
+
+        if(collision.gameObject.GetComponent<InventoryItem>())
+        {
+            cursorHandler.GetComponent<CursorIcon>().SetUse();
+            displayText.text = (data.name + " mit " + collision.name + " kombinieren");
+            combineObj = collision.gameObject;
         }
     }
 

@@ -5,23 +5,27 @@ using UnityEngine.UI;
 
 public class DetailView : MonoBehaviour
 {
-    private GameObject player;
     public Button closeBtn;
+    public GameObject obj;
+    private GameObject manager;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-        Close();
+        transform.gameObject.SetActive(false);
+        manager = GameObject.FindWithTag("GameController");
         closeBtn.onClick.AddListener(Close);
     }
 
     public void Open(){
         transform.gameObject.SetActive(true);
-        player.GetComponent<MoveCharacter>().canMove = false;
+        manager.GetComponent<GameManager>().OpenOverlay();
     }
 
     public void Close() {
         transform.gameObject.SetActive(false);
-        player.GetComponent<MoveCharacter>().canMove = true;
+        manager.GetComponent<GameManager>().CloseOverlay();
+        if(obj) {
+            obj.GetComponent<OpenObject>().Close();
+        }
     }
 }

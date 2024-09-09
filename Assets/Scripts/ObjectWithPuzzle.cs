@@ -16,4 +16,9 @@ public class ObjectWithPuzzle : UsableObject
     {
         puzzle.GetComponent<PuzzleManager>().OpenPuzzle();
     }
+
+    public override void OpenAnimation()
+    {
+        //
+    }
 }

@@ -14,7 +14,7 @@ public class ItemObject : MonoBehaviour
 
     private void OnMouseDown()
     {
-            handlePickup();
+        handlePickup();
     }
 
     private void Update()
