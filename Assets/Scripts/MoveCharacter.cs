@@ -1,30 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MoveCharacter : MonoBehaviour
 {
-    public float speed;
-    public float maxHeight;
     private Vector3 target;
-    private new SpriteRenderer renderer;
     public bool canMove = true;
+    private NavMeshAgent agent;
 
     void Start()
     {
         target = transform.position;
-        renderer = GetComponent<SpriteRenderer>();
-        var floor = GameObject.Find("Floor");
-        //maxHeight = (renderer.bounds.size.y + floor.transform.position.y - 0.2f) * -1;
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        print("collision");
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if(canMove)
         {
@@ -32,24 +26,9 @@ public class MoveCharacter : MonoBehaviour
             {
                 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 target.z = transform.position.z;
-
-                if (target.y > maxHeight)
-                {
-                    target.y = maxHeight;
-                }
-
-                if (target.x > transform.position.x)
-                {
-                    transform.localScale = new Vector2(0.5f, transform.localScale.y);
-                }
-                else
-                {
-                    transform.localScale = new Vector2(-0.5f, transform.localScale.y);
-                }
             }
-            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
-            //GetComponent<Rigidbody2D>().MovePosition(target * Time.deltaTime * speed);       
-            }
+            agent.SetDestination(target);
+        }
 
         else
         {

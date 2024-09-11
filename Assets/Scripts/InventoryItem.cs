@@ -124,4 +124,8 @@ public class InventoryItem : MonoBehaviour
         }
 
     }
+    private void OnMouseDown()
+    {
+        selected = true;
+    }
 }

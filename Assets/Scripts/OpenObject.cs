@@ -17,7 +17,7 @@ public class OpenObject : UsableObject
     void Start()
     {
         displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
+        //gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
         if(locked) {
             gameObject.tag = "inspect";
         }
@@ -49,12 +49,13 @@ public class OpenObject : UsableObject
     }
 
     public void Close() {
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
+        //gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
         open = false;
     }
 
     override public void OpenAnimation() {
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite2;
+        //add animation
+        //gameObject.GetComponent<SpriteRenderer>().sprite = sprite2;
         open = true;
     }
 }

@@ -20,12 +20,4 @@ public class InventorySlot : MonoBehaviour
             item = null;
         }
     }
-
-    public void getClick()
-    {
-        if(item)
-        {
-            item.GetComponent<InventoryItem>().selected = true;
-        }
-    }
 }

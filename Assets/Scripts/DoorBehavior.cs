@@ -8,6 +8,7 @@ public class DoorBehavior : UsableObject
 {
     private static System.Timers.Timer aTimer;
     public string nextScene;
+    private bool open;
 
     public void Start()
     {
@@ -24,17 +25,21 @@ public class DoorBehavior : UsableObject
     override public void Action()
     {
         if(locked == false) {
-            OpenDoor();
+            open = true;
+            //open animation
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (open == true && collision.gameObject.tag == "Player")
+        {
+            if (nextScene != "")
+            {
+                SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
+            }
         }
     }
 
-    public void OpenDoor()
-    {
-        if (nextScene != "")
-        {
-            SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
-        }
-    }
     IEnumerator LoadNext(float duration)
     {
         yield return new WaitForSeconds(duration);
