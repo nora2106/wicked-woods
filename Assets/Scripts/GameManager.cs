@@ -8,18 +8,11 @@ public class GameManager : MonoBehaviour
     public GameObject overlay;
     public GameObject player;
     private GameObject[] objs;
-    private void Update()
-    {
 
-    }
-    // Start is called before the first frame update
     void Start()
     {
-        foreach(GameObject go in FindGameObjectsInLayer(6)) {
-            var pos = transform.position;
-            gameObject.transform.position = new Vector3(pos.x, pos.y, 2);
-        }
         overlay.SetActive(false);
+        overlay.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     GameObject[] FindGameObjectsInLayer(int layer)
@@ -42,6 +35,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenOverlay() {
         overlay.SetActive(true);
+        overlay.GetComponent<CanvasGroup>().alpha = 1;
         player.GetComponent<MoveCharacter>().canMove = false;
         objs = FindGameObjectsInLayer(6);
         foreach(GameObject go in objs) {
@@ -51,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     public void CloseOverlay() {
         overlay.SetActive(false);
+        overlay.GetComponent<CanvasGroup>().alpha = 0;
         player.GetComponent<MoveCharacter>().canMove = true;
         foreach(GameObject go in objs) {
             go.layer = 6;

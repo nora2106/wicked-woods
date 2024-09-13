@@ -8,7 +8,8 @@ public class DoorBehavior : UsableObject
 {
     private static System.Timers.Timer aTimer;
     public string nextScene;
-    private bool open;
+    public bool open;
+    private bool isColliding;
 
     public void Start()
     {
@@ -18,6 +19,13 @@ public class DoorBehavior : UsableObject
     void Update() {
         if(locked == false && gameObject.GetComponent<InspectObject>()) {
             Destroy(gameObject.GetComponent<InspectObject>());
+        }
+        if(open == true &&isColliding == true )
+        {
+            if (nextScene != "")
+            {
+                SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
+            }
         }
     }
 
@@ -31,12 +39,17 @@ public class DoorBehavior : UsableObject
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (open == true && collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player")
         {
-            if (nextScene != "")
-            {
-                SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
-            }
+            isColliding = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            isColliding = false;
         }
     }
 

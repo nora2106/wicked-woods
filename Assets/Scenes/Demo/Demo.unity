@@ -454,45 +454,6 @@ MonoBehaviour:
   m_Area: 0
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
---- !u!1 &846596199 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-  m_PrefabInstance: {fileID: 8159442709940076202}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &846596200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846596199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bb150c4eeb8e714aa150d1990027f1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!195 &846596201
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 846596199}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 3
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 9.1
-  m_BaseOffset: 4.55
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1 &983313419
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,21 +1764,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8159442710715365056, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-      propertyPath: canMove
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8159442710715365056, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-      propertyPath: m_Enabled
+    - target: {fileID: 273845625822272784, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
+      propertyPath: m_IsTrigger
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8159442710715365058, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-      propertyPath: m_Color.a
+    - target: {fileID: 3551239988002433945, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
+      propertyPath: m_CollisionDetection
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1863,17 +1816,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 8159442710715365056, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 846596201}
-    - targetCorrespondingSourceObject: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 846596200}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

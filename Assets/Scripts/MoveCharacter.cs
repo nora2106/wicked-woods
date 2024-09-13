@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class MoveCharacter : MonoBehaviour
 {
     private Vector3 target;
-    public bool canMove = true;
+    public bool canMove;
     private NavMeshAgent agent;
 
     void Start()
@@ -15,6 +15,7 @@ public class MoveCharacter : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        canMove = true;
     }
 
     // Update is called once per frame

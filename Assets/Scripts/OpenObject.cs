@@ -7,9 +7,8 @@ using UnityEngine.UI;
 //open object to make it inspectable/detail view
 public class OpenObject : UsableObject
 {
-    public bool open;
-    public Sprite sprite1;
-    public Sprite sprite2;
+    //public Sprite sprite1;
+    //public Sprite sprite2;
     public GameObject detail;
     public string lockedText;
 
@@ -31,17 +30,11 @@ public class OpenObject : UsableObject
 
     public override void Action()
     {
-        if(!locked && !open) {
+        if(!locked) {
             OpenAnimation();
-/*             displayText.text = "";
-            if(gameObject.tag == "inspect") {
-                gameObject.tag = "Untagged";
-            } */
-        }
-        else if (open) {
-            if(detail != null) {
+          if(detail != null) {
                 detail.GetComponent<DetailView>().Open();
-            }
+          }
         }
         else {
             displayText.text = lockedText;
@@ -50,12 +43,10 @@ public class OpenObject : UsableObject
 
     public void Close() {
         //gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
-        open = false;
     }
 
     override public void OpenAnimation() {
         //add animation
         //gameObject.GetComponent<SpriteRenderer>().sprite = sprite2;
-        open = true;
     }
 }

@@ -13,9 +13,7 @@ public class BookPuzzle : PuzzleManager
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("Player");
-        gameObject.SetActive(false);
-        closeBtn.onClick.AddListener(ClosePuzzle);
+
     }
 
     bool CheckSlots() {

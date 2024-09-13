@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Demo.unity
+    path: Assets/Scenes/Demo/Demo.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Childroom.unity
+    path: Assets/Scenes/Childroom/Childroom.unity
     guid: 1422a2381fad1564c858cff84bbcc412
   - enabled: 1
-    path: Assets/Scenes/Hallway.unity
+    path: Assets/Scenes/Hallway/Hallway.unity
     guid: 57050d958a1cc4b68977ef48f5184e9f
+  - enabled: 1
+    path: Assets/Scenes/Bedroom/Bedroom.unity
+    guid: 7146c68917afee7479a9a98fbc88c7d2
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: f9da42be8ac1d47dfbe55f0770b0b977, type: 2}
     com.unity.localization.settings: {fileID: 11400000, guid: 4a420a337e415447e819288585b16a9a, type: 2}
