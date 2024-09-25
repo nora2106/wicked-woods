@@ -12,6 +12,7 @@ TagManager:
   - Bookslot
   - inventory
   - use
+  - arrow
   layers:
   - Default
   - TransparentFX

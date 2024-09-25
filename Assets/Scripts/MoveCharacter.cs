@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.AI;
 
 public class MoveCharacter : MonoBehaviour
@@ -21,7 +22,7 @@ public class MoveCharacter : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(canMove)
+        if(canMove && !EventSystem.current.IsPointerOverGameObject())
         {
             if (Input.GetMouseButtonDown(0))
             {

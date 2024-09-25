@@ -8,7 +8,6 @@ using UnityEngine.EventSystems;
 public class BookPuzzle : PuzzleManager
 {
     public Text displayText;
-    public Button closeBtn;
     
     // Start is called before the first frame update
     void Start()
