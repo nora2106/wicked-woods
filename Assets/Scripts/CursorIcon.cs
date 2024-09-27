@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CursorIcon : MonoBehaviour
 {
@@ -23,22 +24,22 @@ public class CursorIcon : MonoBehaviour
 
         if (hit.collider != null)
         {
-            if(hit.collider.gameObject.GetComponent<InspectObject>() || hit.collider.gameObject.tag == "inspect")
+            if (hit.collider.gameObject.GetComponent<InventoryItem>() || hit.collider.gameObject.GetComponent<ItemObject>())
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = grabIcon;
+            }
+            else if (hit.collider.gameObject.GetComponent<InspectObject>() || hit.collider.gameObject.tag == "inspect")
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = inspectIcon;
             }
             else if(hit.collider.gameObject.GetComponent<UsableObject>()) {
                 gameObject.GetComponent<SpriteRenderer>().sprite = useIcon;
             }
-            else if(hit.collider.gameObject.GetComponent<InventoryItem>()  || hit.collider.gameObject.GetComponent<ItemObject>())
-            {
-                gameObject.GetComponent<SpriteRenderer>().sprite = grabIcon;
-            }
+           
             else
             {
                 Reset();
             }
-
         }
         else
         {
@@ -50,7 +51,7 @@ public class CursorIcon : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().sprite = inspectIcon;
     }
 
-    public void ShowGrab() {
+    public void SetGrab() {
         gameObject.GetComponent<SpriteRenderer>().sprite = grabIcon;
     }
 

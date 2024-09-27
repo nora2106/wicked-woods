@@ -12,18 +12,25 @@ public class GameManager : MonoBehaviour
     private GameObject[] objs;
     public Camera[] cameras;
     public GameObject UI;
-    GameObject leftArrow;
-    GameObject rightArrow;
-    public string nextScene;
-
+    public static GameManager Instance;
     void Start()
     {
+        Instance = this;
+        Setup();
+        SceneManager.activeSceneChanged += ManageScenes;
+    }
+
+    public void Setup()
+    {
+        overlay = GameObject.FindWithTag("Overlay");
+        overlay.GetComponent<Canvas>().worldCamera = Camera.main;
         overlay.SetActive(false);
         overlay.GetComponent<CanvasGroup>().alpha = 0;
-        leftArrow = UI.transform.GetChild(0).gameObject;
-        rightArrow = UI.transform.GetChild(1).gameObject;
-        SceneManager.activeSceneChanged += ManageScenes;
-        ManageScenes(SceneManager.GetActiveScene(), SceneManager.GetActiveScene());
+        objs = FindGameObjectsInLayer(6);
+        foreach (GameObject obj in objs)
+        {
+            obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, 10);
+        }
     }
 
     GameObject[] FindGameObjectsInLayer(int layer)
@@ -48,21 +55,15 @@ public class GameManager : MonoBehaviour
         overlay.SetActive(true);
         overlay.GetComponent<CanvasGroup>().alpha = 1;
         player.GetComponent<MoveCharacter>().canMove = false;
-        objs = FindGameObjectsInLayer(6);
-        foreach(GameObject go in objs) {
-            go.layer = 2;
-        }
     }
 
     public void CloseOverlay() {
         overlay.SetActive(false);
         overlay.GetComponent<CanvasGroup>().alpha = 0;
         player.GetComponent<MoveCharacter>().canMove = true;
-        foreach(GameObject go in objs) {
-            go.layer = 6;
-        }
     }
 
+    //currently obsolete
     public void SwitchCamera(int index)
     {
         for (int i = 1; i < cameras.Length; i++)
@@ -77,9 +78,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChangeScene()
+    public void ChangeScene(string scene)
     {
-        SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 
     public void ResetPlayerPos(Vector2 pos)
@@ -89,27 +90,6 @@ public class GameManager : MonoBehaviour
 
     public void ManageScenes(Scene oldScene, Scene newScene)
     {
-
-
-        leftArrow.SetActive(false);
-        rightArrow.SetActive(false);
-        switch (newScene.name) {
-            default:
-                break;
-            case "Livingroom":
-                {
-                    leftArrow.SetActive(true);
-                    rightArrow.SetActive(false);
-                    nextScene = "Kitchen";
-                }
-                break;
-            case "Kitchen":
-                {
-                    leftArrow.SetActive(false);
-                    rightArrow.SetActive(true);
-                    nextScene = "Livingroom";
-                }
-                break;
-        }
+        Setup();
     }
 }

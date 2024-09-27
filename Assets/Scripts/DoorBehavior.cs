@@ -8,7 +8,7 @@ public class DoorBehavior : UsableObject
 {
     private static System.Timers.Timer aTimer;
     public string nextScene;
-    public bool open;
+    public bool open = false;
     private bool isColliding;
 
     public void Start()
@@ -32,9 +32,8 @@ public class DoorBehavior : UsableObject
     //unlock door
     override public void Action()
     {
-        if(locked == false) {
+        if(!locked) {
             open = true;
-            //open animation
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

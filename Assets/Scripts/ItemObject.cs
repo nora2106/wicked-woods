@@ -6,22 +6,16 @@ public class ItemObject : MonoBehaviour
 {
     public ItemData refItem;
     public Inventory inventory;
+    private GameObject cursor;
     // Start is called before the first frame update
     void Start()
     {
-        
+        cursor = GameObject.FindWithTag("Cursor");
     }
 
     private void OnMouseDown()
     {
         handlePickup();
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            handlePickup();
-        }
     }
 
     public void handlePickup()

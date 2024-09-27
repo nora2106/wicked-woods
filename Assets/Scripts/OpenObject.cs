@@ -16,7 +16,6 @@ public class OpenObject : UsableObject
     void Start()
     {
         displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
-        //gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
         if(locked) {
             gameObject.tag = "inspect";
         }

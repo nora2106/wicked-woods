@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public abstract class UsableObject : MonoBehaviour
 {
@@ -10,7 +11,10 @@ public abstract class UsableObject : MonoBehaviour
     public bool locked;
 
     private void OnMouseDown() {
-        Action();
+        if(!EventSystem.current.IsPointerOverGameObject())
+        {
+            Action();
+        }
     }
 
     public abstract void Action();

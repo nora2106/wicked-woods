@@ -6,13 +6,13 @@ TagManager:
   tags:
   - slot
   - inspect
-  - grab
   - Text
   - Cursor
   - Bookslot
   - inventory
   - use
   - arrow
+  - Overlay
   layers:
   - Default
   - TransparentFX
@@ -23,7 +23,7 @@ TagManager:
   - Objects
   - Boundaries
   - Character
-  - 
+  - Detail
   - 
   - 
   - 
@@ -65,9 +65,12 @@ TagManager:
   - name: Foreground
     uniqueID: 3947623857
     locked: 0
+  - name: UI
+    uniqueID: 3187485717
+    locked: 0
   - name: View
     uniqueID: 96048835
     locked: 0
-  - name: UI
-    uniqueID: 3187485717
+  - name: Cursor
+    uniqueID: 1341483495
     locked: 0

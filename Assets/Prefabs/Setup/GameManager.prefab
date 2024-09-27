@@ -48,8 +48,8 @@ MonoBehaviour:
   overlay: {fileID: 3277050788029601330, guid: 7e574e1a4ee3e4aa28e5349a237928ae, type: 3}
   player: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
   cameras: []
+  mainCam: {fileID: 1203203243948151636, guid: 59cc33989026fba4bbc9f79355025811, type: 3}
   UI: {fileID: 8985418804032207322, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
-  nextScene: 
 --- !u!114 &2390831976462808299
 MonoBehaviour:
   m_ObjectHideFlags: 0
