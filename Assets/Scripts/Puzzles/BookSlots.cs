@@ -21,7 +21,7 @@ public class BookSlots : MonoBehaviour
 
         if (transform.GetChild(0).gameObject == correctBook)
         {
-            puzzle.GetComponent<BookPuzzle>().Success();
+            puzzle.GetComponent<BookPuzzle>().CheckProgress();
             correct = true;
         }
         else

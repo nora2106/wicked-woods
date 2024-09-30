@@ -4,11 +4,11 @@ using UnityEngine;
 
 public abstract class PuzzleManager : MonoBehaviour
 {
-    public GameObject player;
+    public bool solved;
     // Start is called before the first frame update
     void Start()
     {
-        player = GameObject.FindWithTag("player");
+
     }
 
     // Update is called once per frame
@@ -17,13 +17,18 @@ public abstract class PuzzleManager : MonoBehaviour
         
     }
 
-    public void OpenPuzzle() {
-        gameObject.SetActive(true);
-        player.GetComponent<MoveCharacter>().canMove = false;
+    public abstract bool CheckIfSolved();
+
+    public void CheckProgress()
+    {
+        if(CheckIfSolved())
+        {
+            solved = true;
+            gameObject.SetActive(false);
+            GameManager.Instance.CloseOverlay();
+            Success();
+        }
     }
 
-    public void ClosePuzzle() {
-        gameObject.SetActive(false);
-        player.GetComponent<MoveCharacter>().canMove = true;
-    }
+    public abstract void Success();
 }

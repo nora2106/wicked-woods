@@ -10,11 +10,7 @@ public class DoorBehavior : UsableObject
     public string nextScene;
     public bool open = false;
     private bool isColliding;
-
-    public void Start()
-    {
-
-    }
+    public string lockedText;
 
     void Update() {
         if(locked == false && gameObject.GetComponent<InspectObject>()) {
@@ -34,6 +30,10 @@ public class DoorBehavior : UsableObject
     {
         if(!locked) {
             open = true;
+        }
+        else if(lockedText != null)
+        {
+            GameManager.Instance.SetText(lockedText);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

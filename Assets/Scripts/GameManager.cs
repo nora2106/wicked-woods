@@ -10,9 +10,10 @@ public class GameManager : MonoBehaviour
     public GameObject overlay;
     public GameObject player;
     private GameObject[] objs;
-    public Camera[] cameras;
+    private Camera[] cameras;
     public GameObject UI;
     public static GameManager Instance;
+    public Text displayText;
     void Start()
     {
         Instance = this;
@@ -27,9 +28,12 @@ public class GameManager : MonoBehaviour
         overlay.SetActive(false);
         overlay.GetComponent<CanvasGroup>().alpha = 0;
         objs = FindGameObjectsInLayer(6);
-        foreach (GameObject obj in objs)
+        if(objs != null)
         {
-            obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, 10);
+            foreach (GameObject obj in objs)
+            {
+                obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, 10);
+            }
         }
     }
 
@@ -91,5 +95,10 @@ public class GameManager : MonoBehaviour
     public void ManageScenes(Scene oldScene, Scene newScene)
     {
         Setup();
+    }
+
+    public void SetText(string text)
+    {
+        displayText.text = text;
     }
 }

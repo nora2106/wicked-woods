@@ -14,6 +14,7 @@ public class InventoryItem : MonoBehaviour
     private Text displayText;
     private GameObject usableObj;
     private GameObject combineObj;
+    private GameObject newSlot;
     private GameObject cursorHandler;
     public string id;
     public void Start()
@@ -34,7 +35,6 @@ public class InventoryItem : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && selected)
             {
-                
                 if (usableObj.GetComponent<UsableObject>().usableItemID == data.id)
                 {
                     if(usableObj.GetComponent<UsableObject>().locked == true) {
@@ -43,16 +43,12 @@ public class InventoryItem : MonoBehaviour
                     else {
                         usableObj.GetComponent<UsableObject>().Action();
                     }
-                    selected = false;
-                    if (data.reusable)
+                    if (!data.reusable)
                     {
-                        transform.position = pos;
-                    }
-                    else
-                    {
+                        selected = false;
                         Destroy(gameObject);
+                        player.GetComponent<MoveCharacter>().canMove = true;
                     }
-                    player.GetComponent<MoveCharacter>().canMove = true;
                 }
 
                 else
@@ -63,7 +59,7 @@ public class InventoryItem : MonoBehaviour
             }
         }
 
-        if(combineObj){
+        if (combineObj){
             if (Input.GetMouseButtonDown(0))
             {
                if (combineObj.GetComponent<InventoryItem>().id == data.combineWith)
@@ -81,6 +77,23 @@ public class InventoryItem : MonoBehaviour
                     gameObject.transform.position = pos;
                     //add english option
                 }
+            }
+        }
+
+        else if (newSlot && selected && Input.GetMouseButtonDown(0))
+        {
+            if (newSlot.transform.childCount == 0)
+            {
+                selected = false;
+                transform.parent = newSlot.transform;
+                pos = transform.position;
+                newSlot = null;
+            }
+            else if (newSlot.transform == transform.parent)
+            {
+                transform.position = pos;
+                selected = false;
+                newSlot = null;
             }
         }
 
@@ -112,6 +125,14 @@ public class InventoryItem : MonoBehaviour
             cursorHandler.GetComponent<CursorIcon>().SetUse();
             displayText.text = (data.name + " mit " + collision.name + " kombinieren");
             combineObj = collision.gameObject;
+        }
+
+        if(collision.gameObject.GetComponent<InventorySlot>())
+        {
+            if(selected)
+            {
+                newSlot = collision.gameObject;
+            }
         }
     }
 

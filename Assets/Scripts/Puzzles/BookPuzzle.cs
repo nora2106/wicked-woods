@@ -15,7 +15,7 @@ public class BookPuzzle : PuzzleManager
 
     }
 
-    bool CheckSlots() {
+    public override bool CheckIfSolved() {
         foreach(GameObject go in GameObject.FindGameObjectsWithTag("Bookslot")) {
             if(go.GetComponent<BookSlots>().correct == false) {
                 return false;
@@ -24,9 +24,8 @@ public class BookPuzzle : PuzzleManager
         return true;
     }
 
-    public void Success() {
-        if(CheckSlots()) {
-        displayText.text = "Hallelujah! Du hast gewonnen!";
-        }
+    public override void Success()
+    {
+        print("Heureka! DU hast es geschafft!");
     }
 }
