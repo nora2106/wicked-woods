@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PuzzleManager : MonoBehaviour
+public abstract class PuzzleManager : MonoBehaviour, ISetup
 {
     public bool solved;
-    // Start is called before the first frame update
-    void Start()
-    {
+    public string id;
+    private GameManager gm;
 
-    }
-
-    // Update is called once per frame
-    void Update()
+    public void Setup()
     {
-        
+        gm = GameManager.Instance;
+        if(gm.gameData.solvedPuzzles.Contains(id)) {
+            solved = true;
+        }
     }
 
     public abstract bool CheckIfSolved();

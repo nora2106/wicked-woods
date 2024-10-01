@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 168176851294577175}
   - component: {fileID: 1596295896445657389}
   - component: {fileID: 2390831976462808299}
+  - component: {fileID: 5707854994390725546}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -45,11 +46,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19153983ddd44982a863b52e670b50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overlay: {fileID: 3277050788029601330, guid: 7e574e1a4ee3e4aa28e5349a237928ae, type: 3}
-  player: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-  cameras: []
-  mainCam: {fileID: 1203203243948151636, guid: 59cc33989026fba4bbc9f79355025811, type: 3}
+  overlay: {fileID: 0}
+  player: {fileID: 0}
   UI: {fileID: 8985418804032207322, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
+  displayText: {fileID: 0}
+  gameData:
+    playerPosition: {x: 0, y: 0, z: 0}
+    unlockedObjs: []
+    solvedPuzzles: []
+    scene: 
 --- !u!114 &2390831976462808299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,3 +68,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   index: 4
+--- !u!114 &5707854994390725546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574755068480613114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc25c932529f9e945a17d6919bd68ade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    playerPosition: {x: 0, y: 0, z: 0}
+    unlockedObjs: []
+    solvedPuzzles: []
+    scene: 

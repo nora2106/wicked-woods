@@ -8,9 +8,8 @@ public class DoorBehavior : UsableObject
 {
     private static System.Timers.Timer aTimer;
     public string nextScene;
-    public bool open = false;
+    public bool open;
     private bool isColliding;
-    public string lockedText;
 
     void Update() {
         if(locked == false && gameObject.GetComponent<InspectObject>()) {

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,15 +15,27 @@ public class GameManager : MonoBehaviour
     public GameObject UI;
     public static GameManager Instance;
     public Text displayText;
+    public GameData gameData;
+    private SaveManager sm;
     void Start()
     {
+        sm = gameObject.GetComponent<SaveManager>();
         Instance = this;
-        Setup();
-        SceneManager.activeSceneChanged += ManageScenes;
+        SetupAll();
+        SceneManager.activeSceneChanged += OnSceneChange;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        if (gameData.scene != "" && gameData.scene != SceneManager.GetActiveScene().name)
+        {
+            //uncomment later, enables changing to last visited scene
+            //ChangeScene(gameData.scene);
+        }
     }
 
     public void Setup()
     {
+        sm = gameObject.GetComponent<SaveManager>();
+        sm.GetSaveData();
+        gameData = gameObject.GetComponent<SaveManager>().data;
         overlay = GameObject.FindWithTag("Overlay");
         overlay.GetComponent<Canvas>().worldCamera = Camera.main;
         overlay.SetActive(false);
@@ -35,6 +48,28 @@ public class GameManager : MonoBehaviour
                 obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, 10);
             }
         }
+        
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        SetupAll();
+    }
+
+    private void OnSceneChange(Scene lastScene, Scene nextScene)
+    {
+        gameData.scene = nextScene.name;
+        sm.Save();
+    }
+
+    private void SetupAll()
+    {
+        var setupObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISetup>();
+        foreach (ISetup obj in setupObjects)
+        {
+            obj.Setup();
+        }
+        Setup();
     }
 
     GameObject[] FindGameObjectsInLayer(int layer)
@@ -90,11 +125,6 @@ public class GameManager : MonoBehaviour
     public void ResetPlayerPos(Vector2 pos)
     {
         player.transform.position = pos;
-    }
-
-    public void ManageScenes(Scene oldScene, Scene newScene)
-    {
-        Setup();
     }
 
     public void SetText(string text)

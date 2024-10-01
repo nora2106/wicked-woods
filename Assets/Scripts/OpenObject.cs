@@ -7,24 +7,14 @@ using UnityEngine.UI;
 //open object to make it inspectable/detail view
 public class OpenObject : UsableObject
 {
-    //public Sprite sprite1;
-    //public Sprite sprite2;
     public GameObject detail;
-    public string lockedText;
 
-    // Start is called before the first frame update
     void Start()
     {
         displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
         if(locked) {
             gameObject.tag = "inspect";
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public override void Action()
