@@ -12,30 +12,26 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     private GameObject[] objs;
     private Camera[] cameras;
-    public GameObject UI;
     public static GameManager Instance;
-    public Text displayText;
-    public GameData gameData;
-    private SaveManager sm;
+    private string currentScene;
+    public SaveManager save;
+    public SpawnPos spawnPos;
+    public MonologueSystem textSystem;
+
     void Start()
     {
-        sm = gameObject.GetComponent<SaveManager>();
+        textSystem = FindObjectOfType<MonologueSystem>();
+        currentScene = SceneManager.GetActiveScene().name;
         Instance = this;
-        SetupAll();
+        save = gameObject.GetComponent<SaveManager>();
         SceneManager.activeSceneChanged += OnSceneChange;
         SceneManager.sceneLoaded += OnSceneLoaded;
-        if (gameData.scene != "" && gameData.scene != SceneManager.GetActiveScene().name)
-        {
-            //uncomment later, enables changing to last visited scene
-            //ChangeScene(gameData.scene);
-        }
+        SetupAll();
     }
 
     public void Setup()
     {
-        sm = gameObject.GetComponent<SaveManager>();
-        sm.GetSaveData();
-        gameData = gameObject.GetComponent<SaveManager>().data;
+        spawnPos = FindObjectOfType<SpawnPos>();
         overlay = GameObject.FindWithTag("Overlay");
         overlay.GetComponent<Canvas>().worldCamera = Camera.main;
         overlay.SetActive(false);
@@ -48,23 +44,27 @@ public class GameManager : MonoBehaviour
                 obj.transform.position = new Vector3(obj.transform.position.x, obj.transform.position.y, 10);
             }
         }
-        
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SetupAll();
+        //player.GetComponent<MoveCharacter>().canMove = false;
+        player.GetComponent<MoveCharacter>().setPosition(spawnPos.getPosition(currentScene));
+        currentScene = scene.name;
     }
 
     private void OnSceneChange(Scene lastScene, Scene nextScene)
     {
-        gameData.scene = nextScene.name;
-        sm.Save();
+        save.data.scene = nextScene.name;
+        save.Save();
     }
 
     private void SetupAll()
     {
-        var setupObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISetup>();
+        save.savePath = Application.persistentDataPath + "/gamedata.json";
+        save.GetSaveData();
+        var setupObjects = Resources.FindObjectsOfTypeAll<MonoBehaviour>().OfType<ISetup>();
         foreach (ISetup obj in setupObjects)
         {
             obj.Setup();
@@ -94,41 +94,38 @@ public class GameManager : MonoBehaviour
         overlay.SetActive(true);
         overlay.GetComponent<CanvasGroup>().alpha = 1;
         player.GetComponent<MoveCharacter>().canMove = false;
+        player.layer = 2;
     }
 
     public void CloseOverlay() {
         overlay.SetActive(false);
         overlay.GetComponent<CanvasGroup>().alpha = 0;
         player.GetComponent<MoveCharacter>().canMove = true;
+        player.layer = 8;
     }
 
     //currently obsolete
-    public void SwitchCamera(int index)
-    {
-        for (int i = 1; i < cameras.Length; i++)
-        {
-            cameras[i].enabled = false;
+    //public void SwitchCamera(int index)
+    //{
+    //    for (int i = 1; i < cameras.Length; i++)
+    //    {
+    //        cameras[i].enabled = false;
 
-        }
-        if (cameras.Length > 0)
-        {
-            cameras[index].enabled = true;
-            UI.GetComponent<Canvas>().worldCamera = cameras[index];
-        }
-    }
+    //    }
+    //    if (cameras.Length > 0)
+    //    {
+    //        cameras[index].enabled = true;
+    //        UI.GetComponent<Canvas>().worldCamera = cameras[index];
+    //    }
+    //}
 
     public void ChangeScene(string scene)
     {
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 
-    public void ResetPlayerPos(Vector2 pos)
-    {
-        player.transform.position = pos;
-    }
-
     public void SetText(string text)
     {
-        displayText.text = text;
+        textSystem.setText(text);
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    string savePath;
+    public string savePath;
     public GameData data;
-    // Start is called before the first frame update
-    void Awake()
+
+    void Start()
     {
         savePath = Application.persistentDataPath + "/gamedata.json";
     }
@@ -24,12 +24,16 @@ public class SaveManager : MonoBehaviour
         if (File.Exists(savePath))
         {
             string loadData = File.ReadAllText(savePath);
-            data = JsonUtility.FromJson<GameData>(loadData);
+            GameData loadedData = JsonUtility.FromJson<GameData>(loadData);
+            data = loadedData;
         }
     }
 
     public void DeleteSaveData()
     {
         File.Delete(savePath);
+        GameData loadedData = new GameData();
+        data = loadedData;
+
     }
 }

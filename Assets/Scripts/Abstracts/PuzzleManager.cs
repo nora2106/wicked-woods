@@ -11,8 +11,9 @@ public abstract class PuzzleManager : MonoBehaviour, ISetup
     public void Setup()
     {
         gm = GameManager.Instance;
-        if(gm.gameData.solvedPuzzles.Contains(id)) {
+        if(gm.save.data.solvedPuzzles.Contains(id)) {
             solved = true;
+            DisablePuzzle();
         }
     }
 
@@ -25,9 +26,15 @@ public abstract class PuzzleManager : MonoBehaviour, ISetup
             solved = true;
             gameObject.SetActive(false);
             GameManager.Instance.CloseOverlay();
+            if (!gm.save.data.solvedPuzzles.Contains(id))
+            {
+                gm.save.data.solvedPuzzles.Add(id);
+            }
             Success();
         }
     }
 
     public abstract void Success();
+
+    public abstract void DisablePuzzle();
 }

@@ -11,22 +11,22 @@ public class InventoryItem : MonoBehaviour
     public bool selected = false;
     private Vector2 pos;
     private GameObject player;
-    private Text displayText;
     private GameObject usableObj;
     private GameObject combineObj;
     private GameObject newSlot;
     private GameObject cursorHandler;
     public string id;
+    private GameManager gm;
+
     public void Start()
     {
         GetComponent<SpriteRenderer>().sprite = data.sprite;
         GetComponent<SpriteRenderer>().size = new Vector2(20, 20);
-        pos = transform.position;
         player = GameObject.FindWithTag("Player");
-        displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
         cursorHandler = GameObject.FindWithTag("Cursor");
         inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
         id = data.id;
+        gm = GameManager.Instance;
     }
 
     public void Update()
@@ -46,14 +46,14 @@ public class InventoryItem : MonoBehaviour
                     if (!data.reusable)
                     {
                         selected = false;
-                        Destroy(gameObject);
+                        RemoveItem();
                         player.GetComponent<MoveCharacter>().canMove = true;
                     }
                 }
 
                 else
                 {
-                    displayText.text = ("Ich kann " + data.displayName + " nicht mit " + usableObj.name + " benutzen.");
+                    gm.SetText("Ich kann " + data.displayName + " nicht mit " + usableObj.name + " benutzen.");
                     //add english option
                 }
             }
@@ -65,7 +65,7 @@ public class InventoryItem : MonoBehaviour
                if (combineObj.GetComponent<InventoryItem>().id == data.combineWith)
                 {
                     selected = false;
-                    Destroy(gameObject);
+                    RemoveItem();
                     Destroy(combineObj);
                     player.GetComponent<MoveCharacter>().canMove = true;
                     inventory.addItem(data.newItem);
@@ -73,27 +73,26 @@ public class InventoryItem : MonoBehaviour
 
                 else
                 {
-                    displayText.text = ("Ich kann " + data.displayName + " nicht mit " + combineObj.name + " kombinieren.");
-                    gameObject.transform.position = pos;
-                    //add english option
+                    gm.SetText("Ich kann " + data.displayName + " nicht mit " + combineObj.name + " kombinieren.");
+                    transform.position = pos;
                 }
             }
         }
 
-        else if (newSlot && selected && Input.GetMouseButtonDown(0))
+        if (newSlot && selected && Input.GetMouseButtonDown(0))
         {
             if (newSlot.transform.childCount == 0)
             {
                 selected = false;
                 transform.parent = newSlot.transform;
-                pos = transform.position;
                 newSlot = null;
+                transform.localPosition = Vector2.zero;
             }
             else if (newSlot.transform == transform.parent)
             {
-                transform.position = pos;
                 selected = false;
                 newSlot = null;
+                transform.localPosition = Vector2.zero;
             }
         }
 
@@ -105,7 +104,7 @@ public class InventoryItem : MonoBehaviour
 
             if(Input.GetMouseButtonDown(1)) {
                 selected = false;
-                transform.position = pos;
+                transform.localPosition = Vector2.zero;
                 player.GetComponent<MoveCharacter>().canMove = true;
             }
         }
@@ -113,23 +112,26 @@ public class InventoryItem : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.GetComponent<UsableObject>())
+        if(selected)
         {
-            cursorHandler.GetComponent<CursorIcon>().SetUse();
-            displayText.text = ("Use " + data.name + " on " + collision.name);
-            usableObj = collision.gameObject;
+            if (collision.gameObject.GetComponent<UsableObject>())
+            {
+                cursorHandler.GetComponent<CursorIcon>().SetUse();
+                gm.SetText("Use " + data.name + " on " + collision.name);
+                usableObj = collision.gameObject;
+            }
+
+            if (collision.gameObject.GetComponent<InventoryItem>())
+            {
+                cursorHandler.GetComponent<CursorIcon>().SetUse();
+                gm.SetText(data.name + " mit " + collision.name + " kombinieren");
+                combineObj = collision.gameObject;
+            }
         }
 
-        if(collision.gameObject.GetComponent<InventoryItem>())
+        if (collision.gameObject.GetComponent<InventorySlot>())
         {
-            cursorHandler.GetComponent<CursorIcon>().SetUse();
-            displayText.text = (data.name + " mit " + collision.name + " kombinieren");
-            combineObj = collision.gameObject;
-        }
-
-        if(collision.gameObject.GetComponent<InventorySlot>())
-        {
-            if(selected)
+            if (selected)
             {
                 newSlot = collision.gameObject;
             }
@@ -138,15 +140,22 @@ public class InventoryItem : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(displayText.text.Contains(collision.name))
-        {
-            displayText.text = "";
-            usableObj = null;
-        }
+        combineObj = null;
+        usableObj = null;
+        //if (displayText.text.Contains(collision.name))
+        //{
+        //    usableObj = null;
+        //}
 
     }
     private void OnMouseDown()
     {
         selected = true;
+    }
+
+    private void RemoveItem()
+    {
+        Destroy(gameObject);
+        gm.save.data.inventoryItems.Remove(data);
     }
 }

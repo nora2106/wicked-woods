@@ -12,6 +12,9 @@ public class GameData
     public List<string> unlockedObjs = new List<string>();
     public List<string> solvedPuzzles = new List<string>();
     public List<string> collectedItems = new List<string>();
-    public List<string> inventoryItems = new List<string>();
+    public List<ItemData> inventoryItems = new List<ItemData>();
     public string scene;
+    public string test;
+
+    //Dialogue progress
 }

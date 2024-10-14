@@ -144,4 +144,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   refItem: {fileID: 11400000, guid: cd192ff6c5340e24ba80794c189e25ca, type: 2}
-  inventory: {fileID: 3819572352276198996, guid: 507a54dbf93b0d34d92da75ff3d659aa, type: 3}
+  inventory: {fileID: 0}
+  id: housekey

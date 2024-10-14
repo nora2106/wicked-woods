@@ -32,4 +32,9 @@ public class DoorPuzzle : PuzzleManager
     {
         print("Success");
     }
+
+    public override void DisablePuzzle()
+    {
+        
+    }
 }

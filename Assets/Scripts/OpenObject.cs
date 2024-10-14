@@ -11,7 +11,6 @@ public class OpenObject : UsableObject
 
     void Start()
     {
-        displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
         if(locked) {
             gameObject.tag = "inspect";
         }
@@ -26,7 +25,7 @@ public class OpenObject : UsableObject
           }
         }
         else {
-            displayText.text = lockedText;
+            gm.SetText(lockedText);
         }
     }
 

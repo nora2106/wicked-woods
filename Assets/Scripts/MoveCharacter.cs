@@ -11,27 +11,26 @@ public class MoveCharacter : MonoBehaviour, ISetup
     private NavMeshAgent agent;
     private GameManager gm;
 
-    public void Start()
+    public void Awake()
     {
-
-    }
-
-    public void Setup()
-    {
-        gm = GameManager.Instance;
-        if (gm.gameData != null && gm.gameData.playerPosition != Vector3.zero)
-        {
-            transform.position = gm.gameData.playerPosition;
-        }
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         canMove = true;
     }
+    public void Setup()
+    {
+        gm = GameManager.Instance;
+        if (gm.save.data.playerPosition != Vector3.zero)
+        {
+            transform.position = gm.save.data.playerPosition;
+            target = gm.save.data.playerPosition;
+        }
+    }
 
     private void Update()
     {
-        if(canMove && !EventSystem.current.IsPointerOverGameObject())
+        if (canMove && !EventSystem.current.IsPointerOverGameObject())
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -39,13 +38,21 @@ public class MoveCharacter : MonoBehaviour, ISetup
                 target.z = transform.position.z;
             }
             agent.SetDestination(target);
-            gm.gameData.playerPosition = transform.position;
+            gm.save.data.playerPosition = transform.position;
         }
 
         else
         {
             target = transform.position;
         }
+    }
+
+    public void setPosition(Vector2 pos)
+    {
+        agent.enabled = false;
+        gameObject.transform.position = pos;
+        target = pos;
+        agent.enabled = true;
     }
 }
     

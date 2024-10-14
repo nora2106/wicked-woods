@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class InspectObject : MonoBehaviour
 {
     public string inspectText;
-    protected Text displayText;
+    private GameManager gm;
     public GameObject viewObject;
     public bool wasInspected;
 
     // Start is called before the first frame update
     void Start()
     {
-        displayText = GameObject.FindWithTag("Text").GetComponent<Text>();
+        gm = GameManager.Instance;
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class InspectObject : MonoBehaviour
 
     void OnMouseDown () {
         if(inspectText != null) {
-                displayText.text = inspectText;
+            gm.SetText(inspectText);
                 wasInspected = true;
             }
         if(viewObject != null) {
