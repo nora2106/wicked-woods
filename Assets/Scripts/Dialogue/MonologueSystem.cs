@@ -5,29 +5,45 @@ using UnityEngine.UI;
 
 public class MonologueSystem : MonoBehaviour
 {
-    public Text text;
+    public Typewriter typewriter;
     public GameObject panel;
     public float resetDuration = 5;
+    private string msg;
     // Start is called before the first frame update
     void Start()
     {
-        text.text = "";
         panel.SetActive(false);
+
+        typewriter = gameObject.GetComponentInChildren<Typewriter>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //wait for text to finish 
+        if (typewriter.gameObject.GetComponent<Text>().text == msg)
+        {
+            StartCoroutine("Reset");
+
+        }
+
+        if(msg != "" && Input.GetKeyDown(KeyCode.Return))
+        {
+            typewriter.Skip();
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        typewriter.Skip();
     }
 
     public void setText(string t)
     {
         StopCoroutine("Reset");
         ShowMonologue();
-        text.text = t;
-        //wait for text to finish 
-        StartCoroutine("Reset");
+        msg = t;
+        typewriter.Write(t);
     }
 
     public void ShowMonologue()
@@ -38,7 +54,8 @@ public class MonologueSystem : MonoBehaviour
     IEnumerator Reset()
     {
         yield return new WaitForSeconds(resetDuration);
-        text.text = "";
+        typewriter.Reset();
+        msg = "";
         panel.SetActive(false);
     }
 }

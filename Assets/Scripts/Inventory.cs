@@ -12,13 +12,12 @@ public class Inventory : MonoBehaviour, ISetup
 
     public void Setup()
     {
-
         gm = GameManager.Instance;
         if (gm.save.data.inventoryItems.Count > 0)
         {
-            foreach(ItemData idata in gm.save.data.inventoryItems)
+            foreach (ItemData idata in gm.save.data.inventoryItems)
             {
-                if(!items.Contains(idata))
+                if (!items.Contains(idata))
                 {
                     addItem(idata);
                 }

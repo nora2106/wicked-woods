@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
     public SaveManager save;
     public SpawnPos spawnPos;
     public MonologueSystem textSystem;
+    public GameObject dialoguePanel;
 
     void Start()
     {
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
         currentScene = SceneManager.GetActiveScene().name;
         Instance = this;
         save = gameObject.GetComponent<SaveManager>();
+        dialoguePanel = GameObject.FindWithTag("DialogueCanvas");
+        dialoguePanel.SetActive(false);
         SceneManager.activeSceneChanged += OnSceneChange;
         SceneManager.sceneLoaded += OnSceneLoaded;
         SetupAll();
@@ -49,7 +52,6 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         SetupAll();
-        //player.GetComponent<MoveCharacter>().canMove = false;
         player.GetComponent<MoveCharacter>().setPosition(spawnPos.getPosition(currentScene));
         currentScene = scene.name;
     }
@@ -67,7 +69,13 @@ public class GameManager : MonoBehaviour
         var setupObjects = Resources.FindObjectsOfTypeAll<MonoBehaviour>().OfType<ISetup>();
         foreach (ISetup obj in setupObjects)
         {
-            obj.Setup();
+            GameObject objGameObject = ((MonoBehaviour)obj).gameObject;
+
+            // Only call Setup on objects that are part of an active scene
+            if (objGameObject.scene.IsValid() && objGameObject.scene.isLoaded)
+            {
+                obj.Setup();
+            }
         }
         Setup();
     }
@@ -127,5 +135,20 @@ public class GameManager : MonoBehaviour
     public void SetText(string text)
     {
         textSystem.setText(text);
+    }
+
+    public void OpenDialogue(TextAsset text)
+    {
+        dialoguePanel.SetActive(true);
+        GetComponent<DialogueManager>().StartDialogue(text);
+        player.GetComponent<MoveCharacter>().canMove = false;
+        player.layer = 2;
+    }
+
+    public void CloseDialogue()
+    {
+        dialoguePanel.SetActive(false);
+        player.GetComponent<MoveCharacter>().canMove = true;
+        player.layer = 8;
     }
 }

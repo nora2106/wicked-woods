@@ -13,6 +13,8 @@ TagManager:
   - use
   - arrow
   - Overlay
+  - grab
+  - DialogueCanvas
   layers:
   - Default
   - TransparentFX

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Persistence : MonoBehaviour
 {
-
-    private static GameObject[] persistentObjects = new GameObject[7];
+    private static GameObject[] persistentObjects = new GameObject[8];
     public int index;
 
     // Start is called before the first frame update

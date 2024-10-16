@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1596295896445657389}
   - component: {fileID: 2390831976462808299}
   - component: {fileID: 5707854994390725546}
+  - component: {fileID: 984583070131658278}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameController
@@ -48,13 +49,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overlay: {fileID: 0}
   player: {fileID: 0}
-  UI: {fileID: 8985418804032207322, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
-  displayText: {fileID: 0}
-  gameData:
-    playerPosition: {x: 0, y: 0, z: 0}
-    unlockedObjs: []
-    solvedPuzzles: []
-    scene: 
+  save: {fileID: 0}
+  spawnPos: {fileID: 0}
+  textSystem: {fileID: 0}
 --- !u!114 &2390831976462808299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,8 +77,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc25c932529f9e945a17d6919bd68ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  savePath: 
   data:
     playerPosition: {x: 0, y: 0, z: 0}
     unlockedObjs: []
     solvedPuzzles: []
+    collectedItems: []
+    inventoryItems: []
     scene: 
+    test: 
+--- !u!114 &984583070131658278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574755068480613114}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 293410d3ed3075647ac26b988475be63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
