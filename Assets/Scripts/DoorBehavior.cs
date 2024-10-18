@@ -6,15 +6,14 @@ using UnityEngine.UI;
 
 public class DoorBehavior : UsableObject
 {
-    private static System.Timers.Timer aTimer;
     public string nextScene;
     public bool open;
     private bool isColliding;
 
     void Update() {
-        if(locked == false && gameObject.GetComponent<InspectObject>()) {
-            Destroy(gameObject.GetComponent<InspectObject>());
-        }
+        //if(locked == false && gameObject.GetComponent<ObjectInteraction>()) {
+        //    Destroy(gameObject.GetComponent<ObjectInteraction>());
+        //}
         if(open == true &&isColliding == true )
         {
             if (nextScene != "")
@@ -30,9 +29,9 @@ public class DoorBehavior : UsableObject
         if(!locked) {
             open = true;
         }
-        else if(lockedText != null)
+        else if(gameObject.GetComponent<ObjectInteraction>())
         {
-            GameManager.Instance.SetText(lockedText);
+            GetComponent<ObjectInteraction>().HandleInteraction("");
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

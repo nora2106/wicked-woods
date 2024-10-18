@@ -17,4 +17,6 @@ public class GameData
     public string test;
 
     //Dialogue progress
+    public List<string> dialogue_mom = new List<string>();
+    public List<string> dialogue_dad = new List<string>();
 }

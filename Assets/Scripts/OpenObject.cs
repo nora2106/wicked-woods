@@ -4,7 +4,7 @@ using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.UI;
 
-//open object to make it inspectable/detail view
+//open object to show detail view
 public class OpenObject : UsableObject
 {
     public GameObject detail;
@@ -19,13 +19,13 @@ public class OpenObject : UsableObject
     public override void Action()
     {
         if(!locked) {
-            OpenAnimation();
+          OpenAnimation();
           if(detail != null) {
                 detail.GetComponent<DetailView>().Open();
           }
         }
-        else {
-            gm.SetText(lockedText);
+        else if(GetComponent<ObjectInteraction>()) {
+            GetComponent<ObjectInteraction>().HandleInteraction("");
         }
     }
 

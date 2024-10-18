@@ -24,7 +24,7 @@ public class CursorIcon : MonoBehaviour
 
         if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject())
         {
-            if (hit.collider.gameObject.GetComponent<InspectObject>() || hit.collider.gameObject.tag == "inspect")
+            if (hit.collider.gameObject.GetComponent<ObjectInteraction>() || hit.collider.gameObject.tag == "inspect")
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = inspectIcon;
             }

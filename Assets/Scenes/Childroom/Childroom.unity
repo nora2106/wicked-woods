@@ -240,6 +240,7 @@ GameObject:
   - component: {fileID: 372867570}
   - component: {fileID: 372867573}
   - component: {fileID: 372867574}
+  - component: {fileID: 372867575}
   m_Layer: 6
   m_Name: Chest
   m_TagString: inspect
@@ -381,7 +382,6 @@ MonoBehaviour:
   usableItemID: chest_key
   locked: 1
   id: childroom_chest
-  lockedText: Die Truhe ist abgeschlossen.
   detail: {fileID: 135464234}
 --- !u!114 &372867574
 MonoBehaviour:
@@ -399,6 +399,19 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: 00000000
+--- !u!114 &372867575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 372867567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194439c61f02d4cbcac801af76a2a175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionData: {fileID: 11400000, guid: 01e7793fbc2ffc046ba40d16c43dce83, type: 2}
 --- !u!1 &458320422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1336,6 +1349,7 @@ GameObject:
   - component: {fileID: 904231805}
   - component: {fileID: 904231807}
   - component: {fileID: 904231808}
+  - component: {fileID: 904231809}
   m_Layer: 6
   m_Name: Door1
   m_TagString: Untagged
@@ -1425,7 +1439,6 @@ MonoBehaviour:
   usableItemID: door_key1
   locked: 1
   id: childroom_door
-  lockedText: 
   nextScene: Hallway
   open: 0
 --- !u!61 &904231808
@@ -1473,6 +1486,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9360433, y: 4.691492}
   m_EdgeRadius: 0
+--- !u!114 &904231809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904231804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194439c61f02d4cbcac801af76a2a175, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactionData: {fileID: 11400000, guid: 78bd6d79225c6a34ca889bd3aa93cae6, type: 2}
 --- !u!1 &911241165
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,9 +2181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 194439c61f02d4cbcac801af76a2a175, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inspectText: 
-  viewObject: {fileID: 728252121}
-  wasInspected: 0
+  interactionData: {fileID: 0}
 --- !u!60 &1436494821
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -2841,7 +2865,6 @@ MonoBehaviour:
   usableItemID: 
   locked: 0
   id: 
-  lockedText: 
   detail: {fileID: 1708364903}
 --- !u!60 &1808026966
 PolygonCollider2D:

@@ -9,7 +9,6 @@ public abstract class UsableObject : MonoBehaviour, ISetup
     public string usableItemID;
     public bool locked;
     public string id;
-    public string lockedText;
     protected GameManager gm;
 
     public void Setup()

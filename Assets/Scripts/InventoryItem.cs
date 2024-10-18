@@ -98,12 +98,14 @@ public class InventoryItem : MonoBehaviour
 
         if (selected)
         {
+            gm.selectedItemID = data.id;
             player.GetComponent<MoveCharacter>().canMove = false;
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = mousePosition;
 
             if(Input.GetMouseButtonDown(1)) {
                 selected = false;
+                gm.selectedItemID = "";
                 transform.localPosition = Vector2.zero;
                 player.GetComponent<MoveCharacter>().canMove = true;
             }

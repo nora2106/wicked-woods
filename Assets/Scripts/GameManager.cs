@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System.Reflection;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
     public SpawnPos spawnPos;
     public MonologueSystem textSystem;
     public GameObject dialoguePanel;
-
+    public string selectedItemID;
     void Start()
     {
         textSystem = FindObjectOfType<MonologueSystem>();
@@ -150,5 +151,22 @@ public class GameManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         player.GetComponent<MoveCharacter>().canMove = true;
         player.layer = 8;
+    }
+
+    //function to update story progress from anywhere
+    public void SetSpecificVar(string storyName, string varName)
+    {
+        string saveName = "dialogue_" + storyName;
+        FieldInfo fieldInfo = save.data.GetType().GetField(saveName);
+        
+        if (fieldInfo != null)
+        {
+            object fieldValue = fieldInfo.GetValue(save.data);
+            List<string> valueList = fieldValue as List<string>;
+            if(!valueList.Contains(varName))
+            {
+                fieldInfo.SetValue(fieldInfo, varName);
+            }
+        }
     }
 }

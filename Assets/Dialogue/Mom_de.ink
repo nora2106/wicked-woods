@@ -1,3 +1,14 @@
+VAR story_name = "mom"
+VAR mom_intro = false
+
+
+{ mom_intro:
+    -> default
+ else
+    -> intro
+}
+
+
 -> intro
 
 === intro ===
@@ -20,10 +31,10 @@ Sie ist gestern nicht mehr vom Spielen zurückgekommen... Niemand weiß, wo sie 
     Pass auf... -> talk_about_dad
 
 === talk_about_dad ===
+~ mom_intro = true
 Deinem Vater geht es nicht gut.
 -> DONE
 
-{talk_about_dad} -> standard
-=== standard ===
+=== default ===
 Bitte hilf mir, Iva zu finden.
 -> DONE
