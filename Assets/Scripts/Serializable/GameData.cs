@@ -6,7 +6,7 @@ using UnityEngine;
 public class GameData
 {
     //Player data
-    public Vector3 playerPosition;
+    public Vector2 playerPosition;
 
     //Game state
     public List<string> unlockedObjs = new List<string>();

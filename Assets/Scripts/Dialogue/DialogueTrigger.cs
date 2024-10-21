@@ -5,7 +5,6 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private TextAsset dialogueJSON;
-    private GameManager gm;
 
     private void OnMouseDown()
     {

@@ -8,7 +8,7 @@ public class SaveManager : MonoBehaviour
     public string savePath;
     public GameData data;
 
-    void Start()
+    void Awake()
     {
         savePath = Application.persistentDataPath + "/gamedata.json";
     }

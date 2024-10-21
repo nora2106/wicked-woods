@@ -20,26 +20,32 @@ public class GameManager : MonoBehaviour
     public MonologueSystem textSystem;
     public GameObject dialoguePanel;
     public string selectedItemID;
-    void Start()
+    public DialogueManager dialogue;
+    void Awake()
     {
         textSystem = FindObjectOfType<MonologueSystem>();
         currentScene = SceneManager.GetActiveScene().name;
         Instance = this;
         save = gameObject.GetComponent<SaveManager>();
         dialoguePanel = GameObject.FindWithTag("DialogueCanvas");
-        dialoguePanel.SetActive(false);
-        SceneManager.activeSceneChanged += OnSceneChange;
+        if(dialoguePanel != null)
+        {
+            dialoguePanel.SetActive(false);
+        }
+        dialogue = GetComponent<DialogueManager>();
         SceneManager.sceneLoaded += OnSceneLoaded;
-        SetupAll();
     }
 
     public void Setup()
     {
         spawnPos = FindObjectOfType<SpawnPos>();
         overlay = GameObject.FindWithTag("Overlay");
-        overlay.GetComponent<Canvas>().worldCamera = Camera.main;
-        overlay.SetActive(false);
-        overlay.GetComponent<CanvasGroup>().alpha = 0;
+        if(overlay != null)
+        {
+            overlay.GetComponent<Canvas>().worldCamera = Camera.main;
+            overlay.SetActive(false);
+            overlay.GetComponent<CanvasGroup>().alpha = 0;
+        }
         objs = FindGameObjectsInLayer(6);
         if(objs != null)
         {
@@ -52,21 +58,22 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        //find out why scene is loaded twice
         SetupAll();
-        player.GetComponent<MoveCharacter>().setPosition(spawnPos.getPosition(currentScene));
+        save.data.scene = scene.name;
+        if (scene.name != currentScene)
+        {
+            save.Save();
+            //player.GetComponent<MoveCharacter>().SetPosition(spawnPos.getPosition(currentScene));
+        }
         currentScene = scene.name;
-    }
-
-    private void OnSceneChange(Scene lastScene, Scene nextScene)
-    {
-        save.data.scene = nextScene.name;
-        save.Save();
     }
 
     private void SetupAll()
     {
         save.savePath = Application.persistentDataPath + "/gamedata.json";
         save.GetSaveData();
+        Setup();
         var setupObjects = Resources.FindObjectsOfTypeAll<MonoBehaviour>().OfType<ISetup>();
         foreach (ISetup obj in setupObjects)
         {
@@ -78,7 +85,6 @@ public class GameManager : MonoBehaviour
                 obj.Setup();
             }
         }
-        Setup();
     }
 
     GameObject[] FindGameObjectsInLayer(int layer)

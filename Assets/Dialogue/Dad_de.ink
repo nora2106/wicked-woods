@@ -3,10 +3,13 @@ VAR dad_awake = false
 VAR talked_to_dad = false
 VAR door_inspected = false
 
-//{ dad_awake:
-    //-> talk_to_dad
-//}
--> talk_to_dad
+{ dad_awake:
+    -> talk_to_dad
+  else
+    -> dad_asleep
+}
+
+-> dad_asleep
 
 == talk_to_dad ==
 Hatschi! Mishkaaa, meinn Kindd! Was m..machst duu denn hiier?
@@ -23,7 +26,7 @@ Hatschi! Mishkaaa, meinn Kindd! Was m..machst duu denn hiier?
     + [So werden wir Iva niemals finden!]
         Niemand geht raus, bevor es nicht hell und sicher ist! Ich verliere nicht noch jemanden nach meiner süßen * hicks * Iva…
         + + [Schlaf weiter, Papa.]
-            ~ dad_awake = false
+            //~ dad_awake = false
             -> DONE
         + + [Wo ist der Schlüssel, Papa?]
             -> dad_about_key
@@ -33,5 +36,9 @@ Hatschi! Mishkaaa, meinn Kindd! Was m..machst duu denn hiier?
 == dad_about_key ==
 Den wirst du niiiemals finden, ich habe ihn so * hicks * gut versteckt…  Und, und, es ist so ein gutes Versteck…ich musste mir sogar die Hände dreckig machen, aber ist ok… * gähn * Zzzzzz…
 ~ dad_awake = false
+-> DONE
+
+== dad_asleep ==
+Zzzzz... zzzzzzzz... Zzzzzz..
 -> DONE
     

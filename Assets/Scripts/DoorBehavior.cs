@@ -18,7 +18,7 @@ public class DoorBehavior : UsableObject
         {
             if (nextScene != "")
             {
-                SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
+                gm.ChangeScene(nextScene);
             }
         }
     }
@@ -48,12 +48,6 @@ public class DoorBehavior : UsableObject
         {
             isColliding = false;
         }
-    }
-
-    IEnumerator LoadNext(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        SceneManager.LoadScene(nextScene, LoadSceneMode.Single);
     }
 
     public override void OpenAnimation()

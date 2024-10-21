@@ -11,21 +11,19 @@ public class MoveCharacter : MonoBehaviour, ISetup
     private NavMeshAgent agent;
     private GameManager gm;
 
-    public void Awake()
+    public void Start()
     {
+        canMove = false;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        canMove = true;
+        gm = GameManager.Instance;
+        SetPosition(gm.save.data.playerPosition);
     }
+
     public void Setup()
     {
-        gm = GameManager.Instance;
-        if (gm.save.data.playerPosition != Vector3.zero)
-        {
-            transform.position = gm.save.data.playerPosition;
-            target = gm.save.data.playerPosition;
-        }
+       
     }
 
     private void Update()
@@ -47,12 +45,13 @@ public class MoveCharacter : MonoBehaviour, ISetup
         }
     }
 
-    public void setPosition(Vector2 pos)
+    public void SetPosition(Vector2 pos)
     {
         agent.enabled = false;
         gameObject.transform.position = pos;
         target = pos;
         agent.enabled = true;
+        canMove = true;
     }
 }
     
