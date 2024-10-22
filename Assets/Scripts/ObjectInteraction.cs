@@ -22,18 +22,21 @@ public class ObjectInteraction : MonoBehaviour
 
     public void HandleInteraction(string selectedItem)
     {
-        if (interactionData.itemInteractions.Count > 0 && selectedItem != "")
-        {
-            foreach (var interaction in interactionData.itemInteractions)
+        if(selectedItem != "") {
+            if (interactionData)
             {
-                if (interaction.requiredItem == selectedItem)
+                foreach (var interaction in interactionData.itemInteractions)
                 {
-                    gm.SetText(interaction.comment);
-                    return;
+                    if (interaction.requiredItem == selectedItem)
+                    {
+                        gm.SetText(interaction.comment);
+                        return;
+                    }
+                    gm.SetText(defaultInteractionText);
                 }
-                gm.SetText(defaultInteractionText);
             }
         }
+        
         else
         {
             gm.SetText(interactionData.defaultComment);

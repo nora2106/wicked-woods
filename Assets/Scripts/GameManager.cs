@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
 {
     public GameObject overlay;
     public GameObject player;
+    public Inventory inventory;
     private GameObject[] objs;
-    private Camera[] cameras;
     public static GameManager Instance;
     private string currentScene;
     public SaveManager save;
@@ -21,19 +21,33 @@ public class GameManager : MonoBehaviour
     public GameObject dialoguePanel;
     public string selectedItemID;
     public DialogueManager dialogue;
-    void Awake()
+
+    private void Awake()
     {
-        textSystem = FindObjectOfType<MonologueSystem>();
-        currentScene = SceneManager.GetActiveScene().name;
-        Instance = this;
-        save = gameObject.GetComponent<SaveManager>();
-        dialoguePanel = GameObject.FindWithTag("DialogueCanvas");
-        if(dialoguePanel != null)
+        if (Instance == null)
         {
-            dialoguePanel.SetActive(false);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+        currentScene = SceneManager.GetActiveScene().name;
         dialogue = GetComponent<DialogueManager>();
+        dialoguePanel = GameObject.FindWithTag("DialogueCanvas");
+        dialoguePanel.SetActive(false);
+        save = gameObject.GetComponent<SaveManager>();
+        inventory = GameObject.FindWithTag("inventory").GetComponent<Inventory>();
+        textSystem = GameObject.FindWithTag("Monologue").GetComponent<MonologueSystem>();
+        player = GameObject.FindWithTag("Player");
+    }
+
+    void Start()
+    {
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SetupAll();
+        //player.GetComponent<MoveCharacter>().SetPosition(save.data.playerPosition);
     }
 
     public void Setup()
@@ -58,14 +72,10 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //find out why scene is loaded twice
         SetupAll();
         save.data.scene = scene.name;
-        if (scene.name != currentScene)
-        {
-            save.Save();
-            //player.GetComponent<MoveCharacter>().SetPosition(spawnPos.getPosition(currentScene));
-        }
+        save.Save();
+        player.GetComponent<MoveCharacter>().SetPosition(spawnPos.getPosition(currentScene));
         currentScene = scene.name;
     }
 
@@ -119,21 +129,6 @@ public class GameManager : MonoBehaviour
         player.layer = 8;
     }
 
-    //currently obsolete
-    //public void SwitchCamera(int index)
-    //{
-    //    for (int i = 1; i < cameras.Length; i++)
-    //    {
-    //        cameras[i].enabled = false;
-
-    //    }
-    //    if (cameras.Length > 0)
-    //    {
-    //        cameras[index].enabled = true;
-    //        UI.GetComponent<Canvas>().worldCamera = cameras[index];
-    //    }
-    //}
-
     public void ChangeScene(string scene)
     {
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
@@ -146,6 +141,7 @@ public class GameManager : MonoBehaviour
 
     public void OpenDialogue(TextAsset text)
     {
+        print(dialoguePanel);
         dialoguePanel.SetActive(true);
         GetComponent<DialogueManager>().StartDialogue(text);
         player.GetComponent<MoveCharacter>().canMove = false;

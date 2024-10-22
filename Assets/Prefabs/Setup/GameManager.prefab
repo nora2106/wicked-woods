@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 168176851294577175}
   - component: {fileID: 1596295896445657389}
-  - component: {fileID: 2390831976462808299}
   - component: {fileID: 5707854994390725546}
   - component: {fileID: 984583070131658278}
   m_Layer: 0
@@ -49,22 +48,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   overlay: {fileID: 0}
   player: {fileID: 0}
+  inventory: {fileID: 0}
   save: {fileID: 0}
   spawnPos: {fileID: 0}
   textSystem: {fileID: 0}
---- !u!114 &2390831976462808299
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7574755068480613114}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7afd9c2697d8d384498fb0bce1581acb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  index: 4
+  dialoguePanel: {fileID: 0}
+  selectedItemID: 
+  dialogue: {fileID: 0}
+  test: 
 --- !u!114 &5707854994390725546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,13 +70,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savePath: 
   data:
-    playerPosition: {x: 0, y: 0, z: 0}
+    playerPosition: {x: 0, y: 0}
     unlockedObjs: []
     solvedPuzzles: []
     collectedItems: []
     inventoryItems: []
     scene: 
     test: 
+    dialogue_mom: []
+    dialogue_dad: []
 --- !u!114 &984583070131658278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,3 +91,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 293410d3ed3075647ac26b988475be63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storyProgress: []
+  saveName: 

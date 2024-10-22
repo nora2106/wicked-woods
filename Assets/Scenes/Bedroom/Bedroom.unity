@@ -122,11 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &89370187 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-  m_PrefabInstance: {fileID: 1000030700}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &98093605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -184,17 +179,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c3259eea747e481a8cda35b13ee4f67, type: 3}
---- !u!114 &133302492 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8424122824915615289, guid: 207346f962b54454aab4dd435a7693d4, type: 3}
-  m_PrefabInstance: {fileID: 8319693788920975366}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &138099699
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +372,6 @@ MonoBehaviour:
   usableItemID: 
   locked: 0
   id: 
-  lockedText: 
   detail: {fileID: 375083772}
 --- !u!61 &227683725
 BoxCollider2D:
@@ -882,7 +865,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb342ee76a36b3443b8925dd1fcb4ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogueJSON: {fileID: 4900000, guid: 9c06330ce27b80f4abe52cbc5ce28401, type: 3}
+  dialogueJSON: {fileID: 4900000, guid: 9a39a0c4c3f22a4428bed5b1c9100997, type: 3}
 --- !u!1001 &319789771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1136,6 +1119,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5923619681290391108, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
+      propertyPath: m_TagString
+      value: Monologue
+      objectReference: {fileID: 0}
     - target: {fileID: 6136765083190743725, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1177,17 +1164,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
---- !u!114 &344620489 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3093190472091716235, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
-  m_PrefabInstance: {fileID: 344620488}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b073c0608a65c94f984509bc2390cbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &375083772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1264,11 +1240,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &410025224 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3277050788029601330, guid: 7e574e1a4ee3e4aa28e5349a237928ae, type: 3}
-  m_PrefabInstance: {fileID: 1864298691}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &509530512
 GameObject:
   m_ObjectHideFlags: 0
@@ -1422,11 +1393,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &589455722 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8974637672918168280, guid: 207346f962b54454aab4dd435a7693d4, type: 3}
-  m_PrefabInstance: {fileID: 8319693788920975366}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &608654164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1636,30 +1602,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 984583070131658278, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-      propertyPath: choicePrefab
-      value: 
-      objectReference: {fileID: 1446192809171270328, guid: bc33b99ceaf5d8241955b23ee98d0b61, type: 3}
-    - target: {fileID: 984583070131658278, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-      propertyPath: dialogueText
-      value: 
-      objectReference: {fileID: 133302492}
-    - target: {fileID: 984583070131658278, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-      propertyPath: dialogueCanvas
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1596295896445657389, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 89370187}
-    - target: {fileID: 1596295896445657389, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-      propertyPath: overlay
-      value: 
-      objectReference: {fileID: 410025224}
-    - target: {fileID: 1596295896445657389, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-      propertyPath: dialoguePanel
-      value: 
-      objectReference: {fileID: 589455722}
     - target: {fileID: 7574755068480613114, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -1678,17 +1620,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dc25c932529f9e945a17d6919bd68ade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &910092432 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1596295896445657389, guid: a90fc069b70d64580b9e4d313559394e, type: 3}
-  m_PrefabInstance: {fileID: 910092428}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c19153983ddd44982a863b52e670b50e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &976970690
@@ -1858,11 +1789,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2
+      value: -1.59
       objectReference: {fileID: 0}
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4
+      value: -4.7
       objectReference: {fileID: 0}
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2763,7 +2694,6 @@ MonoBehaviour:
   usableItemID: 
   locked: 0
   id: 
-  lockedText: 
   nextScene: Hallway
   open: 0
 --- !u!61 &2072171891
@@ -3224,8 +3154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   refItem: {fileID: 11400000, guid: 4c7e5ce0ba8960049a54d71125245d8e, type: 2}
-  inventory: {fileID: 344620489}
-  gm: {fileID: 910092432}
   id: bedroom_feather
 --- !u!4 &7218106861561362134
 Transform:

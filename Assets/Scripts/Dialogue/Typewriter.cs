@@ -44,6 +44,7 @@ public class Typewriter : MonoBehaviour
 
     public void Reset()
     {
+        StopCoroutine("PlayText");
         text.text = "";
         currMsg = "";
         active = false;

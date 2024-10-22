@@ -23,27 +23,30 @@ public class DialogueManager : MonoBehaviour
     void Start()
     {
         gm = gameObject.GetComponent<GameManager>();
-        canvas = gm.dialoguePanel;
-        typewriter = canvas.GetComponentInChildren<Typewriter>();
-        skipBtn = canvas.GetComponentInChildren<Button>();
-        skipBtn.onClick.AddListener(ContinueDialogue);
-
-        choiceGrid = canvas.GetComponentInChildren<GridLayoutGroup>().gameObject;
-        foreach(Transform t in choiceGrid.transform)
+        if(gm.dialoguePanel != null)
         {
-            if(t.GetComponent<Button>())
+            canvas = gm.dialoguePanel;
+            typewriter = canvas.GetComponentInChildren<Typewriter>();
+            skipBtn = canvas.GetComponentInChildren<Button>();
+            skipBtn.onClick.AddListener(ContinueDialogue);
+
+            choiceGrid = canvas.GetComponentInChildren<GridLayoutGroup>().gameObject;
+            foreach (Transform t in choiceGrid.transform)
             {
-                choices.Add(t.gameObject);
+                if (t.GetComponent<Button>())
+                {
+                    choices.Add(t.gameObject);
+                }
             }
-        }
 
-        choicesText = new TextMeshProUGUI[choices.Count];
-        for(int index = 0; index < choices.Count; index++)
-        {
-            int t = index;
-            choices[index].GetComponent<Button>().onClick.AddListener(delegate { MakeChoice(t); });
-            choicesText[index] = choices[index].GetComponentInChildren<TextMeshProUGUI>();
-            choices[index].SetActive(false);
+            choicesText = new TextMeshProUGUI[choices.Count];
+            for (int index = 0; index < choices.Count; index++)
+            {
+                int t = index;
+                choices[index].GetComponent<Button>().onClick.AddListener(delegate { MakeChoice(t); });
+                choicesText[index] = choices[index].GetComponentInChildren<TextMeshProUGUI>();
+                choices[index].SetActive(false);
+            }
         }
     }
 

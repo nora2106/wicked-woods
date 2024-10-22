@@ -20,8 +20,8 @@ public class InventoryItem : MonoBehaviour
 
     public void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = data.sprite;
-        GetComponent<SpriteRenderer>().size = new Vector2(20, 20);
+        gameObject.GetComponent<SpriteRenderer>().sprite = data.sprite;
+        gameObject.GetComponent<SpriteRenderer>().size = new Vector2(20, 20);
         player = GameObject.FindWithTag("Player");
         cursorHandler = GameObject.FindWithTag("Cursor");
         inventory = GameObject.Find("Inventory").GetComponent<Inventory>();

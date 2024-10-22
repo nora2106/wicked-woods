@@ -7,23 +7,23 @@ public class DetailView : MonoBehaviour
 {
     public Button closeBtn;
     public GameObject obj;
-    private GameObject manager;
+    private GameManager gm;
     // Start is called before the first frame update
     void Start()
     {
         transform.gameObject.SetActive(false);
-        manager = GameObject.FindWithTag("GameController");
+        gm = GameManager.Instance;
         closeBtn.onClick.AddListener(Close);
     }
 
     public void Open(){
         transform.gameObject.SetActive(true);
-        manager.GetComponent<GameManager>().OpenOverlay();
+        gm.OpenOverlay();
     }
 
     public void Close() {
         transform.gameObject.SetActive(false);
-        manager.GetComponent<GameManager>().CloseOverlay();
+        gm.CloseOverlay();
         if(obj) {
             obj.GetComponent<OpenObject>().Close();
         }

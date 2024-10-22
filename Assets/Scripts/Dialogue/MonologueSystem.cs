@@ -13,7 +13,6 @@ public class MonologueSystem : MonoBehaviour
     void Start()
     {
         panel.SetActive(false);
-
         typewriter = gameObject.GetComponentInChildren<Typewriter>();
     }
 
@@ -40,15 +39,15 @@ public class MonologueSystem : MonoBehaviour
 
     public void setText(string t)
     {
+        if(typewriter == null)
+        {
+            typewriter = gameObject.GetComponentInChildren<Typewriter>();
+        }
+        typewriter.Reset();
         StopCoroutine("Reset");
-        ShowMonologue();
+        panel.SetActive(true);
         msg = t;
         typewriter.Write(t);
-    }
-
-    public void ShowMonologue()
-    {
-        panel.SetActive(true);
     }
 
     IEnumerator Reset()

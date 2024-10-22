@@ -5,14 +5,13 @@ using UnityEngine;
 public class ItemObject : MonoBehaviour, ISetup
 {
     public ItemData refItem;
-    public Inventory inventory;
-    public GameManager gm;
+    private GameManager gm;
     public string id;
 
     public void Setup()
     {
         gm = GameManager.Instance;
-        if(gm.save.data.collectedItems.Contains(id))
+        if (gm.save.data.collectedItems.Contains(id))
         {
             Destroy(gameObject);
         }
@@ -25,7 +24,7 @@ public class ItemObject : MonoBehaviour, ISetup
 
     public void handlePickup()
     {
-        inventory.addItem(refItem);
+        gm.inventory.addItem(refItem);
         gm.save.data.collectedItems.Add(id);
         Destroy(gameObject);
     }

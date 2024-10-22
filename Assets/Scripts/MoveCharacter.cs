@@ -18,7 +18,8 @@ public class MoveCharacter : MonoBehaviour, ISetup
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         gm = GameManager.Instance;
-        SetPosition(gm.save.data.playerPosition);
+        SetPosition(new Vector2(0, 0));
+        //SetPosition(gm.save.data.playerPosition);
     }
 
     public void Setup()
