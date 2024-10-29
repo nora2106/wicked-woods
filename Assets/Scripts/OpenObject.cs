@@ -24,9 +24,6 @@ public class OpenObject : UsableObject
                 detail.GetComponent<DetailView>().Open();
           }
         }
-        else if(GetComponent<ObjectInteraction>()) {
-            GetComponent<ObjectInteraction>().HandleInteraction("");
-        }
     }
 
     public void Close() {

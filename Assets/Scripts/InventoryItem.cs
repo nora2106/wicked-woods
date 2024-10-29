@@ -31,45 +31,17 @@ public class InventoryItem : MonoBehaviour
 
     public void Update()
     {
-        if (usableObj)
-        {
-            if (Input.GetMouseButtonDown(0) && selected)
-            {
-                if (usableObj.GetComponent<UsableObject>().usableItemID == data.id)
-                {
-                    if(usableObj.GetComponent<UsableObject>().locked == true) {
-                        usableObj.GetComponent<UsableObject>().Unlock();
-                    }
-                    else {
-                        usableObj.GetComponent<UsableObject>().Action();
-                    }
-                    if (!data.reusable)
-                    {
-                        selected = false;
-                        RemoveItem();
-                        player.GetComponent<MoveCharacter>().canMove = true;
-                    }
-                }
-
-                else
-                {
-                    gm.SetText("Ich kann " + data.displayName + " nicht mit " + usableObj.name + " benutzen.");
-                    //add english option
-                }
-            }
-        }
 
         if (combineObj){
             if (Input.GetMouseButtonDown(0))
             {
                if (combineObj.GetComponent<InventoryItem>().id == data.combineWith)
-                {
-                    selected = false;
+               {
+                    Reset();
                     RemoveItem();
                     Destroy(combineObj);
-                    player.GetComponent<MoveCharacter>().canMove = true;
                     inventory.addItem(data.newItem);
-                }
+               }
 
                 else
                 {
@@ -99,30 +71,29 @@ public class InventoryItem : MonoBehaviour
         if (selected)
         {
             gm.selectedItemID = data.id;
+            gm.itemSelected = true;
             player.GetComponent<MoveCharacter>().canMove = false;
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = mousePosition;
 
             if(Input.GetMouseButtonDown(1)) {
-                selected = false;
-                gm.selectedItemID = "";
-                transform.localPosition = Vector2.zero;
-                player.GetComponent<MoveCharacter>().canMove = true;
+                Reset();
             }
         }
+    }
+
+    private void Reset()
+    {
+        selected = false;
+        gm.itemSelected = false;
+        transform.localPosition = Vector2.zero;
+        player.GetComponent<MoveCharacter>().canMove = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(selected)
         {
-            if (collision.gameObject.GetComponent<UsableObject>())
-            {
-                cursorHandler.GetComponent<CursorIcon>().SetUse();
-                gm.SetText("Use " + data.name + " on " + collision.name);
-                usableObj = collision.gameObject;
-            }
-
             if (collision.gameObject.GetComponent<InventoryItem>())
             {
                 cursorHandler.GetComponent<CursorIcon>().SetUse();
@@ -143,21 +114,20 @@ public class InventoryItem : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         combineObj = null;
-        usableObj = null;
-        //if (displayText.text.Contains(collision.name))
-        //{
-        //    usableObj = null;
-        //}
-
     }
+
     private void OnMouseDown()
     {
         selected = true;
     }
 
-    private void RemoveItem()
+    public void RemoveItem()
     {
-        Destroy(gameObject);
-        gm.save.data.inventoryItems.Remove(data);
+        Reset();
+        if (!data.reusable)
+        {
+            Destroy(gameObject);
+            gm.save.data.inventoryItems.Remove(data);
+        }
     }
 }

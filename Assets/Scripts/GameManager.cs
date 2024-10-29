@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public MonologueSystem textSystem;
     public GameObject dialoguePanel;
     public string selectedItemID;
+    public bool itemSelected = false;
     public DialogueManager dialogue;
 
     private void Awake()
@@ -141,7 +142,6 @@ public class GameManager : MonoBehaviour
 
     public void OpenDialogue(TextAsset text)
     {
-        print(dialoguePanel);
         dialoguePanel.SetActive(true);
         GetComponent<DialogueManager>().StartDialogue(text);
         player.GetComponent<MoveCharacter>().canMove = false;
@@ -160,14 +160,17 @@ public class GameManager : MonoBehaviour
     {
         string saveName = "dialogue_" + storyName;
         FieldInfo fieldInfo = save.data.GetType().GetField(saveName);
-        
+        print(fieldInfo);
+
         if (fieldInfo != null)
         {
             object fieldValue = fieldInfo.GetValue(save.data);
             List<string> valueList = fieldValue as List<string>;
             if(!valueList.Contains(varName))
             {
-                fieldInfo.SetValue(fieldInfo, varName);
+                valueList.Add(varName);
+                object newValue = valueList as object;
+                fieldInfo.SetValue(fieldInfo, newValue);
             }
         }
     }

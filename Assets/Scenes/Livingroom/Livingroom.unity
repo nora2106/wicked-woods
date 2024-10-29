@@ -887,7 +887,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 894804613
   m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: f237150f422a8a3418974f364d656f57, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -2615,8 +2615,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f0c36dbd274d0a4d84c7b0bcaea153b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultInteractionText: Das funktioniert nicht.
   interactionData: {fileID: 11400000, guid: 879ddeb3d687b8e42b35b96efd1d3250, type: 2}
-  defaultText: Das geht nicht.
+  objName: Papa
   storyName: dad
 --- !u!1 &678685602350844833
 GameObject:

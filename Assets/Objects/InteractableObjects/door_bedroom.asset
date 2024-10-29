@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: "T\xFCr"
   defaultComment: "Die T\xFCr ist verschlossen."
-  itemInteractions: []
+  itemInteractions:
+  - requiredItem: chest_key
+    comment: "Hmm..Der Schl\xFCssel passt nicht."
+    action: 0
+  - requiredItem: chest_key
+    comment: "Hmm..Der Schl\xFCssel passt nicht."
+    action: 0

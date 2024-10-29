@@ -17,7 +17,6 @@ public class HouseDoor : MonoBehaviour
         {
             gameObject.AddComponent<DoorBehavior>();
             gameObject.GetComponent<DoorBehavior>().locked = true;
-            gameObject.GetComponent<DoorBehavior>().usableItemID = "housedoor_key";
             //gameObject.GetComponent<DoorBehavior>().nextScene = "";
             Destroy(gameObject.GetComponent<OpenObject>());
             Destroy(transform.GetChild(0).gameObject);

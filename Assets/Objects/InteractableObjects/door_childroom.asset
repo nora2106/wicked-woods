@@ -17,5 +17,13 @@ MonoBehaviour:
   itemInteractions:
   - requiredItem: fork
     comment: "Nur damit kann ich die T\xFCr nicht \xF6ffnen."
+    action: 0
   - requiredItem: hairpin
     comment: Es passt.. Aber ich komme nicht hoch genug!
+    action: 0
+  - requiredItem: chest_key
+    comment: "Der Schl\xFCssel passt nicht."
+    action: 0
+  - requiredItem: childroom_door-key
+    comment: 
+    action: 1

@@ -14,7 +14,6 @@ public class GameData
     public List<string> collectedItems = new List<string>();
     public List<ItemData> inventoryItems = new List<ItemData>();
     public string scene;
-    public string test;
 
     //Dialogue progress
     public List<string> dialogue_mom = new List<string>();

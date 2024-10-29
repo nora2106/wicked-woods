@@ -11,9 +11,6 @@ public class DoorBehavior : UsableObject
     private bool isColliding;
 
     void Update() {
-        //if(locked == false && gameObject.GetComponent<ObjectInteraction>()) {
-        //    Destroy(gameObject.GetComponent<ObjectInteraction>());
-        //}
         if(open == true &&isColliding == true )
         {
             if (nextScene != "")
@@ -29,11 +26,8 @@ public class DoorBehavior : UsableObject
         if(!locked) {
             open = true;
         }
-        else if(gameObject.GetComponent<ObjectInteraction>())
-        {
-            GetComponent<ObjectInteraction>().HandleInteraction("");
-        }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")

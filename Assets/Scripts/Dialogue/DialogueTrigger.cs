@@ -8,6 +8,9 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnMouseDown()
     {
-        GameManager.Instance.OpenDialogue(dialogueJSON);
+        if(GameManager.Instance.selectedItemID == "")
+        {
+            GameManager.Instance.OpenDialogue(dialogueJSON);
+        }
     }
 }

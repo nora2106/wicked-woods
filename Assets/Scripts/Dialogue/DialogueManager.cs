@@ -63,7 +63,7 @@ public class DialogueManager : MonoBehaviour
             object fieldValue = fieldInfo.GetValue(data);
 
             List<string> valueList = fieldValue as List<string>;
-            storyProgress = valueList;
+            //storyProgress = valueList;
 
         }
         else
@@ -83,17 +83,17 @@ public class DialogueManager : MonoBehaviour
         //send progress data to savemanager
         GameData data = gm.save.data;
         FieldInfo fieldInfo = data.GetType().GetField(saveName);
-        if (fieldInfo != null)
-        {
-            object fieldValue = fieldInfo.GetValue(data);
-            List<string> valueList = fieldValue as List<string>;
-            foreach (var variable in storyProgress)
-            {
-                if (!valueList.Contains(variable)) {
-                    fieldInfo.SetValue(variable, fieldInfo);
-                }
-            }
-        }
+        //if (fieldInfo != null)
+        //{
+        //    object fieldValue = fieldInfo.GetValue(data);
+        //    List<string> valueList = fieldValue as List<string>;
+        //    foreach (var variable in storyProgress)
+        //    {
+        //        if (!valueList.Contains(variable)) {
+        //            fieldInfo.SetValue(variable, fieldInfo);
+        //        }
+        //    }
+        //}
         
         typewriter.Reset();
         ResetChoices();

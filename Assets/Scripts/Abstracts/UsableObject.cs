@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public abstract class UsableObject : MonoBehaviour, ISetup
 {
-    public string usableItemID;
     public bool locked;
     public string id;
     protected GameManager gm;
@@ -35,6 +34,11 @@ public abstract class UsableObject : MonoBehaviour, ISetup
         if(id != null)
         {
             gm.save.data.unlockedObjs.Add(id);
+        }
+
+        if(gameObject.GetComponent<ItemInteraction>())
+        {
+            Destroy(gameObject.GetComponent<ItemInteraction>());
         }
     }
 

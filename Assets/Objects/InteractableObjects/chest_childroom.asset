@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectName: Spielzeugkiste
   defaultComment: Die Kiste ist abgeschlossen.
-  itemInteractions: []
+  itemInteractions:
+  - requiredItem: chest_key
+    comment: 
+    action: 1

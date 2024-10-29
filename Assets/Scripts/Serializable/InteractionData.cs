@@ -14,5 +14,6 @@ public class InteractionData : ScriptableObject
     {
         public string requiredItem;
         public string comment;
+        public bool action;
     }
 }
