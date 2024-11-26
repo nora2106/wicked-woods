@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//handles interactable objects like a locked chest that can be interacted with with items
 public class ObjectInteraction : ItemInteraction
 {
     public override void HandleInteraction(InteractionData.ItemInteraction interaction)
@@ -17,10 +18,8 @@ public class ObjectInteraction : ItemInteraction
             {
                 gameObject.GetComponent<UsableObject>().Action();
             }
-            activeItem.GetComponent<InventoryItem>().RemoveItem();
-
         }
-        else
+        else if(interaction.comment != null)
         {
             gm.SetText(interaction.comment);
         }
@@ -28,6 +27,6 @@ public class ObjectInteraction : ItemInteraction
 
     protected override void HoverText()
     {
-        gm.SetText(activeItem.data.displayName + " mit " + objName + " benutzen.");
+        gm.SetText(activeItem.displayName + " mit " + objName + " benutzen.");
     }
 }

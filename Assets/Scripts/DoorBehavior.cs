@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+//self-explanatory
 public class DoorBehavior : UsableObject
 {
     public string nextScene;

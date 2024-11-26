@@ -159,18 +159,15 @@ public class GameManager : MonoBehaviour
     public void SetSpecificVar(string storyName, string varName)
     {
         string saveName = "dialogue_" + storyName;
-        FieldInfo fieldInfo = save.data.GetType().GetField(saveName);
-        print(fieldInfo);
+        var field = save.data.GetType().GetField(saveName);
 
-        if (fieldInfo != null)
+        if (field != null && typeof(IList).IsAssignableFrom(field.FieldType))
         {
-            object fieldValue = fieldInfo.GetValue(save.data);
-            List<string> valueList = fieldValue as List<string>;
-            if(!valueList.Contains(varName))
+            var list = (IList)field.GetValue(save.data);
+
+            if(!list.Contains(varName))
             {
-                valueList.Add(varName);
-                object newValue = valueList as object;
-                fieldInfo.SetValue(fieldInfo, newValue);
+                list?.Add(varName);
             }
         }
     }

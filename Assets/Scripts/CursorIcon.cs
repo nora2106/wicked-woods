@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+//changes cursor icon based on possible interaction
 public class CursorIcon : MonoBehaviour
 {
     public Sprite inspectIcon; 

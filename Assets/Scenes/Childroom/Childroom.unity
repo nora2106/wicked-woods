@@ -413,6 +413,18 @@ MonoBehaviour:
   defaultInteractionText: Das funktioniert nicht.
   interactionData: {fileID: 11400000, guid: 01e7793fbc2ffc046ba40d16c43dce83, type: 2}
   objName: Spielzeugtruhe
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 13139374469120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &458320422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,6 +1293,18 @@ MonoBehaviour:
   defaultInteractionText: Das funktioniert nicht.
   interactionData: {fileID: 11400000, guid: 78bd6d79225c6a34ca889bd3aa93cae6, type: 2}
   objName: "T\xFCr"
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &911241165
 GameObject:
   m_ObjectHideFlags: 0

@@ -440,7 +440,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67834e6e905824967b23af808dd2a5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: housekey
   locked: 1
   id: housedoor
   detail: {fileID: 14528301}
@@ -646,7 +645,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 270
@@ -886,7 +884,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 180
@@ -1144,6 +1141,7 @@ GameObject:
   - component: {fileID: 542842022}
   - component: {fileID: 542842021}
   - component: {fileID: 542842020}
+  - component: {fileID: 542842024}
   m_Layer: 0
   m_Name: Oven
   m_TagString: Untagged
@@ -1294,6 +1292,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &542842024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 542842019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 270885e97114afd4c87fef0e50f337b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedComment:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 105427988480
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &593805566
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1561,7 +1583,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -1699,7 +1720,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -2000,7 +2020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -2138,7 +2157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 180
@@ -2433,7 +2451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -2571,7 +2588,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -2709,7 +2725,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 270
@@ -2847,7 +2862,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -3088,7 +3102,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -3771,7 +3784,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -4078,7 +4090,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90
@@ -4289,7 +4300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 270
@@ -4550,7 +4560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf593c238501254ab3e26d3cf6b1904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
   correctRotation: 90

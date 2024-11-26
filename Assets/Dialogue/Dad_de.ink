@@ -18,16 +18,15 @@ Hatschi! Mishkaaa, meinn Kindd! Was m..machst duu denn hiier?
     + [Warum war mein Zimmer abgesperrt, Papa?]   
         Ich versuche, euch zu beschützen! -> dad_about_door
     * {door_inspected }
-        Papa, warum ist die Haustür verbarrikadiert?
+        + [Papa, warum ist die Haustür verbarrikadiert?]
         -> dad_about_door
     
 == dad_about_door ==
-       Ich habe aaalle Türen zu.. zugesperrt und gesichert, damit euch nichts passieren kann.
+    Ich habe aaalle Türen zu.. zugesperrt und gesichert, damit euch nichts passieren kann.
     + [So werden wir Iva niemals finden!]
         Niemand geht raus, bevor es nicht hell und sicher ist! Ich verliere nicht noch jemanden nach meiner süßen * hicks * Iva…
         + + [Schlaf weiter, Papa.]
-            //~ dad_awake = false
-            -> DONE
+            -> dad_asleep
         + + [Wo ist der Schlüssel, Papa?]
             -> dad_about_key
     + [Wo ist der Schlüssel? Ich muss sie finden!]

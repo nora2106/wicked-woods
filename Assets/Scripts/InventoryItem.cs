@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 
 [System.Serializable]
 public class InventoryItem : MonoBehaviour
@@ -16,6 +17,7 @@ public class InventoryItem : MonoBehaviour
     private GameObject newSlot;
     private GameObject cursorHandler;
     public string id;
+    public string displayName;
     private GameManager gm;
 
     public void Start()
@@ -27,6 +29,7 @@ public class InventoryItem : MonoBehaviour
         inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
         id = data.id;
         gm = GameManager.Instance;
+        data.displayName.StringChanged += setName;
     }
 
     public void Update()
@@ -35,6 +38,7 @@ public class InventoryItem : MonoBehaviour
         if (combineObj){
             if (Input.GetMouseButtonDown(0))
             {
+                print(displayName);
                if (combineObj.GetComponent<InventoryItem>().id == data.combineWith)
                {
                     Reset();
@@ -45,7 +49,7 @@ public class InventoryItem : MonoBehaviour
 
                 else
                 {
-                    gm.SetText("Ich kann " + data.displayName + " nicht mit " + combineObj.name + " kombinieren.");
+                    gm.SetText("Ich kann " + displayName + " nicht mit " + combineObj.name + " kombinieren.");
                     transform.position = pos;
                 }
             }
@@ -97,7 +101,8 @@ public class InventoryItem : MonoBehaviour
             if (collision.gameObject.GetComponent<InventoryItem>())
             {
                 cursorHandler.GetComponent<CursorIcon>().SetUse();
-                gm.SetText(data.name + " mit " + collision.name + " kombinieren");
+                // translation missing
+                gm.SetText(displayName + " mit " + collision.gameObject.GetComponent<InventoryItem>().displayName + " kombinieren");
                 combineObj = collision.gameObject;
             }
         }
@@ -129,5 +134,10 @@ public class InventoryItem : MonoBehaviour
             Destroy(gameObject);
             gm.save.data.inventoryItems.Remove(data);
         }
+    }
+
+    private void setName(string val)
+    {
+        displayName = val;
     }
 }

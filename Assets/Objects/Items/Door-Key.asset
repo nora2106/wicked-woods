@@ -13,9 +13,20 @@ MonoBehaviour:
   m_Name: Door-Key
   m_EditorClassIdentifier: 
   id: childroom_door-key
-  displayName: "Schl\xFCssel"
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:0cee2287a3f7b4e4480326f718fb0765
+    m_TableEntryReference:
+      m_KeyId: 97538502656
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   combineWith: 
   reusable: 0
   sprite: {fileID: 21300000, guid: 7c60db4f3dcbce542bcb1efe478a69f3, type: 3}
   prefab: {fileID: 5918996192978426799, guid: bb07462a59bf215439482841c44114d3, type: 3}
   newItem: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

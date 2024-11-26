@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//redundant atm
 public class SwitchView : MonoBehaviour
 {
     public Camera mainCam;

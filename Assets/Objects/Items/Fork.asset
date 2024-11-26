@@ -13,9 +13,20 @@ MonoBehaviour:
   m_Name: Fork
   m_EditorClassIdentifier: 
   id: fork
-  displayName: Gabel
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:0cee2287a3f7b4e4480326f718fb0765
+    m_TableEntryReference:
+      m_KeyId: 382176555008
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   combineWith: hairpin
   reusable: 0
   sprite: {fileID: 22129139, guid: 01e89c82ed8a84411b068f45e28d9839, type: 3}
   prefab: {fileID: 642646720068566600, guid: b967f869d3aa1491f86842faff9c2a27, type: 3}
   newItem: {fileID: 11400000, guid: 75b65c7b228ffa24aa418ffb780bbb34, type: 2}
+  references:
+    version: 2
+    RefIds: []

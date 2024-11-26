@@ -63,7 +63,7 @@ public class DialogueManager : MonoBehaviour
             object fieldValue = fieldInfo.GetValue(data);
 
             List<string> valueList = fieldValue as List<string>;
-            //storyProgress = valueList;
+            storyProgress = valueList;
 
         }
         else
@@ -79,22 +79,6 @@ public class DialogueManager : MonoBehaviour
     private void ExitDialogue()
     {
         GetAllVars();
-        
-        //send progress data to savemanager
-        GameData data = gm.save.data;
-        FieldInfo fieldInfo = data.GetType().GetField(saveName);
-        //if (fieldInfo != null)
-        //{
-        //    object fieldValue = fieldInfo.GetValue(data);
-        //    List<string> valueList = fieldValue as List<string>;
-        //    foreach (var variable in storyProgress)
-        //    {
-        //        if (!valueList.Contains(variable)) {
-        //            fieldInfo.SetValue(variable, fieldInfo);
-        //        }
-        //    }
-        //}
-        
         typewriter.Reset();
         ResetChoices();
         gm.CloseDialogue();
@@ -112,11 +96,12 @@ public class DialogueManager : MonoBehaviour
             {
                 storyProgress.Add(variable);
             }
+
             // or another type(for future use)
-            else if(!storyVariables.ContainsKey(variable))
-            {
-               // storyVariables.Add(variable, currentStory.variablesState[variable]);
-            }
+            //else if(!storyVariables.ContainsKey(variable))
+            //{
+            //    storyVariables.Add(variable, currentStory.variablesState[variable]);
+            //}
         }
     }
 
@@ -141,6 +126,7 @@ public class DialogueManager : MonoBehaviour
         else if (currentStory.canContinue)
         {
             typewriter.Write(currentStory.Continue());
+            //print(currentStory.Continue());
             StartCoroutine("WaitForChoices");
         }
 

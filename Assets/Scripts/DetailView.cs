@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//opens the detail view of an interactable object
 public class DetailView : MonoBehaviour
 {
     public Button closeBtn;

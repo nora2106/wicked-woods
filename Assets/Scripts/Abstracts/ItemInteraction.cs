@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
+//handle object interaction with active item (parent class)
 public abstract class ItemInteraction : MonoBehaviour
 {
     public string defaultInteractionText = "Das funktioniert nicht.";
     public InteractionData interactionData;
     protected InventoryItem activeItem;
     protected GameManager gm;
-    public string objName;
+    [HideInInspector] public string objName;
+    public LocalizedString localizedName;
 
     private void Start()
     {
         gm = GameManager.Instance;
+        localizedName.StringChanged += updateName;
     }
 
     private void Update()
@@ -25,7 +29,10 @@ public abstract class ItemInteraction : MonoBehaviour
 
     void OnMouseDown()
     {
-        gm.SetText(interactionData.defaultComment);
+        if(interactionData.defaultComment != "")
+        {
+            gm.SetText(interactionData.defaultComment);
+        }
     }
 
     public void Interaction()
@@ -37,6 +44,7 @@ public abstract class ItemInteraction : MonoBehaviour
                 if (interaction.requiredItem == activeItem.id)
                 {
                     HandleInteraction(interaction);
+                    activeItem.GetComponent<InventoryItem>().RemoveItem();
                     return;
                 }
                 gm.SetText(defaultInteractionText);
@@ -44,10 +52,13 @@ public abstract class ItemInteraction : MonoBehaviour
         }
     }
 
+    //handle item interaction based on object interaction data
     public abstract void HandleInteraction(InteractionData.ItemInteraction interaction);
 
+    //text when hovering over object with active item
     protected abstract void HoverText();
 
+    //handle item entering & exiting object collider
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.GetComponent<InventoryItem>())
@@ -60,5 +71,15 @@ public abstract class ItemInteraction : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         activeItem = null;
+    }
+
+    private void updateName(string val)
+    {
+        objName = val;
+    }
+
+    private void OnDestroy()
+    {
+        localizedName.StringChanged -= updateName;
     }
 }

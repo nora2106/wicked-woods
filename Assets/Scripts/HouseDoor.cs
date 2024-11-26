@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//specific behavior of the house door
 public class HouseDoor : MonoBehaviour
 {
     // Start is called before the first frame update

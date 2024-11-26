@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//get spawn position in target scene dependent on origin scene
 public class SpawnPos : MonoBehaviour
 {
     public Vector2 defaultPos = Vector2.zero;
