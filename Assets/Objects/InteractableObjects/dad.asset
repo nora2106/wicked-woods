@@ -12,9 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1b6fde71b057141b33ccb94d506aea, type: 3}
   m_Name: dad
   m_EditorClassIdentifier: 
-  objectName: Vater
-  defaultComment: 
+  objectName:
+    m_TableReference:
+      m_TableCollectionName: GUID:63a53abd61c10f04bbc6060f34023022
+    m_TableEntryReference:
+      m_KeyId: 6320779264
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultComment:
+    m_TableReference:
+      m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
+    m_TableEntryReference:
+      m_KeyId: 2530503630483456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemInteractions:
   - requiredItem: feather
-    comment: dad_awake
+    comment:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 0
+  references:
+    version: 2
+    RefIds: []

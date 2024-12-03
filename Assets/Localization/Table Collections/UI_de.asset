@@ -16,7 +16,8 @@ MonoBehaviour:
     m_Code: de
   m_SharedData: {fileID: 11400000, guid: fd439494d43c5f44681ad59a4837a383, type: 2}
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 3057784804829298696
   m_TableData:
   - m_Id: 32598093824
     m_Localized: Speichern
@@ -26,6 +27,31 @@ MonoBehaviour:
     m_Localized: "L\xF6schen"
     m_Metadata:
       m_Items: []
+  - m_Id: 2530503630483456
+    m_Localized: Das funktioniert nicht.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2549712511004672
+    m_Localized: '{item} auf {object} benutzen.'
+    m_Metadata:
+      m_Items:
+      - rid: 3057784804829298696
+  - m_Id: 2550078677938176
+    m_Localized: '{item1} mit {item2} kombinieren.'
+    m_Metadata:
+      m_Items:
+      - rid: 3057784804829298696
+  - m_Id: 2550256524816384
+    m_Localized: Mit {name} sprechen.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3057784804829298696
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 2549712511004672
+        - id: 2550078677938176

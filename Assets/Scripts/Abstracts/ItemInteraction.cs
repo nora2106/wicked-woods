@@ -11,7 +11,8 @@ public abstract class ItemInteraction : MonoBehaviour
     protected InventoryItem activeItem;
     protected GameManager gm;
     [HideInInspector] public string objName;
-    public LocalizedString localizedName;
+    private string defaultComment;
+    [HideInInspector] public LocalizedString localizedName;
 
     private void Start()
     {
@@ -29,12 +30,13 @@ public abstract class ItemInteraction : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(interactionData.defaultComment != "")
+        if(defaultComment != "")
         {
-            gm.SetText(interactionData.defaultComment);
+            gm.SetText(defaultComment);
         }
     }
 
+    //handle interaction only if item is in list of item interactions
     public void Interaction()
     {
         if (activeItem != null)
@@ -44,10 +46,12 @@ public abstract class ItemInteraction : MonoBehaviour
                 if (interaction.requiredItem == activeItem.id)
                 {
                     HandleInteraction(interaction);
-                    activeItem.GetComponent<InventoryItem>().RemoveItem();
                     return;
                 }
-                gm.SetText(defaultInteractionText);
+                else
+                {
+                    gm.SetText(defaultInteractionText);
+                }
             }
         }
     }
@@ -77,6 +81,7 @@ public abstract class ItemInteraction : MonoBehaviour
     {
         objName = val;
     }
+
 
     private void OnDestroy()
     {

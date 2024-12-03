@@ -12,9 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1b6fde71b057141b33ccb94d506aea, type: 3}
   m_Name: chest_childroom
   m_EditorClassIdentifier: 
-  objectName: Spielzeugkiste
-  defaultComment: Die Kiste ist abgeschlossen.
+  objectName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 13139374469120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultComment:
+    m_TableReference:
+      m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
+    m_TableEntryReference:
+      m_KeyId: 2530503630483456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemInteractions:
   - requiredItem: chest_key
-    comment: 
+    comment:
+      m_TableReference:
+        m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
+      m_TableEntryReference:
+        m_KeyId: 2530503630483456
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 1
+  references:
+    version: 2
+    RefIds: []

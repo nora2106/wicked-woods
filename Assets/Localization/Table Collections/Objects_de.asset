@@ -30,6 +30,14 @@ MonoBehaviour:
     m_Localized: Spielzeugtruhe
     m_Metadata:
       m_Items: []
+  - m_Id: 2528728944963584
+    m_Localized: "T\xFCr"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2529248682143744
+    m_Localized: "T\xFCr"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -23,6 +23,22 @@ MonoBehaviour:
     m_Key: delete
     m_Metadata:
       m_Items: []
+  - m_Id: 2530503630483456
+    m_Key: default_use_comment
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2549712511004672
+    m_Key: item_use_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2550078677938176
+    m_Key: item_combine_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2550256524816384
+    m_Key: npc_talk_text
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

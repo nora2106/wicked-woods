@@ -12,18 +12,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1b6fde71b057141b33ccb94d506aea, type: 3}
   m_Name: door_childroom
   m_EditorClassIdentifier: 
-  objectName: "T\xFCr"
-  defaultComment: "Die T\xFCr ist verschlossen."
+  objectName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 2528728944963584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultComment:
+    m_TableReference:
+      m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
+    m_TableEntryReference:
+      m_KeyId: 2530503630483456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemInteractions:
   - requiredItem: fork
-    comment: "Nur damit kann ich die T\xFCr nicht \xF6ffnen."
+    comment:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 0
   - requiredItem: hairpin
-    comment: Es passt.. Aber ich komme nicht hoch genug!
+    comment:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 0
   - requiredItem: chest_key
-    comment: "Der Schl\xFCssel passt nicht."
+    comment:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 0
   - requiredItem: childroom_door-key
-    comment: 
+    comment:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 1
+  references:
+    version: 2
+    RefIds: []

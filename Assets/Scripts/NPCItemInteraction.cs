@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 //handles NPCs that can take/react to being given items
 public class NPCItemInteraction : ItemInteraction
 {
     public string storyName;
+    private string comment;
 
     void Start()
     {
@@ -14,10 +16,11 @@ public class NPCItemInteraction : ItemInteraction
 
     public override void HandleInteraction(InteractionData.ItemInteraction interaction)
     {
+        interaction.comment.StringChanged += updateComment;
         //set story variable to true according to comment
-        if(interaction.comment != "")
+        if(comment != "")
         {
-            gm.SetSpecificVar(storyName, interaction.comment);
+            gm.SetSpecificVar(storyName, comment);
         }
         gameObject.GetComponent<DialogueTrigger>().StartDialogue();
     }
@@ -25,11 +28,16 @@ public class NPCItemInteraction : ItemInteraction
     protected override void HoverText()
     {
         //consider translation
-        gm.SetText(activeItem.id + " an " + objName + " geben.");
+        gm.SetText(activeItem.displayName + " an " + objName + " geben.");
     }
 
     public void Action()
     {
         //animation
+    }
+
+    private void updateComment(string val)
+    {
+        comment = val;
     }
 }

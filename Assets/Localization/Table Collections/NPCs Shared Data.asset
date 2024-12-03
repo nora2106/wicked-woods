@@ -10,39 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Objects Shared Data
+  m_Name: NPCs Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Objects
-  m_TableCollectionNameGuidString: 3bed199fb66d8994ea0c36602b9438dd
+  m_TableCollectionName: NPCs
+  m_TableCollectionNameGuidString: 63a53abd61c10f04bbc6060f34023022
   m_Entries:
-  - m_Id: 5968457728
-    m_Key: housedoor_name
+  - m_Id: 6320779264
+    m_Key: dad_name
     m_Metadata:
       m_Items: []
-  - m_Id: 105427988480
-    m_Key: oven_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 13139374469120
-    m_Key: toy-chest_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2528728944963584
-    m_Key: childroom_door_name
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2529248682143744
-    m_Key: bedroom_door_name
+  - m_Id: 59546497024
+    m_Key: mom_name
     m_Metadata:
       m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
-    rid: 6625050745043157001
+    rid: 3057784804829298690
   references:
     version: 2
     RefIds:
-    - rid: 6625050745043157001
+    - rid: 3057784804829298690
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
-        m_CustomEpoch: 1732657378489
+        m_CustomEpoch: 1733260337192

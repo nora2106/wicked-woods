@@ -12,12 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f1b6fde71b057141b33ccb94d506aea, type: 3}
   m_Name: door_bedroom
   m_EditorClassIdentifier: 
-  objectName: "T\xFCr"
-  defaultComment: "Die T\xFCr ist verschlossen."
+  objectName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 2529248682143744
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  defaultComment:
+    m_TableReference:
+      m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
+    m_TableEntryReference:
+      m_KeyId: 2530503630483456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   itemInteractions:
   - requiredItem: chest_key
-    comment: "Hmm..Der Schl\xFCssel passt nicht."
+    comment:
+      m_TableReference:
+        m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
+      m_TableEntryReference:
+        m_KeyId: 2530503630483456
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: 0
-  - requiredItem: chest_key
-    comment: "Hmm..Der Schl\xFCssel passt nicht."
-    action: 0
+  references:
+    version: 2
+    RefIds: []
