@@ -2,22 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 //handle object interaction with active item (parent class)
 public abstract class ItemInteraction : MonoBehaviour
 {
-    public string defaultInteractionText = "Das funktioniert nicht.";
+    public LocalizedString localizedDefaultComment;
+    public LocalizedString localizedUseText;
     public InteractionData interactionData;
     protected InventoryItem activeItem;
     protected GameManager gm;
     [HideInInspector] public string objName;
-    private string defaultComment;
+    protected string defaultComment;
     [HideInInspector] public LocalizedString localizedName;
 
     private void Start()
     {
         gm = GameManager.Instance;
-        localizedName.StringChanged += updateName;
+
+        //get and initialize localized use
+        localizedUseText.TableReference = "UI";
+        localizedUseText.TableEntryReference = "item_use_text";
+        var dict = new Dictionary<string, object>
+        {
+            { "item", "" },
+            { "object", "" }
+
+        };
+        localizedUseText.Arguments = new object[] { dict };
+
+        localizedDefaultComment.StringChanged += updateDefaultComment;
+        localizedUseText.StringChanged += updateUseText;
     }
 
     private void Update()
@@ -25,14 +40,6 @@ public abstract class ItemInteraction : MonoBehaviour
         //necessary because active item blocks onmousedown
         if(activeItem != null && Input.GetKeyDown(KeyCode.Mouse0)) {
             Interaction();
-        }
-    }
-
-    void OnMouseDown()
-    {
-        if(defaultComment != "")
-        {
-            gm.SetText(defaultComment);
         }
     }
 
@@ -48,10 +55,11 @@ public abstract class ItemInteraction : MonoBehaviour
                     HandleInteraction(interaction);
                     return;
                 }
-                else
+                /* else
                 {
                     gm.SetText(defaultInteractionText);
-                }
+                    print("default text");
+                } */
             }
         }
     }
@@ -77,14 +85,14 @@ public abstract class ItemInteraction : MonoBehaviour
         activeItem = null;
     }
 
-    private void updateName(string val)
+    // TODO replace with lambda expressions
+    private void updateDefaultComment(string val)
     {
-        objName = val;
+        defaultComment = val;
     }
 
-
-    private void OnDestroy()
+    private void updateUseText(string val)
     {
-        localizedName.StringChanged -= updateName;
+        defaultComment = val;
     }
 }

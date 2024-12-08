@@ -14,7 +14,12 @@ public class InteractionData : ScriptableObject
     public class ItemInteraction
     {
         public string requiredItem;
+
+        //individual comment for mismatched items
         public LocalizedString comment;
+        
+        //variable used in dialogue procession
+        public string varName;
         public bool action;
     }
 }

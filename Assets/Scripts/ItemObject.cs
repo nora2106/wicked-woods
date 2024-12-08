@@ -6,7 +6,7 @@ public class ItemObject : MonoBehaviour, ISetup
 {
     public ItemData refItem;
     private GameManager gm;
-    public string id;
+    [HideInInspector] public string id;
 
     public void Setup()
     {

@@ -38,13 +38,12 @@ public class InventoryItem : MonoBehaviour
         if (combineObj){
             if (Input.GetMouseButtonDown(0))
             {
-                print(displayName);
                if (combineObj.GetComponent<InventoryItem>().id == data.combineWith)
                {
                     Reset();
-                    RemoveItem();
-                    Destroy(combineObj);
+                    combineObj.GetComponent<InventoryItem>().RemoveItem();
                     inventory.addItem(data.newItem);
+                    RemoveItem();
                }
 
                 else

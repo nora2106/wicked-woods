@@ -29,12 +29,23 @@ public class ObjectInteraction : ItemInteraction
             interaction.comment.StringChanged += UpdateComment;
             gm.SetText(comment);
         }
+        else {
+            gm.SetText(defaultComment);
+        }
     }
 
     protected override void HoverText()
     {
+        objName = localizedName.GetLocalizedString();
         //consider translations
-        gm.SetText(activeItem.displayName + " mit " + objName + " benutzen.");
+                var dict = new Dictionary<string, object>
+        {
+            { "item", activeItem.displayName },
+            { "object", objName }
+
+        };
+        localizedUseText.Arguments = new object[] { dict };
+        gm.SetText(localizedUseText.GetLocalizedString());           
     }
 
     private void UpdateComment(string var)

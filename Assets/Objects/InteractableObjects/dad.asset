@@ -41,6 +41,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    varName: dad_awake
     action: 0
   references:
     version: 2

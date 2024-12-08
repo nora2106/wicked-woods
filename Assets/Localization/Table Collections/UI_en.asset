@@ -44,6 +44,11 @@ MonoBehaviour:
   - m_Id: 2550256524816384
     m_Localized: Talk to {name}.
     m_Metadata:
+      m_Items:
+      - rid: 3057784804829298695
+  - m_Id: 4301619201040384
+    m_Localized: Give {item} to {name}.
+    m_Metadata:
       m_Items: []
   references:
     version: 2
@@ -55,3 +60,4 @@ MonoBehaviour:
         m_SharedEntries:
         - id: 2549712511004672
         - id: 2550078677938176
+        - id: 2550256524816384

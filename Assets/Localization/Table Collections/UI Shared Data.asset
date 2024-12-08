@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: npc_talk_text
     m_Metadata:
       m_Items: []
+  - m_Id: 4301619201040384
+    m_Key: item_npc_comment
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

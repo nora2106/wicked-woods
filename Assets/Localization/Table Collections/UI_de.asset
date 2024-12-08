@@ -32,7 +32,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2549712511004672
-    m_Localized: '{item} auf {object} benutzen.'
+    m_Localized: '{item} auf {object} anwenden.'
     m_Metadata:
       m_Items:
       - rid: 3057784804829298696
@@ -43,6 +43,11 @@ MonoBehaviour:
       - rid: 3057784804829298696
   - m_Id: 2550256524816384
     m_Localized: Mit {name} sprechen.
+    m_Metadata:
+      m_Items:
+      - rid: 3057784804829298696
+  - m_Id: 4301619201040384
+    m_Localized: '{item} an {name} geben.'
     m_Metadata:
       m_Items: []
   references:
@@ -55,3 +60,4 @@ MonoBehaviour:
         m_SharedEntries:
         - id: 2549712511004672
         - id: 2550078677938176
+        - id: 2550256524816384

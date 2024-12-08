@@ -7,37 +7,32 @@ using UnityEngine.Localization;
 public class NPCItemInteraction : ItemInteraction
 {
     public string storyName;
-    private string comment;
 
     void Start()
     {
+/*         localizedUseText.TableReference = "UI";
+        localizedUseText.TableEntryReference = "item_use_text"; */
         gm = GameManager.Instance;
     }
 
     public override void HandleInteraction(InteractionData.ItemInteraction interaction)
     {
-        interaction.comment.StringChanged += updateComment;
         //set story variable to true according to comment
-        if(comment != "")
+        if(interaction.varName != "")
         {
-            gm.SetSpecificVar(storyName, comment);
+            gm.SetSpecificVar(storyName, interaction.varName);
         }
         gameObject.GetComponent<DialogueTrigger>().StartDialogue();
     }
 
     protected override void HoverText()
-    {
-        //consider translation
+   { 
+        // TODO consider translation
         gm.SetText(activeItem.displayName + " an " + objName + " geben.");
     }
 
     public void Action()
     {
         //animation
-    }
-
-    private void updateComment(string val)
-    {
-        comment = val;
     }
 }
