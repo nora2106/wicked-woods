@@ -21,6 +21,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  objectID: bedroom_door
   defaultComment:
     m_TableReference:
       m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
@@ -41,6 +42,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    varName: 
     action: 0
   references:
     version: 2

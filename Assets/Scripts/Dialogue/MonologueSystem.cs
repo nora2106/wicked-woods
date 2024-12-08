@@ -7,16 +7,15 @@ public class MonologueSystem : MonoBehaviour
 {
     public Typewriter typewriter;
     public GameObject panel;
-    public float resetDuration = 5;
+    public float resetDuration = 3;
     private string msg;
-    // Start is called before the first frame update
+    
     void Start()
     {
         panel.SetActive(false);
         typewriter = gameObject.GetComponentInChildren<Typewriter>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         //wait for text to finish 

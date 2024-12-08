@@ -2,36 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Localization;
 
 //open object to show detail view
 public class OpenObject : UsableObject
 {
     public GameObject detail;
 
-    void Start()
+    new void Start()
     {
+        base.Start();
         if(locked) {
             gameObject.tag = "inspect";
         }
+        if(gameObject.GetComponent<ItemInteraction>())
+        {
+            id = gameObject.GetComponent<ItemInteraction>().interactionData.objectID;
+        }
     }
 
+    //open object (only called when unlocked)
     public override void Action()
     {
-        if(!locked) {
-          OpenAnimation();
-          if(detail != null) {
-                detail.GetComponent<DetailView>().Open();
-          }
+        OpenAnimation();
+        if (detail != null)
+        {
+            detail.GetComponent<DetailView>().Open();
         }
     }
 
     public void Close() {
-        //gameObject.GetComponent<SpriteRenderer>().sprite = sprite1;
+        //close animation
     }
 
     override public void OpenAnimation() {
-        //add animation
-        //gameObject.GetComponent<SpriteRenderer>().sprite = sprite2;
+        //open animation
     }
 }

@@ -24,9 +24,7 @@ public class DoorBehavior : UsableObject
     //unlock door
     override public void Action()
     {
-        if(!locked) {
-            open = true;
-        }
+        open = true;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

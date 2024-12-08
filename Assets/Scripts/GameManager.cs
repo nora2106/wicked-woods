@@ -9,19 +9,20 @@ using System.Reflection;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject overlay;
-    public GameObject player;
-    public Inventory inventory;
-    private GameObject[] objs;
-    public static GameManager Instance;
-    private string currentScene;
-    public SaveManager save;
     public SpawnPos spawnPos;
-    public MonologueSystem textSystem;
-    public GameObject dialoguePanel;
-    public string selectedItemID;
-    public bool itemSelected = false;
-    public DialogueManager dialogue;
+    public static GameManager Instance;
+    [HideInInspector] public GameObject dialoguePanel;
+    [HideInInspector] public SaveManager save;
+    [HideInInspector] public MonologueSystem textSystem;
+    [HideInInspector] public GameObject overlay;
+    [HideInInspector] public GameObject player;
+    [HideInInspector] public Inventory inventory;
+    [HideInInspector] public string selectedItemID;
+    [HideInInspector] public bool itemSelected = false;
+    [HideInInspector] public DialogueManager dialogue;
+    private GameObject[] objs;
+    private string currentScene;
+    public GameObject actionText;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
         inventory = GameObject.FindWithTag("inventory").GetComponent<Inventory>();
         textSystem = GameObject.FindWithTag("Monologue").GetComponent<MonologueSystem>();
         player = GameObject.FindWithTag("Player");
+        actionText = GameObject.FindWithTag("Text");
     }
 
     void Start()
@@ -135,9 +137,18 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
 
+    // TODO add capitalization helper function to text
+
+    //set monologue text
     public void SetText(string text)
     {
         textSystem.setText(text);
+    }
+
+    //set action text
+    public void SetActionText(string text)
+    {
+        actionText.GetComponent<Text>().text = text;
     }
 
     public void OpenDialogue(TextAsset text)

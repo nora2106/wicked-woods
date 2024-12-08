@@ -1,10 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private TextAsset dialogueJSON;
+    private GameManager gm;
+    LocalizedString dialogueText;
+
+    private void Start()
+    {
+        gm = GameManager.Instance;
+        dialogueText.TableReference = "UI";
+        dialogueText.TableEntryReference = "npc_talk_text";
+    }
 
     private void OnMouseDown()
     {
@@ -12,6 +22,18 @@ public class DialogueTrigger : MonoBehaviour
         {
             StartDialogue();
         }
+    }
+
+    private void OnMouseOver()
+    {
+        string localizedName = gameObject.GetComponent<NPCItemInteraction>().localizedName.GetLocalizedString();
+        var dict = new Dictionary<string, object>
+        {
+            { "name", localizedName}
+
+        };
+        dialogueText.Arguments = new object[] { dict };
+        gm.SetActionText(dialogueText.GetLocalizedString());
     }
 
     public void StartDialogue()

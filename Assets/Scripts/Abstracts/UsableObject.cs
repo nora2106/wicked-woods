@@ -1,14 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Localization;
 using UnityEngine.EventSystems;
 
 public abstract class UsableObject : MonoBehaviour, ISetup
 {
     public bool locked;
     public string id;
+    public string objName;
+    public LocalizedString localizedName;
+    public LocalizedString lockedText;
+
     protected GameManager gm;
+
+    protected void Start()
+    {
+        localizedName.StringChanged += UpdateName;
+    }
 
     public void Setup()
     {
@@ -20,9 +29,21 @@ public abstract class UsableObject : MonoBehaviour, ISetup
     }
 
     private void OnMouseDown() {
-        if(!EventSystem.current.IsPointerOverGameObject())
+        if (!EventSystem.current.IsPointerOverGameObject())
         {
-            Action();
+            if (!locked)
+            {
+                Action();
+            }
+            else if (!lockedText.IsEmpty)
+            {
+                var dict = new Dictionary<string, object>
+            {
+                { "object", objName }
+            };
+                lockedText.Arguments = new object[] { dict };
+                gm.SetText(lockedText.GetLocalizedString());
+            }
         }
     }
 
@@ -43,4 +64,9 @@ public abstract class UsableObject : MonoBehaviour, ISetup
     }
 
     public abstract void OpenAnimation();
+
+    protected void UpdateName(string val)
+    {
+        objName = val;
+    }
 }

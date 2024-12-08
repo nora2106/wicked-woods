@@ -7,32 +7,26 @@ using UnityEngine.Localization.Settings;
 //handle object interaction with active item (parent class)
 public abstract class ItemInteraction : MonoBehaviour
 {
-    public LocalizedString localizedDefaultComment;
-    public LocalizedString localizedUseText;
     public InteractionData interactionData;
     protected InventoryItem activeItem;
     protected GameManager gm;
-    [HideInInspector] public string objName;
     protected string defaultComment;
+
+    [HideInInspector] public string objName;
+    [HideInInspector] public LocalizedString localizedDefaultComment;
+    [HideInInspector] public LocalizedString localizedUseText;
     [HideInInspector] public LocalizedString localizedName;
 
-    private void Start()
+    protected void Start()
     {
         gm = GameManager.Instance;
 
-        //get and initialize localized use
+        //initialize static localized texts
+        localizedDefaultComment.TableReference = "UI";
+        localizedDefaultComment.TableEntryReference = "default_use_comment";
         localizedUseText.TableReference = "UI";
         localizedUseText.TableEntryReference = "item_use_text";
-        var dict = new Dictionary<string, object>
-        {
-            { "item", "" },
-            { "object", "" }
-
-        };
-        localizedUseText.Arguments = new object[] { dict };
-
-        localizedDefaultComment.StringChanged += updateDefaultComment;
-        localizedUseText.StringChanged += updateUseText;
+        localizedName.StringChanged += UpdateName;
     }
 
     private void Update()
@@ -55,11 +49,6 @@ public abstract class ItemInteraction : MonoBehaviour
                     HandleInteraction(interaction);
                     return;
                 }
-                /* else
-                {
-                    gm.SetText(defaultInteractionText);
-                    print("default text");
-                } */
             }
         }
     }
@@ -85,14 +74,9 @@ public abstract class ItemInteraction : MonoBehaviour
         activeItem = null;
     }
 
-    // TODO replace with lambda expressions
-    private void updateDefaultComment(string val)
+    //only add setter functions for identifiying names
+    protected void UpdateName(string val)
     {
-        defaultComment = val;
-    }
-
-    private void updateUseText(string val)
-    {
-        defaultComment = val;
+        objName = val;
     }
 }

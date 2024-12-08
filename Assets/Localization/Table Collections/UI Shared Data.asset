@@ -43,6 +43,14 @@ MonoBehaviour:
     m_Key: item_npc_comment
     m_Metadata:
       m_Items: []
+  - m_Id: 4342718536839168
+    m_Key: object_locked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4354585707638784
+    m_Key: item_combine_error
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

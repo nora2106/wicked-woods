@@ -21,6 +21,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  objectID: childroom_door
   defaultComment:
     m_TableReference:
       m_TableCollectionName: GUID:fd439494d43c5f44681ad59a4837a383
@@ -41,6 +42,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    varName: 
     action: 0
   - requiredItem: hairpin
     comment:
@@ -52,6 +54,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    varName: 
     action: 0
   - requiredItem: chest_key
     comment:
@@ -63,6 +66,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    varName: 
     action: 0
   - requiredItem: childroom_door-key
     comment:
@@ -74,6 +78,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+    varName: 
     action: 1
   references:
     version: 2

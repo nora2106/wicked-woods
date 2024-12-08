@@ -49,7 +49,18 @@ MonoBehaviour:
   - m_Id: 4301619201040384
     m_Localized: '{item} an {name} geben.'
     m_Metadata:
-      m_Items: []
+      m_Items:
+      - rid: 3057784804829298696
+  - m_Id: 4342718536839168
+    m_Localized: '{object} ist abgeschlossen.'
+    m_Metadata:
+      m_Items:
+      - rid: 3057784804829298696
+  - m_Id: 4354585707638784
+    m_Localized: Ich kann {item1} nicht mit {item2} kombinieren.
+    m_Metadata:
+      m_Items:
+      - rid: 3057784804829298696
   references:
     version: 2
     RefIds:
@@ -61,3 +72,6 @@ MonoBehaviour:
         - id: 2549712511004672
         - id: 2550078677938176
         - id: 2550256524816384
+        - id: 4342718536839168
+        - id: 4354585707638784
+        - id: 4301619201040384

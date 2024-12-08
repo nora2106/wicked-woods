@@ -8,16 +8,16 @@ public class NPCItemInteraction : ItemInteraction
 {
     public string storyName;
 
-    void Start()
+    new private void Start()
     {
-/*         localizedUseText.TableReference = "UI";
-        localizedUseText.TableEntryReference = "item_use_text"; */
-        gm = GameManager.Instance;
+        base.Start();
+        localizedUseText.TableReference = "UI";
+        localizedUseText.TableEntryReference = "item_npc_comment";
     }
 
     public override void HandleInteraction(InteractionData.ItemInteraction interaction)
     {
-        //set story variable to true according to comment
+        //set story variable (name = comment) to true
         if(interaction.varName != "")
         {
             gm.SetSpecificVar(storyName, interaction.varName);
@@ -27,8 +27,15 @@ public class NPCItemInteraction : ItemInteraction
 
     protected override void HoverText()
    { 
-        // TODO consider translation
-        gm.SetText(activeItem.displayName + " an " + objName + " geben.");
+        objName = localizedName.GetLocalizedString();
+        var dict = new Dictionary<string, object>
+        {
+            { "item", activeItem.displayName },
+            { "name", objName }
+
+        };
+        localizedUseText.Arguments = new object[] { dict };
+        gm.SetActionText(localizedUseText.GetLocalizedString());
     }
 
     public void Action()

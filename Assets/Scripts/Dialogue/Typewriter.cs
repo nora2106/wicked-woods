@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class Typewriter : MonoBehaviour
 {
-    [SerializeField] private float timePerChar = 0.05f;
     public Text text;
     public string currMsg;
     public bool active;
+    [SerializeField] private float timePerChar = 0.05f;
 
     void Awake()
     {

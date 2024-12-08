@@ -9,16 +9,20 @@ public class InventoryItem : MonoBehaviour
 {
     public ItemData data;
     public Inventory inventory;
-    public bool selected = false;
+    public string id;
+    public string displayName;
+    public LocalizedString localizedDisplayName;
+    [HideInInspector] public bool selected = false;
+
     private Vector2 pos;
     private GameObject player;
     private GameObject usableObj;
     private GameObject combineObj;
     private GameObject newSlot;
     private GameObject cursorHandler;
-    public string id;
-    public string displayName;
     private GameManager gm;
+    private LocalizedString combineText;
+    private LocalizedString combineErrorText;
 
     public void Start()
     {
@@ -29,12 +33,11 @@ public class InventoryItem : MonoBehaviour
         inventory = GameObject.Find("Inventory").GetComponent<Inventory>();
         id = data.id;
         gm = GameManager.Instance;
-        data.displayName.StringChanged += setName;
+        data.displayName.StringChanged += UpdateName;
     }
 
     public void Update()
     {
-
         if (combineObj){
             if (Input.GetMouseButtonDown(0))
             {
@@ -48,7 +51,19 @@ public class InventoryItem : MonoBehaviour
 
                 else
                 {
-                    gm.SetText("Ich kann " + displayName + " nicht mit " + combineObj.name + " kombinieren.");
+                    //get localized text
+                    combineErrorText.TableReference = "UI";
+                    combineErrorText.TableEntryReference = "item_combine_error";
+                    var dict = new Dictionary<string, object>
+                    {
+                        { "item1", localizedDisplayName.GetLocalizedString() },
+                        { "item2", combineObj.GetComponent<InventoryItem>().localizedDisplayName.GetLocalizedString() }
+
+                    };
+
+                    //error text - potentially switch to assigning in the editor for different sentence options
+                    combineErrorText.Arguments = new object[] { dict };
+                    gm.SetText(combineErrorText.GetLocalizedString());
                     transform.position = pos;
                 }
             }
@@ -100,9 +115,22 @@ public class InventoryItem : MonoBehaviour
             if (collision.gameObject.GetComponent<InventoryItem>())
             {
                 cursorHandler.GetComponent<CursorIcon>().SetUse();
-                // translation missing
-                gm.SetText(displayName + " mit " + collision.gameObject.GetComponent<InventoryItem>().displayName + " kombinieren");
                 combineObj = collision.gameObject;
+
+                //get localized text
+                combineText.TableReference = "UI";
+                combineErrorText.TableEntryReference = "item_combine_text";
+                var dict = new Dictionary<string, object>
+                {
+                    { "item1", localizedDisplayName.GetLocalizedString() },
+                    { "item2", combineObj.GetComponent<InventoryItem>().localizedDisplayName.GetLocalizedString() }
+
+                };
+
+                //error text - potentially switch to assigning in the editor for different sentence options
+                combineErrorText.Arguments = new object[] { dict };
+                gm.SetText(combineErrorText.GetLocalizedString());
+                gm.SetText(displayName + " mit " + collision.gameObject.GetComponent<InventoryItem>().displayName + " kombinieren");
             }
         }
 
@@ -135,7 +163,7 @@ public class InventoryItem : MonoBehaviour
         }
     }
 
-    private void setName(string val)
+    private void UpdateName(string val)
     {
         displayName = val;
     }

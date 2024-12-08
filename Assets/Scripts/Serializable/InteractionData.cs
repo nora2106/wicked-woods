@@ -7,6 +7,7 @@ using UnityEngine.Localization;
 public class InteractionData : ScriptableObject
 {
     public LocalizedString objectName;
+    public string objectID;
     public LocalizedString defaultComment;
     public List<ItemInteraction> itemInteractions;
 

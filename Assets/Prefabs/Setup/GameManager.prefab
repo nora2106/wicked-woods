@@ -52,10 +52,11 @@ MonoBehaviour:
   save: {fileID: 0}
   spawnPos: {fileID: 0}
   textSystem: {fileID: 0}
+  actionText: {fileID: 2765367809074085689, guid: 060ddb0b8340a84408ed58556eb279d8, type: 3}
   dialoguePanel: {fileID: 0}
   selectedItemID: 
+  itemSelected: 0
   dialogue: {fileID: 0}
-  test: 
 --- !u!114 &5707854994390725546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,7 +77,6 @@ MonoBehaviour:
     collectedItems: []
     inventoryItems: []
     scene: 
-    test: 
     dialogue_mom: []
     dialogue_dad: []
 --- !u!114 &984583070131658278
