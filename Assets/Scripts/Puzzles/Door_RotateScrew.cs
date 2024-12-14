@@ -48,8 +48,9 @@ public class RotateScrew : UsableObject
         
     }
 
-    private void Start()
+    new private void Start()
     {
+        base.Start();
         initialRotation = transform.eulerAngles.z;
     }
 }

@@ -101,7 +101,7 @@ MonoBehaviour:
   inspectIcon: {fileID: 21300000, guid: 1e5728f9f18cd4c47acea53701b79611, type: 3}
   moveIcon: {fileID: 21300000, guid: 12136ca9a825f427f9e9cab6c5add6af, type: 3}
   grabIcon: {fileID: 21300000, guid: 1898f5175454445c0a537da99c07c313, type: 3}
-  useIcon: {fileID: 21300000, guid: ee5836a295f732f4a8009c3ee1cc2f98, type: 3}
+  talkIcon: {fileID: 21300000, guid: 7a6cb9c13fce39a4d803df52ff10ca83, type: 3}
 --- !u!114 &5010255957659633849
 MonoBehaviour:
   m_ObjectHideFlags: 0

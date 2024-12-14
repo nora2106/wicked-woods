@@ -38,6 +38,14 @@ MonoBehaviour:
     m_Localized: "T\xFCr"
     m_Metadata:
       m_Items: []
+  - m_Id: 5788305358548992
+    m_Localized: "Die Haust\xFCr ist verbarrikadiert."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5788859451273216
+    m_Localized: "Die Haust\xFCr ist abgeschlossen."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

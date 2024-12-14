@@ -1104,14 +1104,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 285380015086619150, guid: a64a9dcac70a242169f0fff3364b858f, type: 3}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1929110364}
-    - target: {fileID: 285380015086619150, guid: a64a9dcac70a242169f0fff3364b858f, type: 3}
-      propertyPath: grabIcon
-      value: 
-      objectReference: {fileID: 21300000, guid: ee5836a295f732f4a8009c3ee1cc2f98, type: 3}
     - target: {fileID: 3729573085064280381, guid: a64a9dcac70a242169f0fff3364b858f, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.4883
@@ -1155,14 +1147,6 @@ PrefabInstance:
     - target: {fileID: 4890695143392928306, guid: a64a9dcac70a242169f0fff3364b858f, type: 3}
       propertyPath: m_Name
       value: CursorIcon
-      objectReference: {fileID: 0}
-    - target: {fileID: 5301510410120428755, guid: a64a9dcac70a242169f0fff3364b858f, type: 3}
-      propertyPath: m_SortingLayer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5301510410120428755, guid: a64a9dcac70a242169f0fff3364b858f, type: 3}
-      propertyPath: m_SortingLayerID
-      value: 1341483495
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3362,11 +3346,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2161637661260659214, guid: 9bca216ca88a14287b143eace0d3444d, type: 3}
   m_PrefabInstance: {fileID: 1878976425}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1929110364 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8159442710715365069, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
-  m_PrefabInstance: {fileID: 35592522}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1980930822
 GameObject:

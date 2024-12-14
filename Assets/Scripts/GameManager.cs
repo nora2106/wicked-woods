@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public Inventory inventory;
     [HideInInspector] public string selectedItemID;
     [HideInInspector] public bool itemSelected = false;
+    [HideInInspector] public bool dialoguePlaying = false;
+    [HideInInspector] public bool paused = false;
     [HideInInspector] public DialogueManager dialogue;
     private GameObject[] objs;
     private string currentScene;
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
         textSystem = GameObject.FindWithTag("Monologue").GetComponent<MonologueSystem>();
         player = GameObject.FindWithTag("Player");
         actionText = GameObject.FindWithTag("Text");
+        actionText.transform.parent.gameObject.SetActive(false);
     }
 
     void Start()
@@ -148,11 +151,22 @@ public class GameManager : MonoBehaviour
     //set action text
     public void SetActionText(string text)
     {
-        actionText.GetComponent<Text>().text = text;
+        if (!dialoguePlaying && !paused)
+        {
+            actionText.GetComponent<Text>().text = text;
+            actionText.transform.parent.gameObject.SetActive(true);
+        }
+    }
+
+    public void ResetActionText ()
+    {
+        actionText.GetComponent<Text>().text = "";
+        actionText.transform.parent.gameObject.SetActive(false);
     }
 
     public void OpenDialogue(TextAsset text)
     {
+        dialoguePlaying = true;
         dialoguePanel.SetActive(true);
         GetComponent<DialogueManager>().StartDialogue(text);
         player.GetComponent<MoveCharacter>().canMove = false;
@@ -161,6 +175,7 @@ public class GameManager : MonoBehaviour
 
     public void CloseDialogue()
     {
+        dialoguePlaying = false;
         dialoguePanel.SetActive(false);
         player.GetComponent<MoveCharacter>().canMove = true;
         player.layer = 8;

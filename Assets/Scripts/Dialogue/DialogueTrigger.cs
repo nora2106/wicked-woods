@@ -7,7 +7,8 @@ public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private TextAsset dialogueJSON;
     private GameManager gm;
-    LocalizedString dialogueText;
+    LocalizedString dialogueText = new LocalizedString();
+    public LocalizedString NPCName;
 
     private void Start()
     {
@@ -18,7 +19,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!GameManager.Instance.itemSelected)
+        if (!gm.itemSelected)
         {
             StartDialogue();
         }
@@ -26,14 +27,24 @@ public class DialogueTrigger : MonoBehaviour
 
     private void OnMouseOver()
     {
-        string localizedName = gameObject.GetComponent<NPCItemInteraction>().localizedName.GetLocalizedString();
-        var dict = new Dictionary<string, object>
+        if(!gm.itemSelected)
         {
-            { "name", localizedName}
+            string localizedName = NPCName.GetLocalizedString();
+            var dict = new Dictionary<string, object>
+            {
+                { "name", localizedName}
 
-        };
-        dialogueText.Arguments = new object[] { dict };
-        gm.SetActionText(dialogueText.GetLocalizedString());
+            };
+            dialogueText.Arguments = new object[] { dict };
+            gm.SetActionText(dialogueText.GetLocalizedString());
+
+        }
+    }
+
+    //reset action text when mouse leaves npc
+    private void OnMouseExit()
+    {
+        gm.ResetActionText();
     }
 
     public void StartDialogue()

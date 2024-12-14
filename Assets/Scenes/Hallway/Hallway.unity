@@ -859,11 +859,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c261226a89bf3e041bca4cd0ec133fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 2529248682143744
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   nextScene: Bedroom
   open: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!212 &406916881
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1113,11 +1134,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c261226a89bf3e041bca4cd0ec133fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   nextScene: Livingroom
   open: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!61 &531852037
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1814,11 +1856,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c261226a89bf3e041bca4cd0ec133fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: door_key1
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 2528728944963584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   nextScene: Childroom
   open: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!212 &1051849893
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2604,10 +2667,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67834e6e905824967b23af808dd2a5a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usableItemID: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   detail: {fileID: 1435516177}
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1671754910
 GameObject:
   m_ObjectHideFlags: 0

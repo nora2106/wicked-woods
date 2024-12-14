@@ -35,6 +35,14 @@ MonoBehaviour:
     m_Key: bedroom_door_name
     m_Metadata:
       m_Items: []
+  - m_Id: 5788305358548992
+    m_Key: housedoor_locked_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5788859451273216
+    m_Key: housedoor_locked_2
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

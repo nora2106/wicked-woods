@@ -442,7 +442,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: housedoor
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 5968457728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
+    m_TableEntryReference:
+      m_KeyId: 5788305358548992
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   detail: {fileID: 14528301}
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &61756469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -647,8 +669,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 270
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &340989403
 GameObject:
   m_ObjectHideFlags: 0
@@ -886,8 +930,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 180
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &378301858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8985418804032207322, guid: 82f20ea1bd23f4610bbd3db1e944ee4b, type: 3}
@@ -1585,8 +1651,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &652897012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,8 +1810,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &755341709
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,8 +2132,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &880073984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,8 +2291,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 180
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &891155270
 GameObject:
   m_ObjectHideFlags: 0
@@ -2453,8 +2607,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1094495408
 GameObject:
   m_ObjectHideFlags: 0
@@ -2590,8 +2766,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1221348382
 GameObject:
   m_ObjectHideFlags: 0
@@ -2727,8 +2925,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 270
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1260103929
 GameObject:
   m_ObjectHideFlags: 0
@@ -2864,8 +3084,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1438989308
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,8 +3346,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1499287156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3786,8 +4050,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &1849559989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4092,8 +4378,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &1901917687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4302,8 +4610,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 270
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &1944158028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4562,8 +4892,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   correctRotation: 90
   correct: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2040165563
 GameObject:
   m_ObjectHideFlags: 0

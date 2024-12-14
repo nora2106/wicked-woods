@@ -371,7 +371,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   detail: {fileID: 375083772}
+  references:
+    version: 2
+    RefIds: []
 --- !u!61 &227683725
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -865,6 +887,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueJSON: {fileID: 4900000, guid: 9a39a0c4c3f22a4428bed5b1c9100997, type: 3}
+  NPCName:
+    m_TableReference:
+      m_TableCollectionName: GUID:63a53abd61c10f04bbc6060f34023022
+    m_TableEntryReference:
+      m_KeyId: 59546497024
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &319789771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2692,8 +2726,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locked: 0
   id: 
+  objName: 
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   nextScene: Hallway
   open: 0
+  references:
+    version: 2
+    RefIds: []
 --- !u!61 &2072171891
 BoxCollider2D:
   m_ObjectHideFlags: 0

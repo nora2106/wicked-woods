@@ -7,8 +7,8 @@ using UnityEngine.EventSystems;
 public abstract class UsableObject : MonoBehaviour, ISetup
 {
     public bool locked;
-    public string id;
-    public string objName;
+    [HideInInspector] public string id;
+    [HideInInspector] public string objName;
     public LocalizedString localizedName;
     public LocalizedString lockedText;
 

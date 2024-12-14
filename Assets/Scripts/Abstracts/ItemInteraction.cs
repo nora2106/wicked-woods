@@ -72,6 +72,7 @@ public abstract class ItemInteraction : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         activeItem = null;
+        gm.ResetActionText();
     }
 
     //only add setter functions for identifiying names

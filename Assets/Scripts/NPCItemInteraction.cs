@@ -23,11 +23,12 @@ public class NPCItemInteraction : ItemInteraction
             gm.SetSpecificVar(storyName, interaction.varName);
         }
         gameObject.GetComponent<DialogueTrigger>().StartDialogue();
+        activeItem.GetComponent<InventoryItem>().RemoveItem();
     }
 
     protected override void HoverText()
-   { 
-        objName = localizedName.GetLocalizedString();
+    {
+        objName = gameObject.GetComponent<DialogueTrigger>().NPCName.GetLocalizedString();
         var dict = new Dictionary<string, object>
         {
             { "item", activeItem.displayName },
