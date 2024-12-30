@@ -78,11 +78,11 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        SetupAll();
-        save.data.scene = scene.name;
         save.Save();
+        SetupAll();
         player.GetComponent<MoveCharacter>().SetPosition(spawnPos.getPosition(currentScene));
         currentScene = scene.name;
+        save.data.scene = currentScene;
     }
 
     private void SetupAll()

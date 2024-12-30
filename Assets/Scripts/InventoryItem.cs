@@ -34,6 +34,9 @@ public class InventoryItem : MonoBehaviour
         id = data.id;
         gm = GameManager.Instance;
         data.displayName.StringChanged += UpdateName;
+        combineText = new LocalizedString("UI", "item_combine_text");
+        combineErrorText = new LocalizedString("UI", "item_combine_error");
+        localizedDisplayName = data.displayName;
     }
 
     public void Update()
@@ -49,11 +52,9 @@ public class InventoryItem : MonoBehaviour
                     RemoveItem();
                }
 
-                else
-                {
+               else
+               {
                     //get localized text
-                    combineErrorText.TableReference = "UI";
-                    combineErrorText.TableEntryReference = "item_combine_error";
                     var dict = new Dictionary<string, object>
                     {
                         { "item1", localizedDisplayName.GetLocalizedString() },
@@ -65,7 +66,7 @@ public class InventoryItem : MonoBehaviour
                     combineErrorText.Arguments = new object[] { dict };
                     gm.SetText(combineErrorText.GetLocalizedString());
                     transform.position = pos;
-                }
+               }
             }
         }
 
@@ -108,29 +109,25 @@ public class InventoryItem : MonoBehaviour
         player.GetComponent<MoveCharacter>().canMove = true;
     }
 
+    //hovering over another item or inventory slot
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(selected)
         {
             if (collision.gameObject.GetComponent<InventoryItem>())
             {
-                cursorHandler.GetComponent<CursorIcon>().SetUse();
+                //cursorHandler.GetComponent<CursorIcon>().SetUse();
                 combineObj = collision.gameObject;
-
                 //get localized text
-                combineText.TableReference = "UI";
-                combineErrorText.TableEntryReference = "item_combine_text";
                 var dict = new Dictionary<string, object>
                 {
                     { "item1", localizedDisplayName.GetLocalizedString() },
                     { "item2", combineObj.GetComponent<InventoryItem>().localizedDisplayName.GetLocalizedString() }
 
-                };
 
-                //error text - potentially switch to assigning in the editor for different sentence options
-                combineErrorText.Arguments = new object[] { dict };
-                gm.SetText(combineErrorText.GetLocalizedString());
-                gm.SetText(displayName + " mit " + collision.gameObject.GetComponent<InventoryItem>().displayName + " kombinieren");
+                };
+                combineText.Arguments = new object[] { dict };
+                gm.SetActionText(combineText.GetLocalizedString());
             }
         }
 
@@ -146,6 +143,7 @@ public class InventoryItem : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         combineObj = null;
+        gm.ResetActionText();
     }
 
     private void OnMouseDown()
