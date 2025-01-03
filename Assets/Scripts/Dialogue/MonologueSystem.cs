@@ -36,7 +36,7 @@ public class MonologueSystem : MonoBehaviour
         typewriter.Skip();
     }
 
-    public void setText(string t)
+    public void SetText(string t)
     {
         if(typewriter == null)
         {

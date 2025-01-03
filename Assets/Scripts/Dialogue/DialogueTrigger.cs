@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 
-public class DialogueTrigger : MonoBehaviour
+public class DialogueTrigger : MonoBehaviour, ActionAfterMovement
 {
     [SerializeField] private TextAsset dialogueJSON;
     private GameManager gm;
@@ -21,7 +21,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (!gm.itemSelected)
         {
-            StartDialogue();
+            gm.movement.interactionObject = gameObject;
         }
     }
 
@@ -45,6 +45,11 @@ public class DialogueTrigger : MonoBehaviour
     private void OnMouseExit()
     {
         gm.ResetActionText();
+    }
+
+    public void ActionAfterMovement()
+    {
+        StartDialogue();
     }
 
     public void StartDialogue()

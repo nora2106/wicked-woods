@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 
 //open object to show detail view
-public class OpenObject : UsableObject
+public class OpenObject : UsableObject, ActionAfterMovement
 {
     public GameObject detail;
 
@@ -27,8 +27,13 @@ public class OpenObject : UsableObject
         OpenAnimation();
         if (detail != null)
         {
-            detail.GetComponent<DetailView>().Open();
+            gm.movement.interactionObject = gameObject;
         }
+    }
+
+    public void ActionAfterMovement ()
+    {
+        detail.GetComponent<DetailView>().Open();
     }
 
     public void Close() {

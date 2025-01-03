@@ -10,6 +10,9 @@ public class MoveCharacter : MonoBehaviour, ISetup
     public bool canMove;
     private NavMeshAgent agent;
     private GameManager gm;
+    public bool isMoving;
+    public GameObject interactionObject;
+    private int clickIndex = 0;
 
     public void Start()
     {
@@ -35,9 +38,33 @@ public class MoveCharacter : MonoBehaviour, ISetup
             {
                 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 target.z = transform.position.z;
+                if (interactionObject)
+                {
+                    clickIndex++;
+                }
             }
             agent.SetDestination(target);
             gm.save.data.playerPosition = transform.position;
+            if (agent.velocity != Vector3.zero && !isMoving)
+            {
+                isMoving = true;
+            }
+            else if (agent.velocity == Vector3.zero && isMoving)
+            {
+                isMoving = false;
+                if(clickIndex > 1)
+                {
+                    interactionObject = null;
+                }
+
+                if(interactionObject)
+                {
+                    // TODO consider other objects without openobject (extra script or condition)
+                    interactionObject.GetComponent<ActionAfterMovement>().ActionAfterMovement();
+                    interactionObject = null;
+                }
+                clickIndex = 0;
+            }
         }
 
         else

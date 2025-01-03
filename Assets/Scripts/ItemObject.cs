@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemObject : MonoBehaviour, ISetup
+public class ItemObject : MonoBehaviour, ISetup, ActionAfterMovement
 {
     public ItemData refItem;
     private GameManager gm;
@@ -17,12 +17,22 @@ public class ItemObject : MonoBehaviour, ISetup
         }
     }
 
+    // either pick up directly or wait for movement, depending on if player can move
     private void OnMouseDown()
     {
-        handlePickup();
+        if(gm.movement.canMove)
+        {
+            gm.movement.interactionObject = gameObject;
+        }
+
+        else
+        {
+            ActionAfterMovement();
+        }
     }
 
-    public void handlePickup()
+    // pick up item
+    public void ActionAfterMovement ()
     {
         gm.inventory.addItem(refItem);
         gm.save.data.collectedItems.Add(id);

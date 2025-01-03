@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool dialoguePlaying = false;
     [HideInInspector] public bool paused = false;
     [HideInInspector] public DialogueManager dialogue;
+    [HideInInspector] public MoveCharacter movement;
     private GameObject[] objs;
     private string currentScene;
     public GameObject actionText;
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
         inventory = GameObject.FindWithTag("inventory").GetComponent<Inventory>();
         textSystem = GameObject.FindWithTag("Monologue").GetComponent<MonologueSystem>();
         player = GameObject.FindWithTag("Player");
+        movement = player.GetComponent<MoveCharacter>();
         actionText = GameObject.FindWithTag("Text");
         actionText.transform.parent.gameObject.SetActive(false);
     }
@@ -124,14 +126,14 @@ public class GameManager : MonoBehaviour
     public void OpenOverlay() {
         overlay.SetActive(true);
         overlay.GetComponent<CanvasGroup>().alpha = 1;
-        player.GetComponent<MoveCharacter>().canMove = false;
+        PauseCharacterMovement();
         player.layer = 2;
     }
 
     public void CloseOverlay() {
         overlay.SetActive(false);
         overlay.GetComponent<CanvasGroup>().alpha = 0;
-        player.GetComponent<MoveCharacter>().canMove = true;
+        ResumeCharacterMovement();
         player.layer = 8;
     }
 
@@ -145,7 +147,7 @@ public class GameManager : MonoBehaviour
     //set monologue text
     public void SetText(string text)
     {
-        textSystem.setText(text);
+        textSystem.SetText(text);
     }
 
     //set action text
@@ -169,16 +171,28 @@ public class GameManager : MonoBehaviour
         dialoguePlaying = true;
         dialoguePanel.SetActive(true);
         GetComponent<DialogueManager>().StartDialogue(text);
-        player.GetComponent<MoveCharacter>().canMove = false;
+        PauseCharacterMovement();
         player.layer = 2;
     }
+    // TODO replace by general pause & resume function
 
     public void CloseDialogue()
     {
         dialoguePlaying = false;
         dialoguePanel.SetActive(false);
-        player.GetComponent<MoveCharacter>().canMove = true;
+        ResumeCharacterMovement();
         player.layer = 8;
+    }
+
+    //pause and resume the character's ability to move
+    public void PauseCharacterMovement()
+    {
+        player.GetComponent<MoveCharacter>().canMove = false;
+    }
+
+    public void ResumeCharacterMovement()
+    {
+        player.GetComponent<MoveCharacter>().canMove = true;
     }
 
     //function to update story progress from anywhere
