@@ -17,6 +17,11 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 560d2b85c4b7a684496e4562b054daeb
   m_SerializeEntries:
+  - m_GUID: 00861a31aaee7d94f8a7ed1c2ab69639
+    m_Address: Assets/Localization/Table Collections/Puzzles Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0cee2287a3f7b4e4480326f718fb0765
     m_Address: Assets/Localization/Table Collections/Items Shared Data.asset
     m_ReadOnly: 1

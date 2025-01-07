@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Reflection;
+using Ink.Runtime;
 
 public class GameManager : MonoBehaviour
 {
@@ -210,5 +211,22 @@ public class GameManager : MonoBehaviour
                 list?.Add(varName);
             }
         }
+    }
+
+    //check if specific story var is true (exists in save data)
+    public bool GetStoryVar(string storyName, string varName)
+    {
+        string saveName = "dialogue_" + storyName;
+        var field = save.data.GetType().GetField(saveName);
+        if (field != null && typeof(IList).IsAssignableFrom(field.FieldType))
+        {
+            var list = (IList)field.GetValue(save.data);
+
+            if (list.Contains(varName))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

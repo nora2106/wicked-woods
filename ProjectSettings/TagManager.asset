@@ -16,6 +16,7 @@ TagManager:
   - grab
   - DialogueCanvas
   - Monologue
+  - background
   layers:
   - Default
   - TransparentFX
@@ -68,11 +69,14 @@ TagManager:
   - name: Foreground
     uniqueID: 3947623857
     locked: 0
-  - name: UI
-    uniqueID: 3187485717
+  - name: Overlay
+    uniqueID: 2937140827
     locked: 0
   - name: View
     uniqueID: 96048835
+    locked: 0
+  - name: UI
+    uniqueID: 3187485717
     locked: 0
   - name: Cursor
     uniqueID: 1341483495

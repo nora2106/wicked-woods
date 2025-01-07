@@ -23,6 +23,7 @@ public class NPCItemInteraction : ItemInteraction
             gm.SetSpecificVar(storyName, interaction.varName);
         }
         gameObject.GetComponent<DialogueTrigger>().StartDialogue();
+        gm.dialogue.GetAllVars();
         activeItem.GetComponent<InventoryItem>().RemoveItem();
     }
 

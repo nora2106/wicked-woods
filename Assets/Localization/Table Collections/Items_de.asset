@@ -42,6 +42,10 @@ MonoBehaviour:
     m_Localized: "Haust\xFCrschl\xFCssel"
     m_Metadata:
       m_Items: []
+  - m_Id: 14856388081577984
+    m_Localized: Feuerhaken
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

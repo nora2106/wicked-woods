@@ -16,6 +16,10 @@ public class BookPuzzle : PuzzleManager, ISetup
         return true;
     }
 
+    public override void ResetPuzzle()
+    {
+    }
+
     public override void Success()
     {
         print("Heureka! DU hast es geschafft!");

@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: housedoor_key_name
     m_Metadata:
       m_Items: []
+  - m_Id: 14856388081577984
+    m_Key: firehook_name
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

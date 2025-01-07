@@ -94,6 +94,7 @@ public class InventoryItem : MonoBehaviour
             player.GetComponent<MoveCharacter>().canMove = false;
             Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             transform.position = mousePosition;
+            gameObject.layer = 2;
 
             if(Input.GetMouseButtonDown(1)) {
                 Reset();
@@ -105,8 +106,10 @@ public class InventoryItem : MonoBehaviour
     {
         selected = false;
         gm.itemSelected = false;
+        gm.selectedItemID = "";
         transform.localPosition = Vector2.zero;
         player.GetComponent<MoveCharacter>().canMove = true;
+        gameObject.layer = 0;
     }
 
     //hovering over another item or inventory slot

@@ -29,6 +29,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Locale-en
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4a88e67f3126bf4a897b8373531de92
+    m_Address: Puzzles_en
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b8e0c9883055d7f4280a8b2663078575
     m_Address: NPCs_en
     m_ReadOnly: 1

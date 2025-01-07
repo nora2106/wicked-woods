@@ -6,16 +6,32 @@ public abstract class PuzzleManager : MonoBehaviour, ISetup
 {
     public bool solved;
     public string id;
-    private GameManager gm;
+    public bool resets;
+    protected GameManager gm;
 
     public void Setup()
     {
         gm = GameManager.Instance;
         if(gm.save.data.solvedPuzzles.Contains(id)) {
             solved = true;
+        }
+    }
+
+    //reset puzzle on every activation only if it is checked
+    private void OnEnable()
+    {
+        if(resets)
+        {
+            ResetPuzzle();
+        }
+        if(solved)
+        {
             DisablePuzzle();
         }
     }
+
+    //reset puzzle to standard
+    public abstract void ResetPuzzle();
 
     public abstract bool CheckIfSolved();
 
@@ -24,8 +40,6 @@ public abstract class PuzzleManager : MonoBehaviour, ISetup
         if(CheckIfSolved())
         {
             solved = true;
-            gameObject.SetActive(false);
-            GameManager.Instance.CloseOverlay();
             if (!gm.save.data.solvedPuzzles.Contains(id))
             {
                 gm.save.data.solvedPuzzles.Add(id);

@@ -25,7 +25,7 @@ public class DetailView : MonoBehaviour
     public void Close() {
         transform.gameObject.SetActive(false);
         gm.CloseOverlay();
-        if(obj) {
+        if(obj && obj.GetComponent<OpenObject>()) {
             obj.GetComponent<OpenObject>().Close();
         }
     }
