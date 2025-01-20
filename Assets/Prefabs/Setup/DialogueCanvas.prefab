@@ -290,10 +290,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53d7062d071eb2944a295f756a45d9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timePerChar: 0.06
   text: {fileID: 8424122824915615289}
   currMsg: 
   active: 0
+  timePerChar: 0.06
 --- !u!1 &8560860253191773104
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +415,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7afd9c2697d8d384498fb0bce1581acb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  index: 7
+  index: 4
 --- !u!1001 &1397315206140047833
 PrefabInstance:
   m_ObjectHideFlags: 0

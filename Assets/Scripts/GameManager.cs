@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<MoveCharacter>().SetPosition(spawnPos.getPosition(currentScene));
         currentScene = scene.name;
         save.data.scene = currentScene;
+        ManageScene(currentScene);
     }
 
     private void SetupAll()
@@ -228,5 +229,14 @@ public class GameManager : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // manage settings for specific scenes
+    private void ManageScene(string scene)
+    {
+        if(scene == "Street")
+        {
+            player.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        }
     }
 }
