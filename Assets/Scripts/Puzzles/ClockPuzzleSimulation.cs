@@ -14,9 +14,9 @@ public class ClockPuzzleSimulation : MonoBehaviour
 
     void initializeClocks()
     {
-        Clock firstClock = new Clock(1, 5.75f);
+        Clock firstClock = new Clock(0, 5.75f);
         clocks.Add(firstClock);
-        for (int i = 1; i < 6; i++)
+        for (int i = 1; i <= 7; i++)
         {
             Clock newClock = new Clock(i);
             clocks.Add(newClock);
@@ -25,9 +25,10 @@ public class ClockPuzzleSimulation : MonoBehaviour
         Clock lastClock = new Clock(clocks.Count + 1, 12);
         clocks.Add(lastClock);
 
-        clocks[1].addNeighbors(clocks[2], firstClock);
-        clocks[2].addNeighbors(clocks[3], clocks[4]);
-        clocks[2].addNeighbors(clocks[3], clocks[4]);
+        firstClock.addNeighbors(clocks[1], clocks[2]);
+        clocks[1].addNeighbors(clocks[3], firstClock);
+        clocks[2].addNeighbors(firstClock, clocks[3]);
+        clocks[3].addNeighbors(clocks[2], clocks[4]);
     }
 }
 
