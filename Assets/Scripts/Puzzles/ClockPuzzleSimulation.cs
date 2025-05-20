@@ -1,66 +1,160 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
+using System;
 public class ClockPuzzleSimulation : MonoBehaviour
 {
     public List<Clock> clocks = new List<Clock>();
-    
+    public List<Clock> addedClocks = new List<Clock>();
+    System.Random rnd = new System.Random();
+
     void Start()
     {
-        initializeClocks();
-        Debug.Log(clocks[2].time);
+        GenerateClocks();
     }
 
-    void initializeClocks()
+    // generate a random time in minutes between 15 (00:15) and 720 (24:00)
+    public int generateRandomTime()
     {
-        Clock firstClock = new Clock(0, 5.75f);
-        clocks.Add(firstClock);
-        for (int i = 1; i <= 7; i++)
+        int randomNum = rnd.Next(15, 720);
+        if (randomNum % 15 == 0)
         {
-            Clock newClock = new Clock(i);
-            clocks.Add(newClock);
+            return randomNum;
         }
+        return generateRandomTime();
+    }
 
-        Clock lastClock = new Clock(clocks.Count + 1, 12);
-        clocks.Add(lastClock);
+    void GenerateClocks()
+    {
+        Clock firstClock = new Clock(1, this, 720);
+        clocks.Add(firstClock);
+        Clock secondClock = new Clock(2, this, generateRandomTime());
+        clocks.Add(secondClock);
+        firstClock.addNeighbor(secondClock);
+        firstClock.FillSumWithNewNeighbor();
+        //Debug.Log(firstClock.checkIfTimeWorks());
 
-        firstClock.addNeighbors(clocks[1], clocks[2]);
-        clocks[1].addNeighbors(clocks[3], firstClock);
-        clocks[2].addNeighbors(firstClock, clocks[3]);
-        clocks[3].addNeighbors(clocks[2], clocks[4]);
+        while (!allClocksCorrect())
+        {
+            clocks.ForEach(clock =>
+            {
+                if (!clock.checkIfTimeWorks())
+                {
+                    clock.FillSumWithNewNeighbor();
+                }
+            });
+            addedClocks.ForEach(clock => clocks.Add(clock));
+            addedClocks = new List<Clock>();
+        }
+        for (int i = 0; i < 20; i++)
+        {
+            clocks.ForEach(clock =>
+            {
+                if (!clock.checkIfTimeWorks())
+                {
+                    clock.FillSumWithNewNeighbor();
+                }
+            });
+            addedClocks.ForEach(clock => clocks.Add(clock));
+            addedClocks = new List<Clock>();
+        }
+        clocks.ForEach(clock =>
+        {
+            Debug.Log(clock.time);
+        });
+    }
+
+
+    private bool allClocksCorrect()
+    {
+        bool clocksChecked = true;
+        clocks.ForEach(clock =>
+        {
+            if (!clock.checkIfTimeWorks())
+            {
+                clocksChecked = false;
+            }
+        });
+        return clocksChecked;
     }
 }
 
 public class Clock 
 {
     public int id;
-    public float time;
-    private List<Clock> neighbors = new List<Clock>();
-    bool fixedTime = false;
+    // clock time in minutes
+    public int time;
+    public List<Clock> neighbors = new List<Clock>();
+    ClockPuzzleSimulation simulation;
+    System.Random rnd = new System.Random();
 
-    public Clock(int ID, float initialTime = 0, bool FixedTime = false)
+    public Clock(int ID, ClockPuzzleSimulation parentSim, int initialTime = 0)
     {
         id = ID;
-        fixedTime = FixedTime;
+        simulation = parentSim;
         if(initialTime != 0)
         {
             time = initialTime;
         }
     }
 
-    public void addNeighbors(params Clock[] newNeighbors)
+    // add clock as neighbor
+    public void addNeighbor(Clock newNeighbor)
     {
-        foreach(Clock neighbor in newNeighbors)
-        {
-            neighbors.Add(neighbor);
-        }
-        updateTime();
+        neighbors.Add(newNeighbor);
+        simulation.clocks.Add(newNeighbor);
     }
 
-    public void setTime(float newTime)
+    // add new neighbor with a time that completes the sum
+    public void FillSumWithNewNeighbor()
     {
-        time = newTime;
+        int neighborSum(int i)
+        {
+            int sum = i;
+            neighbors.ForEach(n =>
+            {
+                sum += n.time;
+            });
+            return sum;
+        }
+
+        int generateNewTime()
+        {
+            int newTime = simulation.generateRandomTime();
+
+            if (neighborSum(newTime) == time || neighborSum(newTime) % 720 == time % 720)
+            {
+                return newTime;
+            }
+            return generateNewTime();
+        }
+
+        int requiredTime = generateNewTime();
+
+        if (requiredTime == 345)
+        {
+            Debug.Log("success!");
+            time = time - generateNewTime();
+            // connect the clocks via the neighbor system
+            return;
+        }
+        Clock neighbor = new Clock(rnd.Next(0, 100), simulation);
+        neighbor.time = requiredTime;
+        neighbors.Add(neighbor);
+        simulation.addedClocks.Add(neighbor);
+        return;
+    }
+
+    // check if the sum of all neighbors results in the current time
+    public bool checkIfTimeWorks()
+    {
+        int timeSum = 0;
+        neighbors.ForEach(n =>
+        {
+            timeSum += n.time;
+        });
+        return timeSum % 720 == time % 720;
     }
 
     public void updateTime()
