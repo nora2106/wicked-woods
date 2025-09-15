@@ -235,7 +235,7 @@ MonoBehaviour:
   time: 0
   typeID: 1
   editable: 0
-  isMain: 1
+  isMain: 0
 --- !u!1 &7895430777618072789
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 
-public class ClockPuzzleSimulation : MonoBehaviour
+public class ClockPuzzle : MonoBehaviour
 {
     public GameObject clockPrefab;
     // all clocks per type, including main clocks

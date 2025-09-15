@@ -35,7 +35,7 @@ public class Clock : MonoBehaviour
         {
             // edit time
             time = 75;
-            gameObject.GetComponentInParent<ClockPuzzleSimulation>().UpdateAllClocks(this);
+            gameObject.GetComponentInParent<ClockPuzzle>().UpdateAllClocks(this);
         }
     }
 

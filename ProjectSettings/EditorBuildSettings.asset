@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Street/Street.unity
     guid: d0a84479b3c22214293cdb7772643f06
+  - enabled: 1
+    path: Assets/Scenes/Bobo's House/BobosHouse.unity
+    guid: 4e3e6f8049bfd74458baddfb2fc73481
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: f9da42be8ac1d47dfbe55f0770b0b977, type: 2}
     com.unity.localization.settings: {fileID: 11400000, guid: 4a420a337e415447e819288585b16a9a, type: 2}
