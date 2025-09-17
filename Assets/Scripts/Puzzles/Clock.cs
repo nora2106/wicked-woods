@@ -33,8 +33,12 @@ public class Clock : MonoBehaviour
     {
         if(editable)
         {
-            // edit time
-            time = 75;
+            time += 15;
+            if (time != 720)
+            {
+                time = time % 720;
+            }
+
             gameObject.GetComponentInParent<ClockPuzzle>().UpdateAllClocks(this);
         }
     }

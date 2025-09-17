@@ -1,13 +1,12 @@
+using Ink.Parsed;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using TMPro;
 using System.Linq;
+using TMPro;
+using UnityEngine;
 
 public class ClockPuzzle : MonoBehaviour
 {
-    public GameObject clockPrefab;
-    // all clocks per type, including main clocks
     public List<Clock> clocks1 = new List<Clock>();
     public List<Clock> clocks2 = new List<Clock>();
     public List<Clock> clocks3 = new List<Clock>();
@@ -78,41 +77,35 @@ public class ClockPuzzle : MonoBehaviour
 
         if (attempts >= maxAttempts)
         {
-            Debug.LogWarning("Error: Infinite while loop.");
+            Debug.LogWarning("Error: Infinite while loop in CalcMainClockTimes.");
         }
     }
 
     private void CalcClockTimes()
     {
-        int attempts = 0;
-        int maxAttempts = 10000;
-
         for (int i = 0; i < allClocks.Count; i++)
         {
-            while (allClocks[i].Any(c => c.time == 0) && attempts < maxAttempts)
+            Clock mainClock = mainClocks.Find(c => c.typeID == allClocks[i][0].typeID);
+            if(mainClock == null)
             {
-                for (int j = 0; j < allClocks[i].Count; j++)
-                {
-                    if(allClocks[i][j].time == 0)
-                    {
-                        int newTime = 0;
-                        if (j < (allClocks[i].Count - 1) && allClocks[i][j + 1].time != 0)
-                        {
-                            newTime = (allClocks[i][j + 1].time + 720 + 60) % 720;
-                        }
-
-                        else if (j > 0 && allClocks[i][j - 1].time != 0)
-                        {
-                            newTime = (allClocks[i][j - 1].time + 720 + 60) % 720;
-                        }
-                        allClocks[i][j].time = newTime;
-                    }
-                }
-                attempts++;
+                return;
             }
-            if (attempts >= maxAttempts)
+
+            int index = allClocks[i].IndexOf(mainClock);
+
+            // change all clocks after main clock
+            for (int j = index + 1; j < allClocks[i].Count; j++)
             {
-                Debug.LogWarning("Error: Infinite while loop.");
+                allClocks[i][j].time = (allClocks[i][j - 1].time + 720 + 60) % 720;
+            }
+
+            // change remaining clocks before main clock
+            if (index > 0)
+            {
+                for (int j = index - 1; j >= 0; j--)
+                {
+                    allClocks[i][j].time = (allClocks[i][j + 1].time + 720 - 60) % 720;
+                }
             }
         }
     }
@@ -120,17 +113,22 @@ public class ClockPuzzle : MonoBehaviour
     public void UpdateAllClocks(Clock changedClock)
     {
         List<Clock> currClocks = allClocks[changedClock.typeID - 1];
-        for (int i = 0; i < currClocks.Count; i++)
+        int index = currClocks.IndexOf(changedClock);
+
+        // change all clocks after changed clock
+        for (int i = index + 1; i < currClocks.Count; i++)
         {
-            if(i < (currClocks.Count - 1) && currClocks[i].time != (currClocks[i + 1].time + 720 + 60) % 720)
+            currClocks[i].time = (currClocks[i - 1].time + 720 + 60) % 720;
+        }
+
+        // change remaining clocks before changed clock
+        if(index > 0)
+        {
+            for (int i = index - 1; i >= 0; i--)
             {
+                //@todo potentially delay increase to make it more complicated (e.g. 60, 60*2, 60*3,...)
                 currClocks[i].time = (currClocks[i + 1].time + 720 + 60) % 720;
             }
-            else if (i > 0 && currClocks[i].time != (currClocks[i - 1].time + 720 + 60) % 720)
-            {
-                currClocks[i].time = (currClocks[i - 1].time + 720 + 60) % 720;
-            }
-
         }
 
         globalTime = AddClockTimes(mainClocks);
