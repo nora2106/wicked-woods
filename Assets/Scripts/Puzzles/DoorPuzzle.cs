@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class DoorPuzzle : PuzzleManager
 {
+    public void Start()
+    {
+        if(solved)
+        {
+            DisablePuzzle();
+        }
+    }
+
     public override bool CheckIfSolved()
     {
         foreach(Transform t in transform)
@@ -31,6 +39,7 @@ public class DoorPuzzle : PuzzleManager
     {
         GameObject door = gameObject.GetComponent<DetailView>().obj;
         door.GetComponent<DoorBehavior>().enabled = true;
+        door.GetComponent<DoorBehavior>().locked = true;
         if(door.GetComponent<OpenObject>())
         {
             Destroy(door.GetComponent<OpenObject>());
