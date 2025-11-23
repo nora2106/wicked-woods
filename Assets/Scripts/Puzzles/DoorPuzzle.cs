@@ -6,6 +6,7 @@ public class DoorPuzzle : PuzzleManager
 {
     public void Start()
     {
+        //disable puzzle if it was already solved
         if(solved)
         {
             DisablePuzzle();

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.EventSystems;
 
+//object that initates an action after being clicked on. can be locked (optionally).
 public abstract class UsableObject : MonoBehaviour, ISetup
 {
     public bool locked;
