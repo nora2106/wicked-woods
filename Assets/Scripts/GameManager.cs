@@ -56,12 +56,12 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SetupAll();
-        //player.GetComponent<MoveCharacter>().SetPosition(save.data.playerPosition);
+        player.GetComponent<MoveCharacter>().SetPosition(save.data.playerPosition);
     }
 
     public void Setup()
     {
-        spawnPos = FindObjectOfType<SpawnPos>();
+        spawnPos = FindFirstObjectByType<SpawnPos>();
         overlay = GameObject.FindWithTag("Overlay");
         if(overlay != null)
         {
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     GameObject[] FindGameObjectsInLayer(int layer)
     {
-        var goArray = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        var goArray = FindObjectsByType<GameObject>(FindObjectsSortMode.None) as GameObject[];
         var goList = new System.Collections.Generic.List<GameObject>();
         for (int i = 0; i < goArray.Length; i++)
         {

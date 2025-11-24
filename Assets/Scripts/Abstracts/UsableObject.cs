@@ -12,6 +12,7 @@ public abstract class UsableObject : MonoBehaviour, ISetup
     [HideInInspector] public string objName;
     public LocalizedString localizedName;
     public LocalizedString lockedText;
+    public Vector2 targetPos;
 
     protected GameManager gm;
 

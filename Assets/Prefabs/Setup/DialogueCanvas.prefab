@@ -561,6 +561,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4383160908891107070, guid: 5f794caea357bd949856f792cee40654, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 6751124757377260026, guid: 5f794caea357bd949856f792cee40654, type: 3}
       propertyPath: m_Name
       value: Choice1
@@ -663,6 +667,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4383160908891107070, guid: 5f794caea357bd949856f792cee40654, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 6751124757377260026, guid: 5f794caea357bd949856f792cee40654, type: 3}
       propertyPath: m_Name
       value: Choice2
@@ -764,6 +772,10 @@ PrefabInstance:
     - target: {fileID: 804913729869286686, guid: 5f794caea357bd949856f792cee40654, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4383160908891107070, guid: 5f794caea357bd949856f792cee40654, type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 6751124757377260026, guid: 5f794caea357bd949856f792cee40654, type: 3}
       propertyPath: m_Name

@@ -33,35 +33,38 @@ public class OpenObject : UsableObject, ActionAfterMovement
     //open object (only called when unlocked)
     public override void Action()
     {
-        if(!isOpen)
-        {
-            if (detail != null)
-            {
-                gm.movement.interactionObject = gameObject;
-            }
-            if (newSprite != null)
-            {
-                gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
-            }
-            if (showItem != null)
-            {
-                showItem.SetActive(true);
-            }
-            isOpen = true;
-        }
-
-        else if (closeOnSecondClick)
-        {
-            Close();
-        }
+        // assign global interaction object to store interaction
+        gm.movement.interactionObject = gameObject;
     }
 
+    // function is called after movement is completed
     public void ActionAfterMovement ()
     {
-        detail.GetComponent<DetailView>().Open();
+        if(isOpen)
+        {
+            Close();
+            return;
+        }
+        if(detail != null)
+        {
+            detail.GetComponent<DetailView>().Open();
+        }
+        if (newSprite != null)
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = newSprite;
+        }
+        if (showItem != null)
+        {
+            showItem.SetActive(true);
+        }
+        isOpen = true;
     }
 
     public void Close() {
+        if(!closeOnSecondClick)
+        {
+            return;
+        }
         isOpen = false;
         if (newSprite != null)
         {
@@ -71,7 +74,6 @@ public class OpenObject : UsableObject, ActionAfterMovement
         {
             showItem.SetActive(false);
         }
-        //close animation
     }
 
     override public void OpenAnimation() {

@@ -37,10 +37,30 @@ public class MoveCharacter : MonoBehaviour, ISetup
             if (Input.GetMouseButtonDown(0))
             {
                 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                target.z = transform.position.z;
                 if (interactionObject)
                 {
                     clickIndex++;
+                    if (interactionObject.GetComponent<OpenObject>() != null && interactionObject.GetComponent<OpenObject>().targetPos != null)
+                    {
+                        target = interactionObject.GetComponent<OpenObject>().targetPos;
+                    }
+                }
+                target.z = transform.position.z;
+                if(transform.localScale.x > 0)
+                {
+                    if (target.x > transform.position.x)
+                    {
+                        transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                    }
+                }
+                else if(target.x < transform.position.x)
+                {
+                    transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                }
+
+                if (target == transform.position)
+                {
+                    EndMovement();
                 }
             }
             agent.SetDestination(target);
@@ -51,22 +71,13 @@ public class MoveCharacter : MonoBehaviour, ISetup
             }
             else if (agent.velocity == Vector3.zero && isMoving)
             {
-                isMoving = false;
-                if(clickIndex > 1)
+                if (clickIndex > 1)
                 {
                     interactionObject = null;
                 }
-
-                if(interactionObject)
-                {
-                    // TODO consider other objects without openobject (extra script or condition)
-                    interactionObject.GetComponent<ActionAfterMovement>().ActionAfterMovement();
-                    interactionObject = null;
-                }
-                clickIndex = 0;
+                EndMovement();
             }
         }
-
         else
         {
             target = transform.position;
@@ -80,6 +91,18 @@ public class MoveCharacter : MonoBehaviour, ISetup
         target = pos;
         agent.enabled = true;
         canMove = true;
+    }
+
+    private void EndMovement()
+    {
+        isMoving = false;
+        if (interactionObject && interactionObject.GetComponent<ActionAfterMovement>() != null)
+        {
+            // TODO consider other objects without openobject (extra script or condition)
+            interactionObject.GetComponent<ActionAfterMovement>().ActionAfterMovement();
+            interactionObject = null;
+        }
+        clickIndex = 0;
     }
 }
     
