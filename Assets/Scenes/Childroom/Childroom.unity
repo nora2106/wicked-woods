@@ -324,8 +324,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenObject
   locked: 0
-  id: 
-  objName: 
   localizedName:
     m_TableReference:
       m_TableCollectionName: 
@@ -345,6 +343,8 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   targetPos: {x: -5.9, y: -3.5}
+  id: 
+  objName: 
   detail: {fileID: 0}
   newSprite: {fileID: 1153408983566159769, guid: fb7954cf386a2194fbb082e5f4824597, type: 3}
   showItem: {fileID: 1704767803}
@@ -684,8 +684,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 1
-  id: childroom_chest
-  objName: 
   localizedName:
     m_TableReference:
       m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
@@ -705,6 +703,8 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   targetPos: {x: 0, y: 0}
+  id: childroom_chest
+  objName: 
   detail: {fileID: 135464234}
   newSprite: {fileID: 0}
   showItem: {fileID: 0}
@@ -784,9 +784,10 @@ GameObject:
   - component: {fileID: 458320423}
   - component: {fileID: 458320425}
   - component: {fileID: 458320426}
+  - component: {fileID: 458320427}
   m_Layer: 6
   m_Name: Nightstand
-  m_TagString: Untagged
+  m_TagString: inspect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -858,11 +859,11 @@ Transform:
   m_GameObject: {fileID: 458320422}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.0028836005, w: 0.9999959}
-  m_LocalPosition: {x: 0.06, y: -0.92, z: 0.021}
-  m_LocalScale: {x: 0.8445516, y: 0.8445516, z: 0.8445516}
+  m_LocalPosition: {x: 0.059999973, y: -0.92, z: 0.021}
+  m_LocalScale: {x: 0.84455156, y: 0.84455156, z: 0.8445516}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1801238183}
+  m_Father: {fileID: 1039043428}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.33}
 --- !u!114 &458320425
 MonoBehaviour:
@@ -931,11 +932,52 @@ PolygonCollider2D:
       - {x: -0.34127685, y: -1.2942649}
       - {x: -0.9023298, y: -1.3086996}
       - {x: -1.0465435, y: 0.12690336}
-      - {x: -0.11521499, y: 0.6191772}
-      - {x: 0.9379476, y: 0.38965052}
+      - {x: -0.036903113, y: 0.11095756}
+      - {x: 0.8130027, y: -0.14447778}
       - {x: 0.9133468, y: -0.72212833}
       - {x: 0.7902223, y: -1.2147748}
   m_UseDelaunayMesh: 0
+--- !u!114 &458320427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 458320422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67834e6e905824967b23af808dd2a5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenObject
+  locked: 0
+  localizedName:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  lockedText:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  targetPos: {x: 0, y: 0}
+  id: 
+  objName: 
+  detail: {fileID: 0}
+  newSprite: {fileID: -6648069124525892096, guid: 67e6aa029623b634c8cfbf55d64d0e81, type: 3}
+  showItem: {fileID: 0}
+  closeOnSecondClick: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &602495300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1359,8 +1401,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenObject
   locked: 0
-  id: 
-  objName: 
   localizedName:
     m_TableReference:
       m_TableCollectionName: 
@@ -1380,6 +1420,8 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   targetPos: {x: -5.9, y: -3.5}
+  id: 
+  objName: 
   detail: {fileID: 0}
   newSprite: {fileID: 8693008039564885744, guid: 6623314ebff852b43a58dbc99c9013c8, type: 3}
   showItem: {fileID: 0}
@@ -1617,8 +1659,8 @@ Transform:
   m_GameObject: {fileID: 904231804}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.8269, y: -0.508, z: 2.0210247}
-  m_LocalScale: {x: 0.9318976, y: 0.9318976, z: 0.9318976}
+  m_LocalPosition: {x: 2.844, y: -0.49, z: 2.0210247}
+  m_LocalScale: {x: 0.90487254, y: 0.90487254, z: 0.90487254}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1039043428}
@@ -1636,8 +1678,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   locked: 1
-  id: childroom_door
-  objName: 
   localizedName:
     m_TableReference:
       m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
@@ -1657,8 +1697,9 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   targetPos: {x: 0, y: 0}
+  id: childroom_door
+  objName: 
   nextScene: Hallway
-  open: 0
   references:
     version: 2
     RefIds: []
@@ -2625,6 +2666,7 @@ Transform:
   - {fileID: 1808026963}
   - {fileID: 372867569}
   - {fileID: 904231806}
+  - {fileID: 458320424}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1080011894 stripped
@@ -3758,7 +3800,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 645810243}
-  - {fileID: 458320424}
   - {fileID: 1980930826}
   - {fileID: 2100586674}
   - {fileID: 955996318}

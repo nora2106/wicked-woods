@@ -21,7 +21,7 @@ public class DialogueTrigger : MonoBehaviour, ActionAfterMovement
     {
         if (!gm.itemSelected)
         {
-            gm.movement.interactionObject = gameObject;
+            gm.QueueInteraction(new ActionCommand(StartDialogue));
         }
     }
 

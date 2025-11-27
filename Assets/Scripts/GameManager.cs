@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 {
     public SpawnPos spawnPos;
     public static GameManager Instance;
+    public GameObject actionText;
+    public IInteractionCommand pendingCommand;
     [HideInInspector] public GameObject dialoguePanel;
     [HideInInspector] public SaveManager save;
     [HideInInspector] public MonologueSystem textSystem;
@@ -24,9 +26,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool paused = false;
     [HideInInspector] public DialogueManager dialogue;
     [HideInInspector] public MoveCharacter movement;
+    [HideInInspector] public Vector2 movementTargetPos;
     private GameObject[] objs;
     private string currentScene;
-    public GameObject actionText;
 
     private void Awake()
     {
@@ -176,7 +178,6 @@ public class GameManager : MonoBehaviour
         PauseCharacterMovement();
         player.layer = 2;
     }
-    // TODO replace by general pause & resume function
 
     public void CloseDialogue()
     {
@@ -186,7 +187,8 @@ public class GameManager : MonoBehaviour
         player.layer = 8;
     }
 
-    //pause and resume the character's ability to move
+    // TODO replace by general pause & resume function
+    // pause and resume the character's ability to move
     public void PauseCharacterMovement()
     {
         player.GetComponent<MoveCharacter>().canMove = false;
@@ -197,7 +199,7 @@ public class GameManager : MonoBehaviour
         player.GetComponent<MoveCharacter>().canMove = true;
     }
 
-    //function to update story progress from anywhere
+    // function to update story progress from anywhere
     public void SetSpecificVar(string storyName, string varName)
     {
         string saveName = "dialogue_" + storyName;
@@ -214,7 +216,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //check if specific story var is true (exists in save data)
+    // check if specific story var is true (exists in save data)
     public bool GetStoryVar(string storyName, string varName)
     {
         string saveName = "dialogue_" + storyName;
@@ -232,11 +234,26 @@ public class GameManager : MonoBehaviour
     }
 
     // manage settings for specific scenes
+    // TODO find a better solution for this
     private void ManageScene(string scene)
     {
         if(scene == "Street")
         {
             player.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
         }
+    }
+
+    // queues interaction to be executed after movement is finished
+    public void QueueInteraction(IInteractionCommand command)
+    {
+        pendingCommand = command;
+    }
+
+    // executes and clears pending interaction
+    public void ExecutePendingInteraction()
+    {
+        pendingCommand?.Execute();
+        pendingCommand = null;
+        movementTargetPos = Vector2.zero;
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 //open object to show detail view or a different object/sprite
-public class OpenObject : UsableObject, ActionAfterMovement
+public class OpenObject : UsableObject, IInteractionCommand
 {
     //detail view gameobject to be opened
     public GameObject detail;
@@ -33,12 +33,15 @@ public class OpenObject : UsableObject, ActionAfterMovement
     //open object (only called when unlocked)
     public override void Action()
     {
-        // assign global interaction object to store interaction
-        gm.movement.interactionObject = gameObject;
+        if (targetPos != null)
+        {
+            gm.movementTargetPos = targetPos;
+        }
+        gm.QueueInteraction(new ActionCommand(Execute));
     }
 
     // function is called after movement is completed
-    public void ActionAfterMovement ()
+    public void Execute ()
     {
         if(isOpen)
         {
@@ -74,9 +77,5 @@ public class OpenObject : UsableObject, ActionAfterMovement
         {
             showItem.SetActive(false);
         }
-    }
-
-    override public void OpenAnimation() {
-        //open animation
     }
 }

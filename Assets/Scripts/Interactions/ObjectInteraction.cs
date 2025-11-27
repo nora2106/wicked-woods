@@ -11,6 +11,7 @@ public class ObjectInteraction : ItemInteraction
     //possibly rework this to handle multiple actions with different items
     public override void HandleInteraction(InteractionData.ItemInteraction interaction)
     {
+        comment = localizedDefaultComment.GetLocalizedString();
         if (interaction.action) {
 
             if(gameObject.GetComponent<UsableObject>().locked)
@@ -26,11 +27,8 @@ public class ObjectInteraction : ItemInteraction
         else if(!interaction.comment.IsEmpty)
         {
             comment = interaction.comment.GetLocalizedString();
-            gm.SetText(comment);
         }
-        else {
-            gm.SetText(localizedDefaultComment.GetLocalizedString());
-        }
+        gm.QueueInteraction(new SetTextCommand(comment));
     }
 
     protected override void HoverText()

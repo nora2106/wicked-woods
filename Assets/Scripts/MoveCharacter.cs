@@ -11,7 +11,6 @@ public class MoveCharacter : MonoBehaviour, ISetup
     private NavMeshAgent agent;
     private GameManager gm;
     public bool isMoving;
-    public GameObject interactionObject;
     private int clickIndex = 0;
 
     public void Start()
@@ -37,12 +36,12 @@ public class MoveCharacter : MonoBehaviour, ISetup
             if (Input.GetMouseButtonDown(0))
             {
                 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                if (interactionObject)
+                if (gm.pendingCommand != null)
                 {
                     clickIndex++;
-                    if (interactionObject.GetComponent<OpenObject>() != null && interactionObject.GetComponent<OpenObject>().targetPos != null)
+                    if (gm.movementTargetPos != Vector2.zero)
                     {
-                        target = interactionObject.GetComponent<OpenObject>().targetPos;
+                        target = gm.movementTargetPos;
                     }
                 }
                 target.z = transform.position.z;
@@ -73,7 +72,7 @@ public class MoveCharacter : MonoBehaviour, ISetup
             {
                 if (clickIndex > 1)
                 {
-                    interactionObject = null;
+                    gm.pendingCommand = null;
                 }
                 EndMovement();
             }
@@ -96,11 +95,9 @@ public class MoveCharacter : MonoBehaviour, ISetup
     private void EndMovement()
     {
         isMoving = false;
-        if (interactionObject && interactionObject.GetComponent<ActionAfterMovement>() != null)
+        if (gm.pendingCommand != null)
         {
-            // TODO consider other objects without openobject (extra script or condition)
-            interactionObject.GetComponent<ActionAfterMovement>().ActionAfterMovement();
-            interactionObject = null;
+            gm.ExecutePendingInteraction();
         }
         clickIndex = 0;
     }

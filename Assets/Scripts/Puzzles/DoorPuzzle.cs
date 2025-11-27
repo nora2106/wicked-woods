@@ -39,8 +39,8 @@ public class DoorPuzzle : PuzzleManager
     public override void DisablePuzzle()
     {
         GameObject door = gameObject.GetComponent<DetailView>().obj;
-        door.GetComponent<DoorBehavior>().enabled = true;
-        door.GetComponent<DoorBehavior>().locked = true;
+        door.GetComponent<DoorObject>().enabled = true;
+        door.GetComponent<DoorObject>().locked = true;
         if(door.GetComponent<OpenObject>())
         {
             Destroy(door.GetComponent<OpenObject>());

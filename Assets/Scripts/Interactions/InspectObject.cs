@@ -18,7 +18,12 @@ public class InspectObject : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(comment != "")
+        gm.QueueInteraction(new ActionCommand(SetText));
+    }
+
+    public void SetText()
+    {
+        if (comment != "")
         {
             gm.SetText(comment);
         }

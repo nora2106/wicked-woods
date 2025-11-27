@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemObject : MonoBehaviour, ISetup, ActionAfterMovement
+public class ItemObject : MonoBehaviour, ISetup
 {
     public ItemData refItem;
     private GameManager gm;
@@ -22,17 +22,17 @@ public class ItemObject : MonoBehaviour, ISetup, ActionAfterMovement
     {
         if(gm.movement.canMove)
         {
-            gm.movement.interactionObject = gameObject;
+            gm.QueueInteraction(new ActionCommand(PickUp));
         }
 
         else
         {
-            ActionAfterMovement();
+            PickUp();
         }
     }
 
     // pick up item
-    public void ActionAfterMovement ()
+    public void PickUp()
     {
         gm.inventory.addItem(refItem);
         gm.save.data.collectedItems.Add(id);

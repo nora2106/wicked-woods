@@ -4,16 +4,16 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.EventSystems;
 
-//object that initates an action after being clicked on. can be locked (optionally).
+// any object that can be interacted with on click
+// can be locked
 public abstract class UsableObject : MonoBehaviour, ISetup
 {
     public bool locked;
-    [HideInInspector] public string id;
-    [HideInInspector] public string objName;
     public LocalizedString localizedName;
     public LocalizedString lockedText;
     public Vector2 targetPos;
-
+    [HideInInspector] public string id;
+    [HideInInspector] public string objName;
     protected GameManager gm;
 
     protected void Start()
@@ -40,32 +40,36 @@ public abstract class UsableObject : MonoBehaviour, ISetup
             else if (!lockedText.IsEmpty)
             {
                 var dict = new Dictionary<string, object>
-            {
-                { "object", objName }
-            };
+                {
+                    { "object", objName }
+                };
                 lockedText.Arguments = new object[] { dict };
-                gm.SetText(lockedText.GetLocalizedString());
+                gm.QueueInteraction(new SetTextCommand(lockedText.GetLocalizedString()));
             }
         }
     }
 
     public abstract void Action();
 
-    public void Unlock() {
-        OpenAnimation();
+    public void UnlockAction() {
+        gm.QueueInteraction(new ActionCommand(Unlock));
+    }
+
+    public void Unlock()
+    {
         locked = false;
-        if(id != null)
+        if (id != null)
         {
             gm.save.data.unlockedObjs.Add(id);
         }
 
-        if(gameObject.GetComponent<ItemInteraction>())
-        {
-            Destroy(gameObject.GetComponent<ItemInteraction>());
-        }
+        // TODO maybe delete only specific interaction?
+        //if (gameObject.GetComponent<ItemInteraction>())
+        //{
+        //    Destroy(gameObject.GetComponent<ItemInteraction>());
+        //}
+        Action();
     }
-
-    public abstract void OpenAnimation();
 
     protected void UpdateName(string val)
     {

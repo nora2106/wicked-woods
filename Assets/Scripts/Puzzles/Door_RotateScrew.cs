@@ -18,11 +18,6 @@ public class RotateScrew : UsableObject
         Action();
     }
 
-    public override void OpenAnimation()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
