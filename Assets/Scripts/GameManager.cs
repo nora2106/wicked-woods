@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public IInteractionCommand pendingCommand;
     [HideInInspector] public GameObject dialoguePanel;
     [HideInInspector] public SaveManager save;
-    [HideInInspector] public MonologueSystem textSystem;
+    [HideInInspector] public MonologueSystem monologueSystem;
     [HideInInspector] public GameObject overlay;
     [HideInInspector] public GameObject player;
     [HideInInspector] public Inventory inventory;
@@ -47,11 +47,13 @@ public class GameManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         save = gameObject.GetComponent<SaveManager>();
         inventory = GameObject.FindWithTag("inventory").GetComponent<Inventory>();
-        textSystem = GameObject.FindWithTag("Monologue").GetComponent<MonologueSystem>();
+        monologueSystem = GameObject.FindWithTag("Monologue").GetComponent<MonologueSystem>();
+        monologueSystem.gameObject.SetActive(false);
         player = GameObject.FindWithTag("Player");
         movement = player.GetComponent<MoveCharacter>();
         actionText = GameObject.FindWithTag("Text");
         actionText.transform.parent.gameObject.SetActive(false);
+        actionText.gameObject.SetActive(false);
     }
 
     void Start()
@@ -149,9 +151,10 @@ public class GameManager : MonoBehaviour
     // TODO add capitalization helper function to text
 
     //set monologue text
-    public void SetText(string text)
+    public void SetMonologueText(string text)
     {
-        textSystem.SetText(text);
+        monologueSystem.gameObject.SetActive(true);
+        monologueSystem.SetText(text);
     }
 
     //set action text
@@ -159,6 +162,7 @@ public class GameManager : MonoBehaviour
     {
         if (!dialoguePlaying && !paused)
         {
+            actionText.gameObject.SetActive(true);
             actionText.GetComponent<Text>().text = text;
             actionText.transform.parent.gameObject.SetActive(true);
         }
@@ -168,6 +172,7 @@ public class GameManager : MonoBehaviour
     {
         actionText.GetComponent<Text>().text = "";
         actionText.transform.parent.gameObject.SetActive(false);
+        actionText.SetActive(false);
     }
 
     public void OpenDialogue(TextAsset text)

@@ -12,5 +12,5 @@ public class SetTextCommand : IInteractionCommand
         gm = GameManager.Instance;
     }
 
-    public void Execute() => gm.SetText(text);
+    public void Execute() => gm.SetMonologueText(text);
 }

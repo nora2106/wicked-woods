@@ -25,7 +25,7 @@ public class InspectObject : MonoBehaviour
     {
         if (comment != "")
         {
-            gm.SetText(comment);
+            gm.SetMonologueText(comment);
         }
     }
 

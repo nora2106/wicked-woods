@@ -7,12 +7,11 @@ public class MonologueSystem : MonoBehaviour
 {
     public Typewriter typewriter;
     public GameObject panel;
-    public float resetDuration = 3;
+    public float resetDuration = 2.5f;
     private string msg;
     
     void Start()
     {
-        panel.SetActive(false);
         typewriter = gameObject.GetComponentInChildren<Typewriter>();
     }
 
@@ -44,7 +43,6 @@ public class MonologueSystem : MonoBehaviour
         }
         typewriter.Reset();
         StopCoroutine("Reset");
-        panel.SetActive(true);
         msg = t;
         typewriter.Write(t);
     }
@@ -54,6 +52,6 @@ public class MonologueSystem : MonoBehaviour
         yield return new WaitForSeconds(resetDuration);
         typewriter.Reset();
         msg = "";
-        panel.SetActive(false);
+        gameObject.SetActive(false);
     }
 }

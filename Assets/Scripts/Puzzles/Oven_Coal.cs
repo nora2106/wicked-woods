@@ -26,7 +26,7 @@ public class OvenCoal : MonoBehaviour
         }
         else
         {
-            gm.SetText(text.GetLocalizedString());
+            gm.SetMonologueText(text.GetLocalizedString());
         }
     }
 

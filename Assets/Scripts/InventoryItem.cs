@@ -64,7 +64,7 @@ public class InventoryItem : MonoBehaviour
 
                     //error text - potentially switch to assigning in the editor for different sentence options
                     combineErrorText.Arguments = new object[] { dict };
-                    gm.SetText(combineErrorText.GetLocalizedString());
+                    gm.SetMonologueText(combineErrorText.GetLocalizedString());
                     transform.position = pos;
                }
             }
