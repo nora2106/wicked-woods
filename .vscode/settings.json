@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "wicked-woods.sln"
+    "dotnet.defaultSolution": "wicked-woods.sln",
+    "dotnet.preferCSharpExtension": true
 }
