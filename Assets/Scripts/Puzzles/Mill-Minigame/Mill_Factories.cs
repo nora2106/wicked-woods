@@ -34,6 +34,7 @@ public class MillViewFactory : IMillViewFactory
     // create the view
     public MillViewFactory()
     {
+        View = new MillView();
         // reference and instantiate gameobjects here
         // assign View to view gameobject
     }
