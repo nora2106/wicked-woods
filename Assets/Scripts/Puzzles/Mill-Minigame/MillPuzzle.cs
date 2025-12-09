@@ -29,10 +29,9 @@ public class MillPuzzle : PuzzleManager
         var modelFactory = new MillModelFactory();
         var model = modelFactory.Model;
         model.InitializeBoard();
-        BoardPosition testPos = model.GameBoard[11];
-        Debug.Log(testPos.x + "" + testPos.y);
-        var neighbors = model.GetNeighborIDs(testPos, 11);
-        // Debug.Log(neighbors);
+        BoardPosition testPos = model.GameBoard[22];
+        var neighbors = model.GetNeighborIDs(testPos, 22);
+        Debug.Log(neighbors[2].Count);
 
         
         var viewFactory = new MillViewFactory();

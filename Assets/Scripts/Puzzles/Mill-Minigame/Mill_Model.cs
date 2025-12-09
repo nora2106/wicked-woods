@@ -9,7 +9,7 @@ public interface IMillModel
     // Dictionary containing the BoardValue (position on board) and the state 
     // (0 for empty, 1 for player 1 (white), 2 for player 2 (black))
     Dictionary<int, BoardPosition> GameBoard { get; set; }
-    int[][] GetNeighborIDs(BoardPosition pos, int key);
+    List<int>[] GetNeighborIDs(BoardPosition pos, int key);
     void InitializeBoard();
     BoardPosition GetPositionByKey(int key);
 }
@@ -64,21 +64,14 @@ public class MillModel : IMillModel
         }
     }
 
-    public int[][] GetNeighborIDs(BoardPosition pos, int key)
+    public List<int>[] GetNeighborIDs(BoardPosition pos, int key)
     {
         var board = GameBoard;
         // middle points: 2 possible mills (horizontal, vertical)
-        int[][] rows = new int[2][];
+        List<int>[] rows = new List<int>[3];
         List<int> row1 = new List<int>();
         List<int> row2 = new List<int>();
-        List<int> row3 = null;
-
-        // edge points: 3 possible mills (horizontal. vertical, diagonal)
-        if (pos.y != 3 || pos.x != 3)
-        {
-            row3 = new List<int>();
-            rows = new int[3][];
-        }
+        List<int> row3 = new List<int>();
 
         foreach (KeyValuePair<int, BoardPosition> pair in board)
         {
@@ -87,12 +80,10 @@ public class MillModel : IMillModel
             {
                 if(pos.x != 3)
                 {
-                    UnityEngine.Debug.Log("vertical: " + pair.Value.x + "" + pair.Value.y);
                     row1.Add(pair.Key);
                 }
-                else if(Math.Abs(pair.Value.y - pos.y) <= 3)
+                else if(Math.Abs(pair.Value.y - pos.y) <= 2)
                 {
-                    UnityEngine.Debug.Log("vertical: " + pair.Value.x + "" + pair.Value.y);
                     row1.Add(pair.Key);
                 }
             }
@@ -102,12 +93,10 @@ public class MillModel : IMillModel
             {
                 if(pos.y != 3)
                 {
-                    UnityEngine.Debug.Log("horizontal: " + pair.Value.x + "" + pair.Value.y);
                     row2.Add(pair.Key);
                 }
-                else if(Math.Abs(pair.Value.x - pos.x) <= 3)
+                else if(Math.Abs(pair.Value.x - pos.x) <= 2)
                 {
-                    UnityEngine.Debug.Log("horizontal: " + pair.Value.x + "" + pair.Value.y);
                     row2.Add(pair.Key);
                 }
             }
@@ -115,13 +104,19 @@ public class MillModel : IMillModel
             // find diagonal neighbors
             if (pos.y != 3 && pos.x != 3)
             {
-                if (Math.Abs(pair.Value.x - pos.x) <= 3 && Math.Abs(pair.Value.y - pos.y) <= 3 && pair.Key != key)
+                if (Math.Abs(pair.Value.x - pos.x) <= 2 && Math.Abs(pair.Value.y - pos.y) <= 2 && pair.Key != key)
                 {
                     row3.Add(pair.Key);
-                    UnityEngine.Debug.Log("diagonal: " + pair.Value.x + "" + pair.Value.y);
                 }
             }
 
+            rows[0] = row1;
+            rows[1] = row2;
+
+            if(row3.Count > 0)
+            {
+                rows[2] = row3;
+            }
         }
         return rows;
     }
