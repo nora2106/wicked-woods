@@ -26,6 +26,6 @@ public class MillController : IMillController
     // sync view board data with model data
     private void SyncGameBoard()
     {
-        // view.gameBoard = model.GameBoard;
+        view.GameBoard = model.GameBoard;
     }
 }

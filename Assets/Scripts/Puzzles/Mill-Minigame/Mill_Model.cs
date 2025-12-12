@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 public interface IMillModel
 {
-    // Dictionary containing the BoardValue (position on board) and the state 
-    // (0 for empty, 1 for player 1 (white), 2 for player 2 (black))
     Dictionary<int, BoardPosition> GameBoard { get; set; }
-    List<int>[] GetNeighborIDs(BoardPosition pos, int key);
+    List<int>[] GetNeighbors(BoardPosition pos, int key);
     void InitializeBoard();
     BoardPosition GetPositionByKey(int key);
 }
@@ -18,6 +14,7 @@ public struct BoardPosition
 {
     public int x;
     public int y;
+    // (0 for empty (default), 1 for player 1 (white), 2 for player 2 (black))
     public int state;
     public BoardPosition(int x, int y)
     {
@@ -34,12 +31,13 @@ public struct BoardPosition
 
 public class MillModel : IMillModel
 {
+    // all points in the format (x,y)
     public BoardPosition[] positions = {new(0,0), new(3,0), new(6, 0), new(1,1), new(3,1), new(5,1), new(2,2), new(4,2),
     new(0,3), new(1,3), new(2,3), new(4,3), new(5,3), new(6,3), new(2,4), new(3,4), new(4,4), new(1,5), new(3,5),
     new(5,5), new(0,6), new(3,6), new(6,6)};
 
+    // Dictionary containing the BoardValue (position on board) and the current state 
     public Dictionary<int, BoardPosition> gameBoard;
-    public string test;
 
     public Dictionary<int, BoardPosition> GameBoard
     {
@@ -50,24 +48,27 @@ public class MillModel : IMillModel
         }
     }
 
+    // return point by key
     public BoardPosition GetPositionByKey(int key)
     {
         return GameBoard[key];
     }
 
+    // create gameboard and add points
     public void InitializeBoard()
     {
-        gameBoard = new Dictionary<int, BoardPosition>();
+        GameBoard = new Dictionary<int, BoardPosition>();
         for (int i = 0; i < positions.Length; i++)
         {
-            gameBoard.Add(i, positions[i]);
+            GameBoard.Add(i, positions[i]);
         }
     }
 
-    public List<int>[] GetNeighborIDs(BoardPosition pos, int key)
+    // return rows of keys from points adjacent to selected point
+    // every row is a possible mill with selected point
+    public List<int>[] GetNeighbors(BoardPosition pos, int key)
     {
         var board = GameBoard;
-        // middle points: 2 possible mills (horizontal, vertical)
         List<int>[] rows = new List<int>[3];
         List<int> row1 = new List<int>();
         List<int> row2 = new List<int>();
@@ -82,6 +83,7 @@ public class MillModel : IMillModel
                 {
                     row1.Add(pair.Key);
                 }
+                // middle row contains 2 separate rows
                 else if(Math.Abs(pair.Value.y - pos.y) <= 2)
                 {
                     row1.Add(pair.Key);
@@ -95,6 +97,7 @@ public class MillModel : IMillModel
                 {
                     row2.Add(pair.Key);
                 }
+                // middle row contains 2 separate rows
                 else if(Math.Abs(pair.Value.x - pos.x) <= 2)
                 {
                     row2.Add(pair.Key);
