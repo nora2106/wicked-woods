@@ -36,6 +36,7 @@ public class MillViewFactory : IMillViewFactory
     {
         View = new MillView();
         // TODO: instantiate gameobjects for every board point
+        // call setGMPosition() for each board point
         // assign View to view gameobject
     }
 }

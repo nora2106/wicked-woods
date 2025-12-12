@@ -14,4 +14,14 @@ public class BoardPoint : MonoBehaviour {
         this.key = key;
         state = 0;
     }
+
+    // set gameobject position according to pos values
+    public void SetGOPosition()
+    {
+    }
+
+    void OnMouseDown()
+    {
+        // register click
+    }
 }

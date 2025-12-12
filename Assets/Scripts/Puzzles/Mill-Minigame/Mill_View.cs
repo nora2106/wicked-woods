@@ -7,7 +7,7 @@ public class PlayerMoveEventArgs : EventArgs
 }
 public interface IMillView
 {
-    Dictionary<int, BoardPosition> GameBoard {set;}
+    Dictionary<int, BoardPosition> GameBoard {get; set;}
     event EventHandler<PlayerMoveEventArgs> OnMove;
     void InitializeBoard();
     void UpdateBoardPosition(int key);
@@ -18,8 +18,14 @@ public class MillView : IMillView
     public Dictionary<int, BoardPosition> gameBoard;
     private readonly BoardPoint[] boardPoints = new BoardPoint[23];
 
+    public event EventHandler<PlayerMoveEventArgs> OnMove;
+
     public Dictionary<int, BoardPosition> GameBoard
     {
+        get
+        {
+            return gameBoard;
+        }
         set
         {
             gameBoard = value;
@@ -42,9 +48,9 @@ public class MillView : IMillView
 
     // update state of certain point on gameboard
     // notify controller about update
-    private void UpdateBoardPosition(int key)
+    public void UpdateBoardPosition(int key)
     {
-        GameBoard[key].state = boardPoints[key].state;
+        GameBoard[key].SetState(boardPoints[key].state);
 
         // notify controller about update
     }
