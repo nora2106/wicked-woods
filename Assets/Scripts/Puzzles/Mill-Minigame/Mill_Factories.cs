@@ -35,7 +35,7 @@ public class MillViewFactory : IMillViewFactory
     public MillViewFactory()
     {
         View = new MillView();
-        // reference and instantiate gameobjects here
+        // TODO: instantiate gameobjects for every board point
         // assign View to view gameobject
     }
 }
