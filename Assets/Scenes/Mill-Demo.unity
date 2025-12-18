@@ -333,6 +333,7 @@ MonoBehaviour:
   solved: 0
   id: 
   resets: 0
+  pointPrefab: {fileID: 319727813709749787, guid: 3b689f36d9f697347976a2cdfbc28605, type: 3}
 --- !u!4 &2087389872
 Transform:
   m_ObjectHideFlags: 0

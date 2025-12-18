@@ -1,5 +1,5 @@
 // factories serve as builder classes to assemble game parts
-
+using UnityEngine;
 // interface for model factory
 public interface IMillModelFactory
 {
@@ -34,7 +34,9 @@ public class MillViewFactory : IMillViewFactory
     // create the view
     public MillViewFactory()
     {
-        View = new MillView();
+        var instance = UnityEngine.Object.Instantiate(new GameObject());
+        instance.AddComponent<MillView>();
+        View = instance.GetComponent<MillView>();
         // TODO: instantiate gameobjects for every board point
         // call setGMPosition() for each board point
         // assign View to view gameobject

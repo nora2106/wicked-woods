@@ -2,24 +2,31 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMoveEventArgs : EventArgs
+public class PointClickedEventArgs : EventArgs
 {
+    public int Key {get;}
+    public int State {get;}
+
+    public PointClickedEventArgs(int key, int state)
+    {
+        Key = key;
+        State = state;
+    }
 }
 public interface IMillView
 {
-    Dictionary<int, BoardPosition> GameBoard {get; set;}
-    event EventHandler<PlayerMoveEventArgs> OnMove;
-    void InitializeBoard();
-    void UpdateBoardPosition(int key);
+    Dictionary<int, BoardPosition> GameBoard { get; set; }
+	event EventHandler<PointClickedEventArgs> OnBoardChanged;    
+    void InitializeBoard(GameObject pointPrefab, float spacing);
 }
 
-public class MillView : IMillView
+public class MillView : MonoBehaviour, IMillView
 {
     public Dictionary<int, BoardPosition> gameBoard;
-    private readonly BoardPoint[] boardPoints = new BoardPoint[23];
-
-    public event EventHandler<PlayerMoveEventArgs> OnMove;
-
+	public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) =>
+    {
+        
+    };
     public Dictionary<int, BoardPosition> GameBoard
     {
         get
@@ -32,26 +39,37 @@ public class MillView : IMillView
         }
     }
 
-    public void InitializeBoard()
+    public void InitializeBoard(GameObject pointPrefab, float spacing)
     {
-        if(GameBoard.Count == 0 || GameBoard.Count != boardPoints.Length)
+        GameBoard = gameBoard;
+
+        if(GameBoard.Count == 0)
         {
             return;
         }
-
-        // create board points based on board positions
-        for(int i = 0; i < GameBoard.Count; i++)
+        // create board points based on board positions and assign physical position
+        for (int i = 0; i < GameBoard.Count; i++)
         {
-            boardPoints[i] = new BoardPoint(boardPoints[i].x, boardPoints[i].y, boardPoints[i].key);
+            var obj = Instantiate(pointPrefab, GetPosition(GameBoard[i].x, GameBoard[i].y, spacing), Quaternion.identity);
+            obj.GetComponent<BoardPoint>().Init(GameBoard[i].x, GameBoard[i].y, i, this);
         }
     }
 
-    // update state of certain point on gameboard
-    // notify controller about update
-    public void UpdateBoardPosition(int key)
+    public void HandleBoardStateChange(int key, int state)
     {
-        GameBoard[key].SetState(boardPoints[key].state);
+        GameBoard[key].SetState(state);
+        var eventArgs = new PointClickedEventArgs(key, state);
+        OnBoardChanged(this, eventArgs);
+    }
 
-        // notify controller about update
+    private Vector3 GetPosition(int x, int y, float spacing)
+    {
+        int rows = 6;
+        int cols = 6;
+        float boardWidth = cols * spacing;
+        float boardHeight = rows * spacing;
+        Vector3 origin = new Vector3(-boardWidth / 2f, -boardHeight / 2f, 0);
+        Vector3 position = new Vector3(origin.x + (x * spacing), origin.y + (y * spacing), 0);
+        return position;
     }
 }

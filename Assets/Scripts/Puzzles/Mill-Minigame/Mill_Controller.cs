@@ -1,9 +1,11 @@
 using System;
+using System.Diagnostics;
 using UnityEditor;
 
 public interface IMillController
 {
     public void StartGame();
+    public void SyncViewToModel();
     
 }
 
@@ -16,6 +18,15 @@ public class MillController : IMillController
     {
         this.model = model;
         this.view = view;
+
+        // subscribe to the view board change event
+        view.OnBoardChanged += HandlePlayerInput;
+    }
+
+    // sync model board when view board is updated
+    public void HandlePlayerInput(object sender, PointClickedEventArgs e)
+    {
+       model.UpdateField(e.Key, e.State);
     }
 
     public void StartGame()
@@ -24,7 +35,7 @@ public class MillController : IMillController
     }
 
     // sync view board data with model data
-    private void SyncGameBoard()
+    public void SyncViewToModel()
     {
         view.GameBoard = model.GameBoard;
     }

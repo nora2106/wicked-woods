@@ -1,27 +1,26 @@
 using Unity;
 using UnityEngine;
+using System;
 
 public class BoardPoint : MonoBehaviour {
     public int x;
     public int y;
     public int key;
-    public int state;
+    public int state = 0;
+    public MillView view;
 
-    public BoardPoint(int x, int y, int key)
+    public void Init(int x, int y, int key, MillView view)
     {
         this.x = x;
         this.y = y;
         this.key = key;
-        state = 0;
+        this.view = view;
     }
-
-    // set gameobject position according to pos values
-    public void SetGOPosition()
-    {
-    }
-
     void OnMouseDown()
     {
         // register click
+        state = 1;
+        view.HandleBoardStateChange(key, state);
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
     }
 }
