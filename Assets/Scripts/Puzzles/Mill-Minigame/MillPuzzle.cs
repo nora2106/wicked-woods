@@ -42,7 +42,6 @@ public class MillPuzzle : PuzzleManager
         var controller = controllerFactory.Controller;
 
         model.InitializeBoard();
-        controller.SyncViewToModel();
         view.InitializeBoard(pointPrefab, spacing);
     }
 }

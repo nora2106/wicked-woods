@@ -4,9 +4,7 @@ using UnityEditor;
 
 public interface IMillController
 {
-    public void StartGame();
-    public void SyncViewToModel();
-    
+    public void StartGame();    
 }
 
 public class MillController : IMillController
@@ -32,11 +30,5 @@ public class MillController : IMillController
     public void StartGame()
     {
         // start game
-    }
-
-    // sync view board data with model data
-    public void SyncViewToModel()
-    {
-        view.GameBoard = model.GameBoard;
     }
 }

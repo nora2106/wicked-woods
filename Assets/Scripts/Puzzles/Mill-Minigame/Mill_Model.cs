@@ -1,27 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
 
 public interface IMillModel
 {
-    Dictionary<int, BoardPosition> GameBoard { get; set; }
+    Dictionary<int, BoardNode> GameBoard { get; set; }
     void InitializeBoard();
     void UpdateField(int key, int state);
     
 }
 
-public class BoardPosition
+public class BoardNode
 {
-    public int x;
-    public int y;
     // (0 for empty (default), 1 for player 1 (white), 2 for player 2 (black))
-    public int state;
-    public BoardPosition(int x, int y)
+    public int state = 0;
+    public List<int> neighbors;
+
+    public BoardNode(List<int> neighbors)
     {
-        this.x = x;
-        this.y = y;
-        state = 0;
+        this.neighbors = neighbors;
     }
 
     public void SetState(int state)
@@ -32,15 +32,10 @@ public class BoardPosition
 
 public class MillModel : IMillModel
 {
-    // all points in the format (x,y)
-    public BoardPosition[] positions = {new(0,0), new(3,0), new(6, 0), new(1,1), new(3,1), new(5,1), new(2,2), new(4,2),
-    new(0,3), new(1,3), new(2,3), new(3, 2), new(4,3), new(5,3), new(6,3), new(2,4), new(3,4), new(4,4), new(1,5), new(3,5),
-    new(5,5), new(0,6), new(3,6), new(6,6)};
-
-    // Dictionary containing the BoardValue (position on board) and the current state 
-    public Dictionary<int, BoardPosition> gameBoard;
-
-    public Dictionary<int, BoardPosition> GameBoard
+    // Dictionary containing BoardNode (with state) and its key/ID
+    public Dictionary<int, BoardNode> gameBoard = new Dictionary<int, BoardNode>();    
+    private Dictionary<int, List<int[]>> millsByNode;
+    public Dictionary<int, BoardNode> GameBoard
     {
         get { return gameBoard; }
         set
@@ -49,11 +44,26 @@ public class MillModel : IMillModel
         }
     }
 
-    // return point by key
-    private BoardPosition GetPositionByKey(int key)
+    // all possible mills, each containing 3 node IDs
+    static readonly int[][] mills =
     {
-        return GameBoard[key];
-    }
+        new[] {0, 1, 2},
+        new[] {3, 4, 5},
+        new[] {6, 7, 8},
+        new[] {9, 10, 11},
+        new[] {12, 13, 14},
+        new[] {15, 16, 17},
+        new[] {18, 19, 20},
+        new[] {21, 22, 23},
+        new[] {21, 9, 0},
+        new[] {18, 10, 3},
+        new[] {15, 11, 6},
+        new[] {22, 19, 16},
+        new[] {7, 4, 1},
+        new[] {17, 12, 8},
+        new[] {20, 13, 5},
+        new[] {23, 14, 2},
+    };
 
     // update field and check for any mills surrounding the updated field
     public void UpdateField(int key, int state)
@@ -62,95 +72,87 @@ public class MillModel : IMillModel
         CheckForMills(key, state);
     }
 
-    // create gameboard and add points
+    // create gameboard model
     public void InitializeBoard()
     {
-        GameBoard = new Dictionary<int, BoardPosition>();
-        for (int i = 0; i < positions.Length; i++)
+        // assign neighbor nodes to each node (only direct neighbors to model movement paths)
+        List<int>[] neighborNodes = new List<int>[24];
+        neighborNodes[0] = new List<int> {1, 9};
+        neighborNodes[1] = new List<int> {0, 2, 4};
+        neighborNodes[2] = new List<int> {1, 14};
+        neighborNodes[3] = new List<int> {10, 4};
+        neighborNodes[4] = new List<int> {3, 7, 1, 5};
+        neighborNodes[5] = new List<int> {4, 13};
+        neighborNodes[6] = new List<int> {11, 7};
+        neighborNodes[7] = new List<int> {6, 4, 8};
+        neighborNodes[8] = new List<int> {7, 12};
+        neighborNodes[9] = new List<int> {21, 0, 10};
+        neighborNodes[10] = new List<int> {9, 11, 18, 3};
+        neighborNodes[11] = new List<int> {10, 15, 6};
+        neighborNodes[12] = new List<int> {17, 8, 13};
+        neighborNodes[13] = new List<int> {12, 20, 5, 14};
+        neighborNodes[14] = new List<int> {23, 13, 2};
+        neighborNodes[15] = new List<int> {11, 16};
+        neighborNodes[16] = new List<int> {15, 19, 17};
+        neighborNodes[17] = new List<int> {16, 12};
+        neighborNodes[18] = new List<int> {20, 29};
+        neighborNodes[19] = new List<int> {18, 22, 20, 16};
+        neighborNodes[20] = new List<int> {19, 13};
+        neighborNodes[21] = new List<int> {9, 22};
+        neighborNodes[22] = new List<int> {21, 19, 23};
+        neighborNodes[23] = new List<int> {22, 14};
+
+        // lookup table containing a node and its possible mills
+        millsByNode = new Dictionary<int, List<int[]>>();
+        foreach(var mill in mills)
         {
-            GameBoard.Add(i, positions[i]);
+            foreach (var node in mill) {
+                if(!millsByNode.TryGetValue(node, out var list))
+                {
+                    list = new List<int[]>();
+                    millsByNode[node] = list;
+                }
+                list.Add(mill);
+            }
+        }
+
+        // fill board with nodes
+        for (int i = 0; i < 24; i++)
+        {
+            GameBoard.Add(i, new BoardNode(neighborNodes[i]));
         }
     }
 
     public void CheckForMills(int key, int currentState)
     {
-        // Debug.Log(GetPositionByKey(key).state);
-        List<int>[] neighborRows = GetNeighbors(key);
-        for(int i = 0; i < neighborRows.Length; i++)
+        if(currentState == 0)
         {
-            var row = neighborRows[i];
-            // Debug.Log(GetPositionByKey(row[0]).state);
-            // Debug.Log(GetPositionByKey(row[1]).state);
-            Debug.Log("row" + i + ": " + row[0]);
-            Debug.Log("row" + i + ": " + row[1]);
-            // every field in a row has 2 neighbors
-            if(GetPositionByKey(row[0]).state == currentState && GetPositionByKey(row[1]).state == currentState)
+            return;
+        }
+        // get all possible mills
+        var possibleMills = millsByNode[key];
+
+        foreach(var mill in possibleMills)
+        {
+            if(IsMill(mill))
             {
-                Debug.Log("Mill formed");
+                Debug.Log("mill formed");
+                // TODO notify controller
+                // controller sends mill to view
             }
         }
-    }
 
-    // return rows of keys from points adjacent to selected point
-    // every row is a possible mill with selected point
-    private List<int>[] GetNeighbors(int key)
-    {
-        var board = GameBoard;
-        BoardPosition pos = GetPositionByKey(key);
-        List<int>[] rows = new List<int>[2];
-        List<int> row1 = new List<int>();
-        List<int> row2 = new List<int>();
-        List<int> row3 = new List<int>();
-
-        foreach (KeyValuePair<int, BoardPosition> pair in board)
+        // check if all nodes of a mill have the same state
+        bool IsMill(int[] mill)
         {
-            // find vertical neighbors (same x coordinate)
-            if (pair.Value.x == pos.x && pair.Key != key)
+            foreach(int node in mill)
             {
-                if(pos.x != 3)
+                if(GameBoard[node].state != currentState)
                 {
-                    row1.Add(pair.Key);
-                }
-                // middle row contains 2 separate rows
-                else if(Math.Abs(pair.Value.y - pos.y) <= 2)
-                {
-                    row1.Add(pair.Key);
+                    return false;
                 }
             }
-
-            // find horizontal neighbors (same y coordinate)
-            if (pair.Value.y == pos.y && pair.Key != key)
-            {
-                if(pos.y != 3)
-                {
-                    row2.Add(pair.Key);
-                }
-                // middle row contains 2 separate rows
-                else if(Math.Abs(pair.Value.x - pos.x) <= 2)
-                {
-                    row2.Add(pair.Key);
-                }
-            }
-            
-            // TODO: fix diagonal neighbor generation
-            // find diagonal neighbors
-            if (pos.y != 3 && pos.x != 3)
-            {
-                if (Math.Abs(pair.Value.x - pos.x) <= 2 && Math.Abs(pair.Value.y - pos.y) <= 2 && pair.Key != key)
-                {
-                    row3.Add(pair.Key);
-                }
-            }
-            
-            if(row3.Count > 0)
-            {
-                rows = new List<int>[3];
-                rows[2] = row3;
-            }
-
-            rows[0] = row1;
-            rows[1] = row2;
+            return true;
         }
-        return rows;
     }
 }

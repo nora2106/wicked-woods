@@ -13,36 +13,49 @@ public class PointClickedEventArgs : EventArgs
         State = state;
     }
 }
+
 public interface IMillView
 {
-    Dictionary<int, BoardPosition> GameBoard { get; set; }
+    Dictionary<int, Vector2> GameBoard { get;}
 	event EventHandler<PointClickedEventArgs> OnBoardChanged;    
     void InitializeBoard(GameObject pointPrefab, float spacing);
 }
 
 public class MillView : MonoBehaviour, IMillView
 {
-    public Dictionary<int, BoardPosition> gameBoard;
-	public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) =>
+    // create view gameboard containing ID and position
+    // starting at bottom left: from left to right, row for row ending at top right
+    public Dictionary<int, Vector2> GameBoard => new()
     {
-        
+        {0, new Vector2(0, 0)},
+        {1, new Vector2(0, 3)},
+        {2, new Vector2(0, 6)},
+        {3, new Vector2(1, 1)},
+        {4, new Vector2(1, 3)},
+        {5, new Vector2(1, 5)},
+        {6, new Vector2(2, 2)},
+        {7, new Vector2(2, 3)},
+        {8, new Vector2(2, 4)},
+        {9, new Vector2(3, 0)},
+        {10, new Vector2(3, 1)},
+        {11, new Vector2(3, 2)},
+        {12, new Vector2(3, 4)},
+        {13, new Vector2(3, 5)},
+        {14, new Vector2(3, 6)},
+        {15, new Vector2(4, 2)},
+        {16, new Vector2(4, 3)},
+        {17, new Vector2(4, 4)},
+        {18, new Vector2(5, 1)},
+        {19, new Vector2(5, 3)},
+        {20, new Vector2(5, 5)},
+        {21, new Vector2(6, 0)},
+        {22, new Vector2(6, 3)},
+        {23, new Vector2(6, 6)},
     };
-    public Dictionary<int, BoardPosition> GameBoard
-    {
-        get
-        {
-            return gameBoard;
-        }
-        set
-        {
-            gameBoard = value;
-        }
-    }
+	public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) => {};
 
     public void InitializeBoard(GameObject pointPrefab, float spacing)
     {
-        GameBoard = gameBoard;
-
         if(GameBoard.Count == 0)
         {
             return;
@@ -50,26 +63,32 @@ public class MillView : MonoBehaviour, IMillView
         // create board points based on board positions and assign physical position
         for (int i = 0; i < GameBoard.Count; i++)
         {
-            var obj = Instantiate(pointPrefab, GetPosition(GameBoard[i].x, GameBoard[i].y, spacing), Quaternion.identity);
-            obj.GetComponent<BoardPoint>().Init(GameBoard[i].x, GameBoard[i].y, i, this);
+            var obj = Instantiate(pointPrefab, GetWorldPosition(GameBoard[i], spacing), Quaternion.identity);
+            obj.GetComponent<BoardPoint>().Init(i, this);
         }
     }
 
-    public void HandleBoardStateChange(int key, int state)
+    public void HandleBoardInteraction(BoardPoint sender)
     {
-        GameBoard[key].SetState(state);
-        var eventArgs = new PointClickedEventArgs(key, state);
+        // click on empty field -> set state to 1
+        if(sender.state == 0)
+        {
+            sender.SetState(1);
+        }
+
+        // notify model about state change
+        var eventArgs = new PointClickedEventArgs(sender.key, sender.state);
         OnBoardChanged(this, eventArgs);
     }
 
-    private Vector3 GetPosition(int x, int y, float spacing)
+    private Vector3 GetWorldPosition(Vector2 pos, float spacing)
     {
         int rows = 6;
         int cols = 6;
         float boardWidth = cols * spacing;
         float boardHeight = rows * spacing;
         Vector3 origin = new Vector3(-boardWidth / 2f, -boardHeight / 2f, 0);
-        Vector3 position = new Vector3(origin.x + (x * spacing), origin.y + (y * spacing), 0);
+        Vector3 position = new Vector3(origin.x + (pos.x * spacing), origin.y + (pos.y * spacing), 0);
         return position;
     }
 }
