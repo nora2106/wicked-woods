@@ -10,7 +10,8 @@ public interface IMillModel
     Dictionary<int, BoardNode> GameBoard { get; set; }
     void InitializeBoard();
     void UpdateField(int key, int state);
-    
+    bool IsNeighbor(int key1, int key2);
+    List<int> GetFieldsByState(int playerID);
 }
 
 public class BoardNode
@@ -43,6 +44,7 @@ public class MillModel : IMillModel
             gameBoard = value;
         }
     }
+    private List<int>[] neighborNodes;
 
     // all possible mills, each containing 3 node IDs
     static readonly int[][] mills =
@@ -76,7 +78,7 @@ public class MillModel : IMillModel
     public void InitializeBoard()
     {
         // assign neighbor nodes to each node (only direct neighbors to model movement paths)
-        List<int>[] neighborNodes = new List<int>[24];
+        neighborNodes = new List<int>[24];
         neighborNodes[0] = new List<int> {1, 9};
         neighborNodes[1] = new List<int> {0, 2, 4};
         neighborNodes[2] = new List<int> {1, 14};
@@ -154,5 +156,30 @@ public class MillModel : IMillModel
             }
             return true;
         }
+    }
+
+    public bool IsNeighbor(int key1, int key2)
+    {
+        foreach(var node in neighborNodes[key1])
+        {
+            if(node == key2)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<int> GetFieldsByState(int state)
+    {
+        List<int> list = new List<int>();
+        foreach(var point in GameBoard)
+        {
+            if(point.Value.state == state)
+            {
+                list.Add(point.Key);
+            }
+        }
+        return list;
     }
 }

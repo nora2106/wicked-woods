@@ -20,6 +20,10 @@ public class BoardPoint : MonoBehaviour {
         {
             gameObject.GetComponent<SpriteRenderer>().enabled = true;
         }
+        if(state == 0)
+        {
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     // register click

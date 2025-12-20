@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Ink.Runtime;
 using UnityEngine;
 
 public class PointClickedEventArgs : EventArgs
@@ -19,6 +20,7 @@ public interface IMillView
     Dictionary<int, Vector2> GameBoard { get;}
 	event EventHandler<PointClickedEventArgs> OnBoardChanged;    
     void InitializeBoard(GameObject pointPrefab, float spacing);
+    void UpdateField(int key, int state);
 }
 
 public class MillView : MonoBehaviour, IMillView
@@ -52,7 +54,18 @@ public class MillView : MonoBehaviour, IMillView
         {22, new Vector2(6, 3)},
         {23, new Vector2(6, 6)},
     };
+    public BoardPoint[] boardPoints;
 	public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) => {};
+    public string gamemode;
+    // game modes: setup phase, move phase, select
+    public string Gamemode{get{return gamemode;}set{Gamemode = value;}}
+    public BoardPoint selectedPoint;
+
+    // update field visually
+    public void UpdateField(int key, int state)
+    {
+        boardPoints[key].SetState(state);
+    }
 
     public void InitializeBoard(GameObject pointPrefab, float spacing)
     {
@@ -60,23 +73,19 @@ public class MillView : MonoBehaviour, IMillView
         {
             return;
         }
+        boardPoints = new BoardPoint[GameBoard.Count];
         // create board points based on board positions and assign physical position
         for (int i = 0; i < GameBoard.Count; i++)
         {
             var obj = Instantiate(pointPrefab, GetWorldPosition(GameBoard[i], spacing), Quaternion.identity);
             obj.GetComponent<BoardPoint>().Init(i, this);
+            boardPoints[i] = obj.GetComponent<BoardPoint>();
         }
     }
 
     public void HandleBoardInteraction(BoardPoint sender)
     {
-        // click on empty field -> set state to 1
-        if(sender.state == 0)
-        {
-            sender.SetState(1);
-        }
-
-        // notify model about state change
+        // notify controller about click
         var eventArgs = new PointClickedEventArgs(sender.key, sender.state);
         OnBoardChanged(this, eventArgs);
     }
