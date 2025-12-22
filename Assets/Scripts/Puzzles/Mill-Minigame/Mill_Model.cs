@@ -12,6 +12,7 @@ public interface IMillModel
     void UpdateField(int key, int state);
     bool IsNeighbor(int key1, int key2);
     List<int> GetFieldsByState(int playerID);
+    bool CheckForMills(int key, int currentState);
 }
 
 public class BoardNode
@@ -125,11 +126,11 @@ public class MillModel : IMillModel
         }
     }
 
-    public void CheckForMills(int key, int currentState)
+    public bool CheckForMills(int key, int currentState)
     {
         if(currentState == 0)
         {
-            return;
+            return false;
         }
         // get all possible mills
         var possibleMills = millsByNode[key];
@@ -139,10 +140,12 @@ public class MillModel : IMillModel
             if(IsMill(mill))
             {
                 Debug.Log("mill formed");
+                return true;
                 // TODO notify controller
                 // controller sends mill to view
             }
         }
+        return false;
 
         // check if all nodes of a mill have the same state
         bool IsMill(int[] mill)

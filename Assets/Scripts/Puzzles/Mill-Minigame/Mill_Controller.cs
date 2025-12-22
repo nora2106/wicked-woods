@@ -12,6 +12,7 @@ public class MillController : IMillController
     private readonly IMillModel model;
     private readonly IMillView view;
     private string gamePhase = "setup";
+    private int remainingStones = 18;
     private PointClickedEventArgs selectedField = null;
 
     public MillController(IMillModel model, IMillView view)
@@ -32,6 +33,7 @@ public class MillController : IMillController
         if (gamePhase == "setup" && e.State == 0)
         {
             newState = 1;
+            remainingStones--;
         }
 
         // move phase
@@ -52,17 +54,49 @@ public class MillController : IMillController
                 selectedField = null;
             }
         }
+
+        else if(gamePhase == "remove" && e.State == 2)
+        {
+            newState = 0;
+            gamePhase = "move";
+            if(remainingStones > 0)
+            {
+                gamePhase = "setup";
+            }
+        }
+
+        // update model and view boards
         model.UpdateField(e.Key, newState);
         view.UpdateField(e.Key, newState);
-        
-        if (model.GetFieldsByState(1).Count == 9)
+
+        // change game phase if mill was made
+        if(model.CheckForMills(e.Key, newState))
+        {
+            gamePhase = "remove";
+        }
+        // change gamephase if all stones are placed
+        else if (remainingStones == 0)
         {
             gamePhase = "move";
+        }
+        EnemyMove();
+    }
+
+    public void EnemyMove()
+    {
+        if(gamePhase == "setup")
+        {
+            remainingStones--;
+        }
+        else if(gamePhase == "move")
+        {
+            // pathfinding algorithm
         }
     }
 
     public void StartGame()
     {
         // start game
+        gamePhase = "setup";
     }
 }
