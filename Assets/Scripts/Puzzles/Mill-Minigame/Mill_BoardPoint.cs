@@ -18,11 +18,15 @@ public class BoardPoint : MonoBehaviour {
         this.state = state;
         if(state == 1)
         {
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         }
-        if(state == 0)
+        else if(state == 0)
         {
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+        }
+        else if(state == 2)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
         }
     }
 
