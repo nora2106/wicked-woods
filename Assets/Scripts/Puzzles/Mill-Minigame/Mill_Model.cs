@@ -9,16 +9,16 @@ public interface IMillModel
 {
     Dictionary<int, BoardNode> GameBoard { get; set; }
     void InitializeBoard();
-    void UpdateField(int key, int state);
-    bool IsNeighbor(int key1, int key2);
-    List<int> GetFieldsByState(int playerID);
-    bool CheckForMills(int key, int currentState);
+    void UpdateField(int key, FieldState player);
+    bool AreNeighbors(int key1, int key2);
+    List<int> GetFieldsByState(FieldState state);
+    bool CheckForMill(int key, FieldState state);
 }
 
 public class BoardNode
 {
     // (0 for empty (default), 1 for player 1 (white), 2 for player 2 (black))
-    public int state = 0;
+    public FieldState state = FieldState.Empty;
     public List<int> neighbors;
 
     public BoardNode(List<int> neighbors)
@@ -26,7 +26,7 @@ public class BoardNode
         this.neighbors = neighbors;
     }
 
-    public void SetState(int state)
+    public void SetState(FieldState state)
     {
         this.state = state;
     }
@@ -69,10 +69,10 @@ public class MillModel : IMillModel
     };
 
     // update field and check for any mills surrounding the updated field
-    public void UpdateField(int key, int state)
+    public void UpdateField(int key, FieldState state)
     {
         GameBoard[key].SetState(state);
-        CheckForMills(key, state);
+        // CheckForMill(key, state);
     }
 
     // create gameboard model
@@ -126,9 +126,9 @@ public class MillModel : IMillModel
         }
     }
 
-    public bool CheckForMills(int key, int currentState)
+    public bool CheckForMill(int key, FieldState currentState)
     {
-        if(currentState == 0)
+        if(currentState == FieldState.Empty)
         {
             return false;
         }
@@ -139,7 +139,6 @@ public class MillModel : IMillModel
         {
             if(IsMill(mill))
             {
-                Debug.Log("mill formed");
                 return true;
                 // TODO notify controller
                 // controller sends mill to view
@@ -161,7 +160,7 @@ public class MillModel : IMillModel
         }
     }
 
-    public bool IsNeighbor(int key1, int key2)
+    public bool AreNeighbors(int key1, int key2)
     {
         foreach(var node in neighborNodes[key1])
         {
@@ -173,7 +172,7 @@ public class MillModel : IMillModel
         return false;
     }
 
-    public List<int> GetFieldsByState(int state)
+    public List<int> GetFieldsByState(FieldState state)
     {
         List<int> list = new List<int>();
         foreach(var point in GameBoard)

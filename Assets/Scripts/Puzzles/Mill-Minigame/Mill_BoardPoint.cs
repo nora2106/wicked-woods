@@ -1,10 +1,19 @@
 using Unity;
 using UnityEngine;
 using System;
+using UnityEditorInternal;
+
+public enum FieldState
+{
+    Empty,
+    Player,
+    Enemy,
+    Selected
+}
 
 public class BoardPoint : MonoBehaviour {
     public int key;
-    public int state = 0;
+    public FieldState state = FieldState.Empty;
     public MillView view;
 
     public void Init(int key, MillView view)
@@ -13,20 +22,27 @@ public class BoardPoint : MonoBehaviour {
         this.view = view;
     }
 
-    public void SetState(int state)
+    public void SetState(FieldState state)
     {
         this.state = state;
-        if(state == 1)
+        switch(state)
         {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-        }
-        else if(state == 0)
-        {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
-        }
-        else if(state == 2)
-        {
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
+            // empty field
+            case FieldState.Empty :
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+                break;
+            // player stone    
+            case FieldState.Player:
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+                break;
+            // enemy stone
+            case FieldState.Enemy:
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
+                break;
+            // selected player stone
+            case FieldState.Selected:
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(0.4f, 0.4f, 0.4f, 1f);
+                break;
         }
     }
 

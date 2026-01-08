@@ -184,7 +184,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2308103935990771322, guid: 56388e661fc5149428016f1ebaf27135, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7607843}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -334,6 +334,7 @@ MonoBehaviour:
   id: 
   resets: 0
   pointPrefab: {fileID: 319727813709749787, guid: 3b689f36d9f697347976a2cdfbc28605, type: 3}
+  spacing: 1.452
 --- !u!4 &2087389872
 Transform:
   m_ObjectHideFlags: 0

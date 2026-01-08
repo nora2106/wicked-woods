@@ -37,8 +37,11 @@ public class MillPuzzle : PuzzleManager
         
         var viewFactory = new MillViewFactory();
         var view = viewFactory.View;
+
+        var ruleFactory = new MillRulesFactory();
+        var rules = ruleFactory.Rules;
         
-        var controllerFactory = new MillControllerFactory(model, view);
+        var controllerFactory = new MillControllerFactory(model, view, rules);
         var controller = controllerFactory.Controller;
 
         model.InitializeBoard();

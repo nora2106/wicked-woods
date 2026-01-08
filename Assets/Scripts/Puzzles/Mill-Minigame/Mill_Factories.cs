@@ -26,6 +26,25 @@ public interface IMillViewFactory
     IMillView View { get; }
 }
 
+// interface for rules factory
+public interface IMillRulesFactory
+{
+    // get created view
+    IMillRules Rules { get; }
+}
+
+// implement rules factory
+public class MillRulesFactory : IMillRulesFactory
+{
+    public IMillRules Rules { get; private set; }
+
+    // create model
+    public MillRulesFactory()
+    {
+        Rules = new MillRules();
+    }
+}
+
 // implement view factory
 public class MillViewFactory : IMillViewFactory
 {
@@ -55,8 +74,8 @@ public class MillControllerFactory : IMillControllerFactory
     public IMillController Controller { get; private set; }
 
     // create the controller
-    public MillControllerFactory(IMillModel model, IMillView view)
+    public MillControllerFactory(IMillModel model, IMillView view, IMillRules rules)
     {
-        Controller = new MillController(model, view);
+        Controller = new MillController(model, view, rules);
     }
 }

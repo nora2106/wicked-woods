@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Ink.Runtime;
 using UnityEngine;
 
 public class PointClickedEventArgs : EventArgs
 {
     public int Key {get;}
-    public int State {get;}
+    public FieldState State {get;}
 
-    public PointClickedEventArgs(int key, int state)
+    public PointClickedEventArgs(int key, FieldState state)
     {
         Key = key;
         State = state;
@@ -20,7 +19,8 @@ public interface IMillView
     Dictionary<int, Vector2> GameBoard { get;}
 	event EventHandler<PointClickedEventArgs> OnBoardChanged;    
     void InitializeBoard(GameObject pointPrefab, float spacing);
-    void UpdateField(int key, int state);
+    void UpdateField(int key, FieldState state);
+    void UpdateBoard(Dictionary<int, BoardNode> board);
 }
 
 public class MillView : MonoBehaviour, IMillView
@@ -62,7 +62,7 @@ public class MillView : MonoBehaviour, IMillView
     public BoardPoint selectedPoint;
 
     // update field visually
-    public void UpdateField(int key, int state)
+    public void UpdateField(int key, FieldState state)
     {
         boardPoints[key].SetState(state);
     }
@@ -80,6 +80,14 @@ public class MillView : MonoBehaviour, IMillView
             var obj = Instantiate(pointPrefab, GetWorldPosition(GameBoard[i], spacing), Quaternion.identity);
             obj.GetComponent<BoardPoint>().Init(i, this);
             boardPoints[i] = obj.GetComponent<BoardPoint>();
+        }
+    }
+
+    public void UpdateBoard(Dictionary<int, BoardNode> board)
+    {
+        for (int i = 0; i < GameBoard.Count; i++)
+        {
+            boardPoints[i].SetState(board[i].state);
         }
     }
 
