@@ -1,14 +1,23 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using JetBrains.Annotations;
-using UnityEditor;
+using System.Collections;
 using UnityEngine;
+using System.Threading.Tasks;
+using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using System.Linq;
+using System.Collections.Generic;
 
 public interface IMillController
 {
-    public void StartGame();
+    void StartGame();
+    Phase GamePhase { get; set; }
+}
+
+public enum Phase
+{
+    Setup,
+    Move,
+    Remove,
+    GameOver,
 }
 
 public class MillController : IMillController
@@ -17,9 +26,13 @@ public class MillController : IMillController
     private readonly IMillView view;
     private readonly IMillRules rules;
 
-    /* current phase (default: setup) */
-    private string gamePhase;
-    private int remainingStones = 18;
+    public Phase gamePhase;
+    public Phase GamePhase
+    {
+        get => gamePhase;
+        set => gamePhase = value;
+    }
+    private int maxStones = 18;
     private bool playerTurn;
     private PointClickedEventArgs selectedField = null;
 
@@ -29,7 +42,7 @@ public class MillController : IMillController
         this.view = view;
         this.rules = rules;
 
-        /* subscribe to the view board change event */
+        // subscribe to the view board change event
         view.OnBoardChanged += HandlePlayerInput;
     }
 
@@ -44,54 +57,85 @@ public class MillController : IMillController
         {
             return;
         }
-        
-        rules.PlaceOrMoveStone(model, e.Key);
+
+        if (gamePhase == Phase.Setup)
+        {
+            var result = rules.PlaceStone(model, e.Key, FieldState.Player);
+            switch (result)
+            {
+                case MoveResult.Invalid:
+                    return;
+                case MoveResult.MillFormed:
+                    UpdateView();
+                    maxStones--;
+                    gamePhase = Phase.Remove;
+                    UnityEngine.Debug.Log("select stone to remove");
+                    return;
+                case MoveResult.Ok:
+                    maxStones--;
+                    break;
+            }
+        }
+
+        else if (gamePhase == Phase.Move)
+        {
+            // select stone to move
+            if (e.State == FieldState.Player)
+            {
+                selectedField = e;
+                view.UpdateField(e.Key, FieldState.Selected);
+                UnityEngine.Debug.Log("click on any empty neighboring field to move selected stone.");
+                return;
+            }
+            // select field to move to
+            else if (selectedField != null)
+            {
+                var result = rules.MoveStone(model, selectedField.Key, e.Key, FieldState.Player);
+                switch (result)
+                {
+                    case MoveResult.Invalid:
+                        return;
+                    case MoveResult.MillFormed:
+                        UpdateView();
+                        gamePhase = Phase.Remove;
+                        UnityEngine.Debug.Log("select stone to remove");
+                        selectedField = null;
+                        return;
+                    case MoveResult.Ok:
+                        selectedField = null;
+                        break;
+                }
+            }
+
+            // no valid field clicked
+            else
+            {
+                return;
+            }
+        }
+
+        // select stone to remove
+        else if (gamePhase == Phase.Remove)
+        {
+            var result = rules.RemoveStone(model, e.Key, FieldState.Player);
+            switch (result)
+            {
+                case MoveResult.Invalid:
+                    return;
+                case MoveResult.MillFormed:
+                    return;
+                case MoveResult.Ok:
+                    gamePhase = Phase.Setup;
+                    if (maxStones <= 0)
+                    {
+                        gamePhase = Phase.Move;
+                    }
+                    break;
+            }
+        }
+
         UpdateView();
         SwitchTurn();
-
-        // place stone
-        // if (gamePhase == "setup" && e.State == 0)
-        // {
-        //     ExecuteMove(e.Key, 1);
-        //     remainingStones--;
-        // }
-
-        // if (gamePhase == "move")
-        // {
-        //     // click on full field -> select it and choose another field 
-        //     if (e.State == 1)
-        //     {
-        //         selectedField = e;
-        //         view.UpdateField(selectedField.Key, 3);
-        //         UnityEngine.Debug.Log("click on any empty neighboring field to move selected stone.");
-        //     }
-        //     // selected field -> check if another field is neighbor 
-        //     else if (e.State == 0 && selectedField != null && model.IsNeighbor(selectedField.Key, e.Key))
-        //     {
-        //         model.UpdateField(selectedField.Key, 0);
-        //         view.UpdateField(selectedField.Key, 0);
-        //         selectedField = null;
-        //         ExecuteMove(e.Key, 1);
-        //     }
-        // }
-
-        // // remove stone from field if enemy stone and not in a mill
-        // else if (gamePhase == "remove" && e.State == 2 && !model.CheckForMills(e.Key, e.State))
-        // {
-        //     gamePhase = "move";
-        //     if (remainingStones > 0)
-        //     {
-        //         gamePhase = "setup";
-        //     }
-        //     ExecuteMove(e.Key, 0);
-        //     return;
-        // }
-
-        // // change gamephase if all stones are placed
-        // if (remainingStones == 0)
-        // {
-        //     gamePhase = "move";
-        // }
     }
 
     /// <summary>
@@ -99,12 +143,19 @@ public class MillController : IMillController
     /// </summary>
     private void SwitchTurn()
     {
-        if (playerTurn)
+        // end setup phase if all stones have been placed
+        if (gamePhase == Phase.Setup && maxStones <= 0)
         {
-            playerTurn = false;
+            gamePhase = Phase.Move;
+            UnityEngine.Debug.Log("move phase");
+        }
+
+        playerTurn = !playerTurn;
+
+        if (!playerTurn)
+        {
             EnemyMove();
         }
-        playerTurn = true;
 
     }
 
@@ -113,41 +164,92 @@ public class MillController : IMillController
     /// </summary>
     private void EnemyMove()
     {
-        rules.ExecuteEnemyMove(model);
+        if (gamePhase == Phase.Setup)
+        {
+            // calculate field to place stone
+            // for testing: get first empty field
+            int targetField = model.GetFieldsByState(FieldState.Empty)[0];
+            var result = rules.PlaceStone(model, targetField, FieldState.Enemy);
+            switch (result)
+            {
+                case MoveResult.Invalid:
+                    return;
+                case MoveResult.MillFormed:
+                    maxStones--;
+                    EnemyRemoveStone();
+                    break;
+                case MoveResult.Ok:
+                    maxStones--;
+                    break;
+            }
+        }
+
+        else if (gamePhase == Phase.Move)
+        {
+            // calculate field to move stone to
+            // for testing: get first enemy field with empty neighbors and move to first empty neighbor
+            // FIXME not working (line 198: Object reference not set to an instance of an object)
+            int[] fieldPair = null;
+            for(int i = 0; i < model.GameBoard.Count; i++)
+            {
+                foreach(var neighbor in model.GameBoard[i].neighbors)
+                {
+                    if(model.GameBoard[neighbor].state == FieldState.Empty)
+                    {
+                        fieldPair[0] = i;
+                        fieldPair[1] = neighbor;
+                        i = model.GameBoard.Count;
+                    }
+                } 
+            }
+            
+            if(fieldPair == null)
+            {
+                return;
+            }
+            var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
+            switch (result)
+            {
+                case MoveResult.Invalid:
+                    return;
+                case MoveResult.MillFormed:
+                    maxStones--;
+                    EnemyRemoveStone();
+                    break;
+                case MoveResult.Ok:
+                    maxStones--;
+                    break;
+            }
+        }
+
+        ExecuteEnemyMove();
+    }
+
+    public async void ExecuteEnemyMove()
+    {
+        await Task.Delay(new TimeSpan(0, 0, 1));
         UpdateView();
         SwitchTurn();
-        // int newFieldKey = 0;
-        // int newState = 2;
+    }
 
-        // if (gamePhase == "setup")
-        // {
-        //     newFieldKey = GetRandomField(0);
-        //     remainingStones--;
-        //     if (remainingStones == 0)
-        //     {
-        //         gamePhase = "move";
-        //     }
-        // }
-        // else if (gamePhase == "move")
-        // {
-        //     for(int i = 0; i < model.GameBoard.Count; i++)
-        //     {
-        //         List<int> neighbors = model.GameBoard[i].neighbors;
-        //         for(int j = 0; j < neighbors.Count; j++)
-        //         {
-        //             // if(model.GameBoard[neighbors[j]].state == 0)
-        //             // {
-        //             //     model.UpdateField(i, 0);
-        //             //     view.UpdateField(i, 0);
-        //             //     newFieldKey = neighbors[j];
-        //             //     newState = 2;
-        //             // }
-        //         }
-        //     }
-        //     // TODO pathfinding algorithm
-        // }
+    /// <summary>
+    /// Calculate player stone to remove.
+    /// </summary>
+    private void EnemyRemoveStone()
+    {
+        // for testing purposes: get first field with player stone
+        int targetField = model.GetFieldsByState(FieldState.Player)[0];
+        var result = rules.RemoveStone(model, targetField, FieldState.Enemy);
 
-        // ExecuteMove(newFieldKey, newState);
+        switch (result)
+        {
+            case MoveResult.Invalid:
+                return;
+            case MoveResult.MillFormed:
+                return;
+            case MoveResult.Ok:
+                break;
+        }
     }
 
     // Aligns the view board to the model board.
@@ -156,86 +258,14 @@ public class MillController : IMillController
         view.UpdateBoard(model.GameBoard);
     }
 
-    /// <summary>
-    /// Either place new stone, move existing stone or remove stone.
-    /// </summary>
-    /// <param name="key">Key of the changed field.</param>
-    /// <param name="newState">New state of the changed field.</param>
-    public void ExecuteMove(int key, int newState)
-    {
-        // TODO end game if one player has only 2 stones
-        // if (gamePhase == "")
-        // {
-        //     return;
-        // }
-        // model.UpdateField(key, newState);
-        // view.UpdateField(key, newState);
-        
-        // if (model.CheckForMills(key, newState))
-        // {
-        //     if(playerTurn)
-        //     {
-        //         gamePhase = "remove";
-        //         UnityEngine.Debug.Log("click on any enemy stone to remove.");
-        //     }
-        //     else
-        //     {
-        //         EnemyRemove();
-        //     }
-        // }
-        // SwitchTurn();
-    }
-
-    
-
-    /// <summary>
-    /// Remove player stone after the enemy forms a mill.
-    /// </summary>
-    private void EnemyRemove()
-    {
-        // for(int i = 0; i < model.GameBoard.Count; i++)
-        // {
-        //     if(model.GameBoard[i].state == 1 && !model.CheckForMills(i, 1))
-        //     {
-        //         ExecuteMove(i, 0);
-        //     }
-        // }
-    }
-
-    /// <summary>
-    /// Gets a random board key that matches the required state.
-    /// </summary>
-    /// <param name="state"> Required field state. </param>
-    // public int GetRandomField(int state)
-    // {
-    //     int newField;
-    //     System.Random rnd = new System.Random();
-
-    //     void CheckIfEmpty(int field)
-    //     {
-    //         if (model.GameBoard[field].state == state)
-    //         {
-    //             newField = field;
-    //         }
-    //         else
-    //         {
-    //             CheckIfEmpty(rnd.Next(0, model.GameBoard.Count));
-    //         }
-    //     }
-
-    //     CheckIfEmpty(rnd.Next(0, model.GameBoard.Count));
-    //     return newField;
-    // }
-
     public void StartGame()
     {
         // start game
-        gamePhase = "setup";
+        gamePhase = Phase.Setup;
         playerTurn = true;
     }
 
     public void StopGame()
     {
-        gamePhase = "";
     }
 }

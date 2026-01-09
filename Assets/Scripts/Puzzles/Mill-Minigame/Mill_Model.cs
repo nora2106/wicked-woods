@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Data;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
-using UnityEngine.Localization.SmartFormat.PersistentVariables;
+using System.Linq;
 
 public interface IMillModel
 {
@@ -12,7 +8,9 @@ public interface IMillModel
     void UpdateField(int key, FieldState player);
     bool AreNeighbors(int key1, int key2);
     List<int> GetFieldsByState(FieldState state);
-    bool CheckForMill(int key, FieldState state);
+    bool CheckForMill(int key);
+    List<int> GetMovableFields(FieldState state);
+    List<int> GetPossibleMills(FieldState state);
 }
 
 public class BoardNode
@@ -126,12 +124,8 @@ public class MillModel : IMillModel
         }
     }
 
-    public bool CheckForMill(int key, FieldState currentState)
+    public bool CheckForMill(int key)
     {
-        if(currentState == FieldState.Empty)
-        {
-            return false;
-        }
         // get all possible mills
         var possibleMills = millsByNode[key];
 
@@ -151,7 +145,7 @@ public class MillModel : IMillModel
         {
             foreach(int node in mill)
             {
-                if(GameBoard[node].state != currentState)
+                if(GameBoard[node].state != gameBoard[key].state)
                 {
                     return false;
                 }
@@ -175,12 +169,48 @@ public class MillModel : IMillModel
     public List<int> GetFieldsByState(FieldState state)
     {
         List<int> list = new List<int>();
-        foreach(var point in GameBoard)
+        foreach(var point in gameBoard)
         {
             if(point.Value.state == state)
             {
                 list.Add(point.Key);
             }
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Get fields that can be moved from.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// /// <returns>All field keys with at least one empty neighbor.</returns>
+    public List<int> GetMovableFields(FieldState state)
+    {
+        List<int> list = new List<int>();
+        foreach(var point in gameBoard)
+        {
+            if(point.Value.state == state && gameBoard[point.Key].neighbors.Any(x => gameBoard[x].state == FieldState.Empty))
+            {
+                list.Add(point.Key);
+            }
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Get fields that could form a mill within the next move.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>All field keys that are the last missing stone for a mill.</returns>
+    // TODO implement
+    public List<int> GetPossibleMills(FieldState state)
+    {
+        List<int> list = new List<int>();
+        UnityEngine.Debug.Log(millsByNode[0].Count);
+        foreach(var possibleMill in millsByNode)
+        {
+            // int emptyNode;
+            List<int> fullNodes = new List<int>();
         }
         return list;
     }

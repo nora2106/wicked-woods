@@ -87,7 +87,10 @@ public class MillView : MonoBehaviour, IMillView
     {
         for (int i = 0; i < GameBoard.Count; i++)
         {
-            boardPoints[i].SetState(board[i].state);
+            if(boardPoints[i].state != board[i].state)
+            {
+                boardPoints[i].SetState(board[i].state);
+            }
         }
     }
 

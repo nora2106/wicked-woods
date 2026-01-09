@@ -28,7 +28,7 @@ public class BoardPoint : MonoBehaviour {
         switch(state)
         {
             // empty field
-            case FieldState.Empty :
+            case FieldState.Empty:
                 gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
                 break;
             // player stone    
