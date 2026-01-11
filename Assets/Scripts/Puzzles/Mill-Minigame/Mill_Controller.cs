@@ -1,10 +1,5 @@
 using System;
-using System.Collections;
-using UnityEngine;
 using System.Threading.Tasks;
-using UnityEngine.Localization.SmartFormat.PersistentVariables;
-using System.Linq;
-using System.Collections.Generic;
 
 public interface IMillController
 {
@@ -25,6 +20,7 @@ public class MillController : IMillController
     private readonly IMillModel model;
     private readonly IMillView view;
     private readonly IMillRules rules;
+    private readonly EnemyController enemy;
 
     public Phase gamePhase;
     public Phase GamePhase
@@ -41,6 +37,7 @@ public class MillController : IMillController
         this.model = model;
         this.view = view;
         this.rules = rules;
+        enemy = new EnemyController(model, rules);
 
         // subscribe to the view board change event
         view.OnBoardChanged += HandlePlayerInput;
@@ -156,7 +153,6 @@ public class MillController : IMillController
         {
             EnemyMove();
         }
-
     }
 
     /// <summary>
@@ -168,7 +164,7 @@ public class MillController : IMillController
         {
             // calculate field to place stone
             // for testing: get first empty field
-            int targetField = model.GetFieldsByState(FieldState.Empty)[0];
+            int targetField = enemy.CalcPlaceStone();
             var result = rules.PlaceStone(model, targetField, FieldState.Enemy);
             switch (result)
             {
@@ -188,25 +184,8 @@ public class MillController : IMillController
         {
             // calculate field to move stone to
             // for testing: get first enemy field with empty neighbors and move to first empty neighbor
-            // FIXME not working (line 198: Object reference not set to an instance of an object)
-            int[] fieldPair = null;
-            for(int i = 0; i < model.GameBoard.Count; i++)
-            {
-                foreach(var neighbor in model.GameBoard[i].neighbors)
-                {
-                    if(model.GameBoard[neighbor].state == FieldState.Empty)
-                    {
-                        fieldPair[0] = i;
-                        fieldPair[1] = neighbor;
-                        i = model.GameBoard.Count;
-                    }
-                } 
-            }
-            
-            if(fieldPair == null)
-            {
-                return;
-            }
+            // FIXME not working (line 197: Object reference not set to an instance of an object)
+            int[] fieldPair = enemy.CalcMoveStone();
             var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
             switch (result)
             {
@@ -233,12 +212,12 @@ public class MillController : IMillController
     }
 
     /// <summary>
-    /// Calculate player stone to remove.
+    /// Remove a stone.
     /// </summary>
     private void EnemyRemoveStone()
     {
         // for testing purposes: get first field with player stone
-        int targetField = model.GetFieldsByState(FieldState.Player)[0];
+        int targetField = enemy.CalcRemoveStone();
         var result = rules.RemoveStone(model, targetField, FieldState.Enemy);
 
         switch (result)
@@ -246,7 +225,7 @@ public class MillController : IMillController
             case MoveResult.Invalid:
                 return;
             case MoveResult.MillFormed:
-                return;
+                break;
             case MoveResult.Ok:
                 break;
         }

@@ -1,7 +1,4 @@
-using Unity;
 using UnityEngine;
-using System;
-using UnityEditorInternal;
 
 public enum FieldState
 {

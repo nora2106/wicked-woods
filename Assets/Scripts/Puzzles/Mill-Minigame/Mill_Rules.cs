@@ -1,5 +1,3 @@
-using UnityEditorInternal;
-
 public interface IMillRules
 {
      MoveResult PlaceStone(IMillModel model, int fieldKey, FieldState player);
@@ -14,7 +12,6 @@ public enum MoveResult
     MillFormed,
     FieldSelectRequired,
     GameOver
-    
 }
 
 public class MillRules : IMillRules
