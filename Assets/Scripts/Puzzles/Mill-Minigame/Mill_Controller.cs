@@ -37,7 +37,7 @@ public class MillController : IMillController
         this.model = model;
         this.view = view;
         this.rules = rules;
-        enemy = new EnemyController(model, rules);
+        enemy = new EnemyController(model);
 
         // subscribe to the view board change event
         view.OnBoardChanged += HandlePlayerInput;
@@ -192,11 +192,9 @@ public class MillController : IMillController
                 case MoveResult.Invalid:
                     return;
                 case MoveResult.MillFormed:
-                    maxStones--;
                     EnemyRemoveStone();
                     break;
                 case MoveResult.Ok:
-                    maxStones--;
                     break;
             }
         }

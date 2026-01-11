@@ -1,11 +1,9 @@
 public class EnemyController
 {
     private IMillModel model;
-    private IMillRules rules;
-    public EnemyController(IMillModel model, IMillRules rules)
+    public EnemyController(IMillModel model)
     {
         this.model = model;
-        this.rules = rules;
     }
 
     /// <summary>
