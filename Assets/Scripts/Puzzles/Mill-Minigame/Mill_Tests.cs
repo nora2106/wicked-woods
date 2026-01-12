@@ -44,8 +44,11 @@ public class MillTests
     public void EnemyMakeMillAndRemoveStone()
     {
         var board = new MillModel();
-        board.UpdateField(board.GetFieldsByState(FieldState.Empty)[0], FieldState.Player);
-
-
+        board.UpdateField(0, FieldState.Player);
+        board.UpdateField(6, FieldState.Player);
+        board.UpdateField(10, FieldState.Player);
+        board.UpdateField(22, FieldState.Enemy);
+        board.UpdateField(19, FieldState.Enemy);
+        board.UpdateField(16, FieldState.Enemy);
     }
 }
