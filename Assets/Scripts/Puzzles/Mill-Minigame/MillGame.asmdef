@@ -1,0 +1,4 @@
+{
+	"name": "MillGame",
+	"references": ["Assembly-CSharp"]
+}
