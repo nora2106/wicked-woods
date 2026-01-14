@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using NUnit.Framework;
+
 public class EnemyController
 {
     private IMillModel model;
@@ -22,20 +25,31 @@ public class EnemyController
     /// <returns>Keys of chosen and target field.</returns>
     public int[] CalcMoveStone()
     {
-        int[] fieldPair = null;
-        for (int i = 0; i < model.GameBoard.Count; i++)
+        // first: check for possible mills
+        var possibleMillFields = model.GetPossibleMills(FieldState.Enemy);
+        foreach(int field in possibleMillFields)
         {
-            foreach (var neighbor in model.GameBoard[i].neighbors)
+            foreach(int neighbor in model.GetNeighbors(field))
             {
-                if (model.GameBoard[neighbor].state == FieldState.Empty)
+                if(model.GameBoard[neighbor].state == FieldState.Enemy)
                 {
-                    fieldPair[0] = i;
-                    fieldPair[1] = neighbor;
-                    i = model.GameBoard.Count;
+                    return new int[2]{neighbor, field};
                 }
             }
         }
-        return fieldPair;
+
+        // for testing: get random fieldpair  
+        foreach(int field in model.GetFieldsByState(FieldState.Enemy))
+        {
+            foreach(int neighbor in model.GetNeighbors(field))
+            {
+                if(model.GameBoard[neighbor].state == FieldState.Empty)
+                {
+                    return new int[2]{neighbor, field};
+                }
+            }
+        }      
+        return new int[2];
     }
 
     /// <summary>

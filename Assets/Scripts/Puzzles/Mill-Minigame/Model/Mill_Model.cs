@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 
 public interface IMillModel
 {
@@ -11,6 +12,7 @@ public interface IMillModel
     bool CheckForMill(int key);
     List<int> GetMovableFields(FieldState state);
     List<int> GetPossibleMills(FieldState state);
+    List<int> GetNeighbors(int key);
 }
 
 public class BoardNode
@@ -43,7 +45,7 @@ public class MillModel : IMillModel
             gameBoard = value;
         }
     }
-    private List<int>[] neighborNodes;
+    public List<int>[] neighborNodes;
 
     // all possible mills, each containing 3 node IDs
     static readonly int[][] mills =
@@ -65,6 +67,11 @@ public class MillModel : IMillModel
         new[] {20, 13, 5},
         new[] {23, 14, 2},
     };
+
+    public MillModel()
+    {
+        InitializeBoard();
+    }
 
     // update field and check for any mills surrounding the updated field
     public void UpdateField(int key, FieldState state)
@@ -122,6 +129,11 @@ public class MillModel : IMillModel
         {
             GameBoard.Add(i, new BoardNode(neighborNodes[i]));
         }
+    }
+
+    public List<int> GetNeighbors(int key)
+    {
+        return neighborNodes[key];
     }
 
     public bool CheckForMill(int key)
@@ -202,15 +214,29 @@ public class MillModel : IMillModel
     /// </summary>
     /// <param name="state">The required field state.</param>
     /// <returns>All field keys that are the last missing stone for a mill.</returns>
-    // TODO implement
     public List<int> GetPossibleMills(FieldState state)
     {
         List<int> list = new List<int>();
         UnityEngine.Debug.Log(millsByNode[0].Count);
-        foreach(var possibleMill in millsByNode)
+        foreach(var mill in mills)
         {
-            // int emptyNode;
             List<int> fullNodes = new List<int>();
+            List<int> emptyNodes = new List<int>();
+            foreach(int node in mill)
+            {
+                if(gameBoard[node].state == state)
+                {
+                    fullNodes.Add(node);
+                }
+                else if(gameBoard[node].state == FieldState.Empty)
+                {
+                    emptyNodes.Add(node);
+                }
+            }
+            if(fullNodes.Count == 2 && emptyNodes.Count == 1)
+            {
+                list.Add(emptyNodes[0]);
+            }
         }
         return list;
     }
