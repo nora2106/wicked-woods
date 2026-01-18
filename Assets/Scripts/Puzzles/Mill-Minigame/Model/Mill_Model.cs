@@ -11,7 +11,9 @@ public interface IMillModel
     List<int> GetFieldsByState(FieldState state);
     bool CheckForMill(int key);
     List<int> GetMovableFields(FieldState state);
-    List<int> GetPossibleMills(FieldState state);
+    Dictionary<int, int[]> GetAlmostMills(FieldState state);
+    List<int> GetPossibleMillFields(FieldState state);
+    List<int> GetBlockedMillFields(FieldState state);
     List<int> GetNeighbors(int key);
 }
 
@@ -210,14 +212,48 @@ public class MillModel : IMillModel
     }
 
     /// <summary>
+    /// Get possible mills that are only missing one stone.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>Dictionary containing empty field and its full row fields.</returns>
+    public Dictionary<int, int[]> GetAlmostMills(FieldState state)
+    {
+        Dictionary<int, int[]> dict = new Dictionary<int, int[]>();
+        foreach(var mill in mills)
+        {
+            int[] fullNodes = new int[2];
+            int emptyNode = new int();
+            int index = 0;
+            bool hasEmpty = false;
+            foreach(int node in mill)
+            {
+                if(gameBoard[node].state == state)
+                {
+                    fullNodes[index] = node;
+                    index++;
+                }
+                else if(gameBoard[node].state == FieldState.Empty)
+                {
+                    emptyNode = node;
+                    hasEmpty = true;
+                }
+            }
+            if(index == 2 && hasEmpty && !dict.Keys.Contains(emptyNode))
+            {
+                dict.Add(emptyNode, fullNodes);
+            }
+        }
+        return dict;
+    }
+
+    /// <summary>
     /// Get fields that could form a mill within the next move.
     /// </summary>
     /// <param name="state">The required field state.</param>
     /// <returns>All field keys that are the last missing stone for a mill.</returns>
-    public List<int> GetPossibleMills(FieldState state)
+    public List<int> GetPossibleMillFields(FieldState state)
     {
         List<int> list = new List<int>();
-        UnityEngine.Debug.Log(millsByNode[0].Count);
         foreach(var mill in mills)
         {
             List<int> fullNodes = new List<int>();
@@ -236,6 +272,37 @@ public class MillModel : IMillModel
             if(fullNodes.Count == 2 && emptyNodes.Count == 1)
             {
                 list.Add(emptyNodes[0]);
+            }
+        }
+        return list;
+    }
+
+    /// <summary>
+    /// Get fields that could form a mill but are blocked by an opponent's stone.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>All field keys that are the last missing stone for a mill.</returns>
+    public List<int> GetBlockedMillFields(FieldState state)
+    {
+        List<int> list = new List<int>();
+        foreach(var mill in mills)
+        {
+            List<int> fullNodes = new List<int>();
+            List<int> blockedNodes = new List<int>();
+            foreach(int node in mill)
+            {
+                if(gameBoard[node].state == state)
+                {
+                    fullNodes.Add(node);
+                }
+                else if(gameBoard[node].state == FieldState.Player)
+                {
+                    blockedNodes.Add(node);
+                }
+            }
+            if(fullNodes.Count == 2 && blockedNodes.Count == 1)
+            {
+                list.Add(blockedNodes[0]);
             }
         }
         return list;

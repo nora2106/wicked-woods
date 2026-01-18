@@ -1,15 +1,21 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 public class TestBoardBuilder
 {
-    // board after setup, populated with random stone placement
+    // board after setup, 18 stones placed, no mill
     public static IMillModel BoardAfterSetup()
     {
         var board = new MillModel();
-        for (int i = 0; i < 9; i++)
+        int[] playerFields = new int[]{0, 2, 21, 23, 18, 20, 3, 14, 7};
+        int[] enemyFields = new int[]{1, 9, 22, 5, 10, 4, 13, 19, 6};
+        for (int i = 0; i < playerFields.Length; i++)
         {
-            board.UpdateField(board.GetFieldsByState(FieldState.Empty)[0], FieldState.Player);
-            board.UpdateField(board.GetFieldsByState(FieldState.Empty)[0], FieldState.Enemy);
+            board.UpdateField(playerFields[i], FieldState.Player);
+        }
+        for (int i = 0; i < enemyFields.Length; i++)
+        {
+            board.UpdateField(enemyFields[i], FieldState.Enemy);
         }
         return board;
     }
@@ -18,7 +24,6 @@ public class TestBoardBuilder
 [TestFixture]
 public class BaseEnemyMoves
 {
-    
     [Test]
     // place stone on a valid field
     public void EnemyPlaceStone()
@@ -34,18 +39,8 @@ public class BaseEnemyMoves
 
         int newField = enemy.CalcPlaceStone();
         var result = rules.PlaceStone(model, newField, FieldState.Enemy);
-        
 
-        switch (result)
-        {
-            case MoveResult.Invalid:
-                throw new InvalidOperationException("Invalid field for placement.");
-            case MoveResult.MillFormed:
-                break;
-            case MoveResult.Ok:
-                break;
-        }
-
+        Assert.That(result, Is.EqualTo(MoveResult.Ok));
         Assert.That(model.GameBoard[newField].state, Is.EqualTo(FieldState.Enemy));
     }
 
@@ -80,15 +75,6 @@ public class BaseEnemyMoves
         int[] fieldPair = enemy.CalcMoveStone();
 
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
-        switch (result)
-        {
-            case MoveResult.Invalid:
-                return;
-            case MoveResult.MillFormed:
-                break;
-            case MoveResult.Ok:
-                break;
-        }
 
         Assert.That(model.GameBoard[fieldPair[0]].state, Is.EqualTo(FieldState.Empty));
         Assert.That(model.GameBoard[fieldPair[1]].state, Is.EqualTo(FieldState.Enemy));
@@ -102,7 +88,12 @@ public class BaseEnemyMoves
         var enemy = new EnemyController(model);
         var rules = new MillRules();
 
-        int[] fieldPair = enemy.CalcMoveStone();
+        // add some player and enemy stones
+        model.UpdateField(0, FieldState.Player);
+        model.UpdateField(1, FieldState.Enemy);
+        model.UpdateField(6, FieldState.Player);
+
+        int[] fieldPair = new int[]{1, 0};
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
 
         Assert.That(result, Is.EqualTo(MoveResult.Invalid));
@@ -112,7 +103,7 @@ public class BaseEnemyMoves
 }
 
 [TestFixture]
-public class EnemyCalcMoves
+public class CalcEnemyMoves
 {
     [Test]
     // find possible mill and close it by placing new stone
@@ -145,7 +136,43 @@ public class EnemyCalcMoves
 
         int[] fieldPair = enemy.CalcMoveStone();
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
-
+        
+        Assert.That(model.GameBoard[fieldPair[1]].state, Is.EqualTo(FieldState.Enemy));
         Assert.That(result, Is.EqualTo(MoveResult.MillFormed));
+    }
+
+    [Test]
+    // detect possible player mill and avert it by placing stone
+    public void AvertPlayerMillByPlacing()
+    {
+        var model = new MillModel();
+        var enemy = new EnemyController(model);
+        var rules = new MillRules();
+
+        model.UpdateField(21, FieldState.Player);
+        model.UpdateField(22, FieldState.Player);
+
+        int target = enemy.CalcPlaceStone();
+        var result = rules.PlaceStone(model, target, FieldState.Enemy);
+
+        Assert.That(model.GameBoard[23].state, Is.EqualTo(FieldState.Enemy));
+    }
+
+    [Test]
+    // detect possible player mill and avert it by moving stone
+    public void AvertPlayerMillByMoving()
+    {
+        var model = new MillModel();
+        var enemy = new EnemyController(model);
+        var rules = new MillRules();
+
+        model.UpdateField(21, FieldState.Player);
+        model.UpdateField(22, FieldState.Player);
+        model.UpdateField(14, FieldState.Enemy);
+
+        int[] fieldPair = enemy.CalcMoveStone();
+        var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
+
+        Assert.That(model.GameBoard[23].state, Is.EqualTo(FieldState.Enemy));
     }
 }
