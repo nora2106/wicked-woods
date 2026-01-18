@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using UnityEngine;
 public class TestBoardBuilder
 {
     // board after setup, 18 stones placed, no mill
@@ -174,5 +175,20 @@ public class CalcEnemyMoves
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
 
         Assert.That(model.GameBoard[23].state, Is.EqualTo(FieldState.Enemy));
+    }
+}
+
+[TestFixture]
+public class TestGames
+{
+    [Test]
+    public void TestSetupPhase()
+    {
+        var model = new MillModel();
+        var enemy = new EnemyController(model);
+        var player = new EnemyController(model, FieldState.Player, FieldState.Enemy);
+        var rules = new MillRules();
+
+        
     }
 }

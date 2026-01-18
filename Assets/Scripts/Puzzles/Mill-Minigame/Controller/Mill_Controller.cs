@@ -141,7 +141,7 @@ public class MillController : IMillController
     private void SwitchTurn()
     {
         // end setup phase if all stones have been placed
-        if (gamePhase == Phase.Setup && maxStones <= 0)
+        if (gamePhase == Phase.Setup && model.AvailableStones[FieldState.Player] <= 0 && model.AvailableStones[FieldState.Enemy] <= 0)
         {
             gamePhase = Phase.Move;
             UnityEngine.Debug.Log("move phase");

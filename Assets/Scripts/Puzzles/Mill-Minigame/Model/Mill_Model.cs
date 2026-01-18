@@ -15,6 +15,7 @@ public interface IMillModel
     List<int> GetPossibleMillFields(FieldState state);
     List<int> GetBlockedMillFields(FieldState state);
     List<int> GetNeighbors(int key);
+    Dictionary<FieldState, int> AvailableStones {get; set;}
 }
 
 public class BoardNode
@@ -39,14 +40,9 @@ public class MillModel : IMillModel
     // Dictionary containing BoardNode (with state) and its key/ID
     public Dictionary<int, BoardNode> gameBoard = new Dictionary<int, BoardNode>();    
     private Dictionary<int, List<int[]>> millsByNode;
-    public Dictionary<int, BoardNode> GameBoard
-    {
-        get { return gameBoard; }
-        set
-        {
-            gameBoard = value;
-        }
-    }
+    private Dictionary<FieldState, int> availableStones;
+    public Dictionary<int, BoardNode> GameBoard{get => gameBoard; set => gameBoard = value;}
+    public Dictionary<FieldState, int> AvailableStones {get => availableStones; set => availableStones = value; }
     public List<int>[] neighborNodes;
 
     // all possible mills, each containing 3 node IDs
@@ -114,6 +110,8 @@ public class MillModel : IMillModel
 
         // lookup table containing a node and its possible mills
         millsByNode = new Dictionary<int, List<int[]>>();
+        availableStones[FieldState.Player] = 9;
+        availableStones[FieldState.Enemy] = 9;
         foreach(var mill in mills)
         {
             foreach (var node in mill) {

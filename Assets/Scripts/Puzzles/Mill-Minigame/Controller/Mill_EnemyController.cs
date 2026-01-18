@@ -5,9 +5,13 @@ using NUnit.Framework;
 public class EnemyController
 {
     private IMillModel model;
-    public EnemyController(IMillModel model)
+    private FieldState myState;
+    private FieldState opponentState;
+    public EnemyController(IMillModel model, FieldState myState = FieldState.Enemy, FieldState opponentState = FieldState.Player)
     {
         this.model = model;
+        this.myState = myState;
+        this.opponentState = opponentState;
     }
 
     /// <summary>
@@ -17,7 +21,7 @@ public class EnemyController
     public int CalcPlaceStone()
     {
         // get possible mills
-        var possibleMillFields = model.GetPossibleMillFields(FieldState.Enemy);
+        var possibleMillFields = model.GetPossibleMillFields(myState);
         foreach(int field in possibleMillFields)
         {
             if(model.GameBoard[field].state == FieldState.Empty)
@@ -27,7 +31,7 @@ public class EnemyController
         }
 
         // get possible player mills
-        var possibleMillFieldsPlayer = model.GetPossibleMillFields(FieldState.Player);
+        var possibleMillFieldsPlayer = model.GetPossibleMillFields(opponentState);
         foreach(int field in possibleMillFieldsPlayer)
         {
             if(model.GameBoard[field].state == FieldState.Empty)
@@ -47,13 +51,13 @@ public class EnemyController
     public int[] CalcMoveStone()
     {
         // first: check for possible mills
-        var almostMills = model.GetAlmostMills(FieldState.Enemy);
+        var almostMills = model.GetAlmostMills(myState);
         foreach(int key in almostMills.Keys)
         {
             foreach(int neighbor in model.GetNeighbors(key))
             {
                 // choose field with enemy stone that's not in the current almostMill
-                if(model.GameBoard[neighbor].state == FieldState.Enemy && !almostMills[key].Contains(neighbor))
+                if(model.GameBoard[neighbor].state == myState && !almostMills[key].Contains(neighbor))
                 {
                     return new int[2]{neighbor, key};
                 }
@@ -61,7 +65,7 @@ public class EnemyController
         }
 
         // for testing: get random fieldpair  
-        foreach(int field in model.GetFieldsByState(FieldState.Enemy))
+        foreach(int field in model.GetFieldsByState(myState))
         {
             foreach(int neighbor in model.GetNeighbors(field))
             {
@@ -82,12 +86,12 @@ public class EnemyController
     {
         // prevent player mill
         // TODO order depends on game phase - setup: remove one of 2 stones in row, move: predict player moves
-        var possibleMillFieldsPlayer = model.GetPossibleMillFields(FieldState.Player);
+        var possibleMillFieldsPlayer = model.GetPossibleMillFields(opponentState);
         foreach(int field in possibleMillFieldsPlayer)
         {
             foreach(var neighbor in model.GetNeighbors(field))
             {
-                if(model.GameBoard[neighbor].state == FieldState.Player)
+                if(model.GameBoard[neighbor].state == opponentState)
                 {
                     return neighbor;
                 }
@@ -95,16 +99,21 @@ public class EnemyController
         }
 
         // enable possible mill by looking for blocked mills (row containing 2 enemy stones and 1 player stone)
-        var possibleMillFields = model.GetBlockedMillFields(FieldState.Enemy);
+        var possibleMillFields = model.GetBlockedMillFields(myState);
         foreach(int field in possibleMillFields)
         {
-            if(model.GameBoard[field].state == FieldState.Player)
+            if(model.GameBoard[field].state == opponentState)
             {
                 return field;
             }
         }
 
         // fallback: select first field with player stone
-        return model.GetFieldsByState(FieldState.Player)[0];
+        return model.GetFieldsByState(opponentState)[0];
+    }
+
+    public void TakeTurn()
+    {
+        
     }
 }

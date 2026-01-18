@@ -3,6 +3,10 @@ public interface IMillRules
      MoveResult PlaceStone(IMillModel model, int fieldKey, FieldState player);
      MoveResult MoveStone(IMillModel model, int from, int to, FieldState player);
      MoveResult RemoveStone(IMillModel model, int fieldKey, FieldState player);
+    bool CanPlaceStone(IMillModel model, FieldState player);
+    bool CanMoveStone(IMillModel model, FieldState player);
+    bool CanFly(IMillModel model, FieldState player);
+    bool CanRemoveStone(IMillModel model, FieldState player);
 }
 
 public enum MoveResult
@@ -30,6 +34,7 @@ public class MillRules : IMillRules
         }
 
         model.UpdateField(fieldKey, player);
+        model.AvailableStones[player]--;
         
         if(model.CheckForMill(fieldKey)) {
             return MoveResult.MillFormed;
@@ -77,5 +82,25 @@ public class MillRules : IMillRules
 
         model.UpdateField(fieldKey, FieldState.Empty);
         return MoveResult.Ok;
+    }
+
+    public bool CanPlaceStone(IMillModel model, FieldState player)
+    {
+        return model.AvailableStones[player] > 0;
+    }
+
+    public bool CanMoveStone(IMillModel model, FieldState player)
+    {
+        return model.GetFieldsByState(player).Count > 3;
+    }
+
+    public bool CanFly(IMillModel model, FieldState player)
+    {
+        return model.GetFieldsByState(player).Count <= 3;
+    }
+
+    public bool CanRemoveStone(IMillModel model, FieldState player)
+    {
+        return true;
     }
 }
