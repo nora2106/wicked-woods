@@ -108,10 +108,15 @@ public class MillModel : IMillModel
         neighborNodes[22] = new List<int> {21, 19, 23};
         neighborNodes[23] = new List<int> {22, 14};
 
-        // lookup table containing a node and its possible mills
+        // // lookup table containing a node and its possible mills
         millsByNode = new Dictionary<int, List<int[]>>();
-        availableStones[FieldState.Player] = 9;
-        availableStones[FieldState.Enemy] = 9;
+ 
+        availableStones = new Dictionary<FieldState, int>
+        {
+            { FieldState.Player, 9 },
+            { FieldState.Enemy, 9 }
+        };
+        
         foreach(var mill in mills)
         {
             foreach (var node in mill) {
