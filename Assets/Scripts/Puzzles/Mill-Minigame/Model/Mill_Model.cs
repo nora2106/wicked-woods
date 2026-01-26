@@ -230,7 +230,7 @@ public class MillModel : IMillModel
             bool hasEmpty = false;
             foreach(int node in mill)
             {
-                if(gameBoard[node].state == state)
+                if(gameBoard[node].state == state && index < fullNodes.Length)
                 {
                     fullNodes[index] = node;
                     index++;

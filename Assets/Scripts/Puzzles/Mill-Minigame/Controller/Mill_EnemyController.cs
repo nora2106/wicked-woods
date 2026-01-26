@@ -4,12 +4,14 @@ using NUnit.Framework;
 
 public class EnemyController
 {
-    private IMillModel model;
-    private FieldState myState;
-    private FieldState opponentState;
-    public EnemyController(IMillModel model, FieldState myState = FieldState.Enemy, FieldState opponentState = FieldState.Player)
+    private readonly IMillModel model;
+    private readonly IMillRules rules;
+    private readonly FieldState myState;
+    private readonly FieldState opponentState;
+    public EnemyController(IMillModel model, IMillRules rules, FieldState myState = FieldState.Enemy, FieldState opponentState = FieldState.Player)
     {
         this.model = model;
+        this.rules = rules;
         this.myState = myState;
         this.opponentState = opponentState;
     }
@@ -50,7 +52,7 @@ public class EnemyController
     /// <returns>Keys of chosen and target field.</returns>
     public int[] CalcMoveStone()
     {
-        // first: check for possible mills
+        // first: close mill if possible within one move
         var almostMills = model.GetAlmostMills(myState);
         foreach(int key in almostMills.Keys)
         {
@@ -63,6 +65,11 @@ public class EnemyController
                 }
             }
         }
+
+        // second: calculate moves to block enemy mill
+        // third: calculate moves to block enemy almost mill
+        // if both larger than one: calculate moves to close mill
+        // fourth: choose action with least moves required
 
         // for testing: get random fieldpair  
         foreach(int field in model.GetFieldsByState(myState))
@@ -114,6 +121,17 @@ public class EnemyController
 
     public void TakeTurn()
     {
-        
+        if(rules.CanRemoveStone(model, myState))
+        {
+            rules.RemoveStone(model, CalcRemoveStone(), myState);
+        }
+        else if(rules.CanPlaceStone(model, myState))
+        {
+            rules.PlaceStone(model, CalcPlaceStone(), myState);
+        }
+        else if(rules.CanMoveStone(model, myState))
+        {
+            rules.MoveStone(model, CalcMoveStone()[0], CalcMoveStone()[1], myState);
+        }
     }
 }

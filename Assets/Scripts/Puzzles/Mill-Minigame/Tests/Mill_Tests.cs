@@ -30,8 +30,8 @@ public class BaseEnemyMoves
     public void EnemyPlaceStone()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
         
         // add some player and enemy stones
         model.UpdateField(0, FieldState.Player);
@@ -50,7 +50,6 @@ public class BaseEnemyMoves
     public void DontPlaceInvalidStone()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
         
         // add some player and enemy stones
@@ -70,8 +69,8 @@ public class BaseEnemyMoves
     public void EnemyMoveStone()
     {
         var model = TestBoardBuilder.BoardAfterSetup();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
 
         int[] fieldPair = enemy.CalcMoveStone();
 
@@ -86,8 +85,8 @@ public class BaseEnemyMoves
     public void DontExecuteInvalidMove()
     {
         var model = TestBoardBuilder.BoardAfterSetup();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model,rules);
 
         // add some player and enemy stones
         model.UpdateField(0, FieldState.Player);
@@ -111,8 +110,8 @@ public class CalcEnemyMoves
     public void ClosePossibleMillByPlacing()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
 
         model.UpdateField(19, FieldState.Enemy);
         model.UpdateField(16, FieldState.Enemy);
@@ -128,8 +127,8 @@ public class CalcEnemyMoves
     public void ClosePossibleMillByMoving()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
 
         model.UpdateField(19, FieldState.Enemy);
         model.UpdateField(16, FieldState.Enemy);
@@ -147,8 +146,8 @@ public class CalcEnemyMoves
     public void AvertPlayerMillByPlacing()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
 
         model.UpdateField(21, FieldState.Player);
         model.UpdateField(22, FieldState.Player);
@@ -164,8 +163,8 @@ public class CalcEnemyMoves
     public void AvertPlayerMillByMoving()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
         var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
 
         model.UpdateField(21, FieldState.Player);
         model.UpdateField(22, FieldState.Player);
@@ -185,10 +184,8 @@ public class TestGames
     public void TestSetupPhase()
     {
         var model = new MillModel();
-        var enemy = new EnemyController(model);
-        var player = new EnemyController(model, FieldState.Player, FieldState.Enemy);
         var rules = new MillRules();
-
-        
+        var enemy = new EnemyController(model, rules);
+        var player = new EnemyController(model, rules, FieldState.Player, FieldState.Enemy);
     }
 }

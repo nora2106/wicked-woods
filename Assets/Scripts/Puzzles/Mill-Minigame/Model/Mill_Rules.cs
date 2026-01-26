@@ -20,6 +20,7 @@ public enum MoveResult
 
 public class MillRules : IMillRules
 {
+    private FieldState canRemove = FieldState.Empty;
     /// <summary>
     /// Place a new stone on an empty field.
     /// </summary>
@@ -37,6 +38,7 @@ public class MillRules : IMillRules
         model.AvailableStones[player]--;
         
         if(model.CheckForMill(fieldKey)) {
+            canRemove = player;
             return MoveResult.MillFormed;
         }
 
@@ -61,6 +63,7 @@ public class MillRules : IMillRules
         model.UpdateField(to, player);
         
         if(model.CheckForMill(to)) {
+            canRemove = player;
             return MoveResult.MillFormed;
         }
 
@@ -81,6 +84,7 @@ public class MillRules : IMillRules
         }
 
         model.UpdateField(fieldKey, FieldState.Empty);
+        canRemove = FieldState.Empty;
         return MoveResult.Ok;
     }
 
@@ -91,7 +95,7 @@ public class MillRules : IMillRules
 
     public bool CanMoveStone(IMillModel model, FieldState player)
     {
-        return model.GetFieldsByState(player).Count > 3;
+        return model.GetFieldsByState(player).Count > 3 && model.AvailableStones[player] <= 0;
     }
 
     public bool CanFly(IMillModel model, FieldState player)
@@ -101,6 +105,6 @@ public class MillRules : IMillRules
 
     public bool CanRemoveStone(IMillModel model, FieldState player)
     {
-        return true;
+        return canRemove == player;
     }
 }
