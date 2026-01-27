@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEditor;
 
@@ -15,7 +16,8 @@ public interface IMillModel
     List<int> GetPossibleMillFields(FieldState state);
     List<int> GetBlockedMillFields(FieldState state);
     List<int> GetNeighbors(int key);
-    Dictionary<FieldState, int> AvailableStones {get; set;}
+    Dictionary<FieldState, int> AvailableStones { get; set; }
+    int CalcMoveDistance(int from, int to);
 }
 
 public class BoardNode
@@ -38,11 +40,11 @@ public class BoardNode
 public class MillModel : IMillModel
 {
     // Dictionary containing BoardNode (with state) and its key/ID
-    public Dictionary<int, BoardNode> gameBoard = new Dictionary<int, BoardNode>();    
+    public Dictionary<int, BoardNode> gameBoard = new Dictionary<int, BoardNode>();
     private Dictionary<int, List<int[]>> millsByNode;
     private Dictionary<FieldState, int> availableStones;
-    public Dictionary<int, BoardNode> GameBoard{get => gameBoard; set => gameBoard = value;}
-    public Dictionary<FieldState, int> AvailableStones {get => availableStones; set => availableStones = value; }
+    public Dictionary<int, BoardNode> GameBoard { get => gameBoard; set => gameBoard = value; }
+    public Dictionary<FieldState, int> AvailableStones { get => availableStones; set => availableStones = value; }
     public List<int>[] neighborNodes;
 
     // all possible mills, each containing 3 node IDs
@@ -83,44 +85,45 @@ public class MillModel : IMillModel
     {
         // assign neighbor nodes to each node (only direct neighbors to model movement paths)
         neighborNodes = new List<int>[24];
-        neighborNodes[0] = new List<int> {1, 9};
-        neighborNodes[1] = new List<int> {0, 2, 4};
-        neighborNodes[2] = new List<int> {1, 14};
-        neighborNodes[3] = new List<int> {10, 4};
-        neighborNodes[4] = new List<int> {3, 7, 1, 5};
-        neighborNodes[5] = new List<int> {4, 13};
-        neighborNodes[6] = new List<int> {11, 7};
-        neighborNodes[7] = new List<int> {6, 4, 8};
-        neighborNodes[8] = new List<int> {7, 12};
-        neighborNodes[9] = new List<int> {21, 0, 10};
-        neighborNodes[10] = new List<int> {9, 11, 18, 3};
-        neighborNodes[11] = new List<int> {10, 15, 6};
-        neighborNodes[12] = new List<int> {17, 8, 13};
-        neighborNodes[13] = new List<int> {12, 20, 5, 14};
-        neighborNodes[14] = new List<int> {23, 13, 2};
-        neighborNodes[15] = new List<int> {11, 16};
-        neighborNodes[16] = new List<int> {15, 19, 17};
-        neighborNodes[17] = new List<int> {16, 12};
-        neighborNodes[18] = new List<int> {20, 29};
-        neighborNodes[19] = new List<int> {18, 22, 20, 16};
-        neighborNodes[20] = new List<int> {19, 13};
-        neighborNodes[21] = new List<int> {9, 22};
-        neighborNodes[22] = new List<int> {21, 19, 23};
-        neighborNodes[23] = new List<int> {22, 14};
+        neighborNodes[0] = new List<int> { 1, 9 };
+        neighborNodes[1] = new List<int> { 0, 2, 4 };
+        neighborNodes[2] = new List<int> { 1, 14 };
+        neighborNodes[3] = new List<int> { 10, 4 };
+        neighborNodes[4] = new List<int> { 3, 7, 1, 5 };
+        neighborNodes[5] = new List<int> { 4, 13 };
+        neighborNodes[6] = new List<int> { 11, 7 };
+        neighborNodes[7] = new List<int> { 6, 4, 8 };
+        neighborNodes[8] = new List<int> { 7, 12 };
+        neighborNodes[9] = new List<int> { 21, 0, 10 };
+        neighborNodes[10] = new List<int> { 9, 11, 18, 3 };
+        neighborNodes[11] = new List<int> { 10, 15, 6 };
+        neighborNodes[12] = new List<int> { 17, 8, 13 };
+        neighborNodes[13] = new List<int> { 12, 20, 5, 14 };
+        neighborNodes[14] = new List<int> { 23, 13, 2 };
+        neighborNodes[15] = new List<int> { 11, 16 };
+        neighborNodes[16] = new List<int> { 15, 19, 17 };
+        neighborNodes[17] = new List<int> { 16, 12 };
+        neighborNodes[18] = new List<int> { 19, 10 };
+        neighborNodes[19] = new List<int> { 18, 22, 20, 16 };
+        neighborNodes[20] = new List<int> { 19, 13 };
+        neighborNodes[21] = new List<int> { 9, 22 };
+        neighborNodes[22] = new List<int> { 21, 19, 23 };
+        neighborNodes[23] = new List<int> { 22, 14 };
 
         // // lookup table containing a node and its possible mills
         millsByNode = new Dictionary<int, List<int[]>>();
- 
+
         availableStones = new Dictionary<FieldState, int>
         {
             { FieldState.Player, 9 },
             { FieldState.Enemy, 9 }
         };
-        
-        foreach(var mill in mills)
+
+        foreach (var mill in mills)
         {
-            foreach (var node in mill) {
-                if(!millsByNode.TryGetValue(node, out var list))
+            foreach (var node in mill)
+            {
+                if (!millsByNode.TryGetValue(node, out var list))
                 {
                     list = new List<int[]>();
                     millsByNode[node] = list;
@@ -146,9 +149,9 @@ public class MillModel : IMillModel
         // get all possible mills
         var possibleMills = millsByNode[key];
 
-        foreach(var mill in possibleMills)
+        foreach (var mill in possibleMills)
         {
-            if(IsMill(mill))
+            if (IsMill(mill))
             {
                 return true;
                 // TODO notify controller
@@ -160,9 +163,9 @@ public class MillModel : IMillModel
         // check if all nodes of a mill have the same state
         bool IsMill(int[] mill)
         {
-            foreach(int node in mill)
+            foreach (int node in mill)
             {
-                if(GameBoard[node].state != gameBoard[key].state)
+                if (GameBoard[node].state != gameBoard[key].state)
                 {
                     return false;
                 }
@@ -173,9 +176,9 @@ public class MillModel : IMillModel
 
     public bool AreNeighbors(int key1, int key2)
     {
-        foreach(var node in neighborNodes[key1])
+        foreach (var node in neighborNodes[key1])
         {
-            if(node == key2)
+            if (node == key2)
             {
                 return true;
             }
@@ -186,9 +189,9 @@ public class MillModel : IMillModel
     public List<int> GetFieldsByState(FieldState state)
     {
         List<int> list = new List<int>();
-        foreach(var point in gameBoard)
+        foreach (var point in gameBoard)
         {
-            if(point.Value.state == state)
+            if (point.Value.state == state)
             {
                 list.Add(point.Key);
             }
@@ -204,9 +207,9 @@ public class MillModel : IMillModel
     public List<int> GetMovableFields(FieldState state)
     {
         List<int> list = new List<int>();
-        foreach(var point in gameBoard)
+        foreach (var point in gameBoard)
         {
-            if(point.Value.state == state && gameBoard[point.Key].neighbors.Any(x => gameBoard[x].state == FieldState.Empty))
+            if (point.Value.state == state && gameBoard[point.Key].neighbors.Any(x => gameBoard[x].state == FieldState.Empty))
             {
                 list.Add(point.Key);
             }
@@ -222,26 +225,26 @@ public class MillModel : IMillModel
     public Dictionary<int, int[]> GetAlmostMills(FieldState state)
     {
         Dictionary<int, int[]> dict = new Dictionary<int, int[]>();
-        foreach(var mill in mills)
+        foreach (var mill in mills)
         {
             int[] fullNodes = new int[2];
             int emptyNode = new int();
             int index = 0;
             bool hasEmpty = false;
-            foreach(int node in mill)
+            foreach (int node in mill)
             {
-                if(gameBoard[node].state == state && index < fullNodes.Length)
+                if (gameBoard[node].state == state && index < fullNodes.Length)
                 {
                     fullNodes[index] = node;
                     index++;
                 }
-                else if(gameBoard[node].state == FieldState.Empty)
+                else if (gameBoard[node].state == FieldState.Empty)
                 {
                     emptyNode = node;
                     hasEmpty = true;
                 }
             }
-            if(index == 2 && hasEmpty && !dict.Keys.Contains(emptyNode))
+            if (index == 2 && hasEmpty && !dict.Keys.Contains(emptyNode))
             {
                 dict.Add(emptyNode, fullNodes);
             }
@@ -257,22 +260,22 @@ public class MillModel : IMillModel
     public List<int> GetPossibleMillFields(FieldState state)
     {
         List<int> list = new List<int>();
-        foreach(var mill in mills)
+        foreach (var mill in mills)
         {
             List<int> fullNodes = new List<int>();
             List<int> emptyNodes = new List<int>();
-            foreach(int node in mill)
+            foreach (int node in mill)
             {
-                if(gameBoard[node].state == state)
+                if (gameBoard[node].state == state)
                 {
                     fullNodes.Add(node);
                 }
-                else if(gameBoard[node].state == FieldState.Empty)
+                else if (gameBoard[node].state == FieldState.Empty)
                 {
                     emptyNodes.Add(node);
                 }
             }
-            if(fullNodes.Count == 2 && emptyNodes.Count == 1)
+            if (fullNodes.Count == 2 && emptyNodes.Count == 1)
             {
                 list.Add(emptyNodes[0]);
             }
@@ -288,26 +291,66 @@ public class MillModel : IMillModel
     public List<int> GetBlockedMillFields(FieldState state)
     {
         List<int> list = new List<int>();
-        foreach(var mill in mills)
+        foreach (var mill in mills)
         {
             List<int> fullNodes = new List<int>();
             List<int> blockedNodes = new List<int>();
-            foreach(int node in mill)
+            foreach (int node in mill)
             {
-                if(gameBoard[node].state == state)
+                if (gameBoard[node].state == state)
                 {
                     fullNodes.Add(node);
                 }
-                else if(gameBoard[node].state == FieldState.Player)
+                else if (gameBoard[node].state == FieldState.Player)
                 {
                     blockedNodes.Add(node);
                 }
             }
-            if(fullNodes.Count == 2 && blockedNodes.Count == 1)
+            if (fullNodes.Count == 2 && blockedNodes.Count == 1)
             {
                 list.Add(blockedNodes[0]);
             }
         }
         return list;
+    }
+
+    /// <summary>
+    /// Get distance in moves between two fields.
+    /// </summary>
+    /// <param name="from">Start field ID.</param>
+    /// <param name="to">Target field ID.</param>
+    /// <returns>Move count. 0 if move is not possible.</returns>
+    public int CalcMoveDistance(int from, int to)
+    {
+        List<int> currentLayer = new List<int> { from };
+        List<int> nextLayer = new List<int>();
+        List<int> visitedNodes = new List<int>() { from };
+        int distance = 0;
+
+        while (currentLayer.Count > 0)
+        {
+            foreach (int node in currentLayer)
+            {
+                if (node == to)
+                {
+                    return distance;
+                }
+
+                foreach (int neighbor in neighborNodes[node])
+                {
+                    if (gameBoard[neighbor].state == FieldState.Empty && !visitedNodes.Contains(neighbor))
+                    {
+                        nextLayer.Add(neighbor);
+                        visitedNodes.Add(neighbor);
+                    }
+                }
+            }
+
+            currentLayer = nextLayer;
+            nextLayer = new List<int>();
+            distance++;
+        }
+
+        return 0;
     }
 }

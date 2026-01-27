@@ -175,6 +175,43 @@ public class CalcEnemyMoves
 
         Assert.That(model.GameBoard[23].state, Is.EqualTo(FieldState.Enemy));
     }
+
+    [Test]
+    // calc move distance between 2 fields
+    public void MoveDistance()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+        int moveCount = model.CalcMoveDistance(21, 0);
+
+        Assert.That(moveCount, Is.EqualTo(2));
+    }
+
+    [Test]
+    // calc move distance between 2 fields
+    public void MoveDistanceWithObstacles()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+
+        model.UpdateField(9, FieldState.Player);
+        int moveCount = model.CalcMoveDistance(21, 0);
+        Assert.That(moveCount, Is.EqualTo(6));
+    }
+
+    [Test]
+    // calc move distance between 2 fields
+    public void MoveDistancePathImpossible()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+        
+        model.UpdateField(9, FieldState.Player);
+        model.UpdateField(1, FieldState.Player);
+        int moveCount = model.CalcMoveDistance(21, 0);
+
+        Assert.That(moveCount, Is.EqualTo(0));
+    }
 }
 
 [TestFixture]
