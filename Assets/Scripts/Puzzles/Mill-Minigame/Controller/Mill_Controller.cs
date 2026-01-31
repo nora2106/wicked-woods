@@ -137,7 +137,15 @@ public class MillController : IMillController
     {
         await Task.Delay(new TimeSpan(0, 0, 2));
         view.UpdateBoard(model.GameBoard);
-        SwitchTurn();
+        if(rules.CanRemoveStone(model, FieldState.Enemy))
+        {
+            enemy.TakeTurn();
+            ExecuteEnemyMove();
+        }
+        else
+        {
+            SwitchTurn();
+        }
     }
 
     /// <summary>

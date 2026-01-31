@@ -34,7 +34,7 @@ public class BoardPoint : MonoBehaviour {
                 break;
             // enemy stone
             case FieldState.Enemy:
-                gameObject.GetComponent<SpriteRenderer>().color = new Color(0f, 0f, 0f, 1f);
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f, 0.7f);
                 break;
             // selected player stone
             case FieldState.Selected:

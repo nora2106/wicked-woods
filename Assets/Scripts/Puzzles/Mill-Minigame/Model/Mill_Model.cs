@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using UnityEditor;
 
 public interface IMillModel
 {
@@ -16,6 +14,7 @@ public interface IMillModel
     List<int> GetPossibleMillFields(FieldState state);
     List<int> GetBlockedMillFields(FieldState state);
     List<int> GetNeighbors(int key);
+    List<int[]> GetMillsByPlayer(FieldState player);
     Dictionary<FieldState, int> AvailableStones { get; set; }
     int CalcMoveDistance(int from, int to);
 }
@@ -352,5 +351,34 @@ public class MillModel : IMillModel
         }
 
         return 0;
+    }
+
+    /// <summary>
+    /// Get distance in moves between two fields.
+    /// </summary>
+    /// <param name="from">Start field ID.</param>
+    /// <param name="to">Target field ID.</param>
+    /// <returns>Move count. 0 if move is not possible.</returns>
+    public List<int[]> GetMillsByPlayer(FieldState player)
+    {
+        List<int[]> mills = new List<int[]>();
+        
+        foreach(var possibleMill in mills)
+        {
+            bool full = true;
+            foreach(int field in possibleMill)
+            {
+                if(gameBoard[field].state != player)
+                {
+                    full = false;
+                }
+            }
+            if(full)
+            {
+                mills.Add(possibleMill);
+            }
+        }
+
+        return mills;
     }
 }

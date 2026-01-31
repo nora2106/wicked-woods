@@ -105,6 +105,7 @@ public class MillRules : IMillRules
 
     public bool CanRemoveStone(IMillModel model, FieldState player)
     {
+        // TODO cant remove if all opponent stones are in mills
         return canRemove == player;
     }
 }
