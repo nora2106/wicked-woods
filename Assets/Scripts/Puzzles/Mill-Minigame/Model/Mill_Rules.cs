@@ -37,7 +37,7 @@ public class MillRules : IMillRules
         model.UpdateField(fieldKey, player);
         model.AvailableStones[player]--;
         
-        if(model.CheckForMill(fieldKey)) {
+        if(model.CheckForMill(fieldKey, player)) {
             canRemove = player;
             return MoveResult.MillFormed;
         }
@@ -54,7 +54,12 @@ public class MillRules : IMillRules
     /// <param name="player">Current player - new field state.</param>
     public MoveResult MoveStone(IMillModel model, int from, int to, FieldState player)
     {
-        if(!model.GameBoard[from].neighbors.Contains(to) || model.GameBoard[to].state != FieldState.Empty)
+        if(model.GameBoard[to].state != FieldState.Empty)
+        {
+            return MoveResult.Invalid;
+        }
+
+        else if(!model.GameBoard[from].neighbors.Contains(to) && !CanFly(model, player))
         {
             return MoveResult.Invalid;
         }
@@ -62,8 +67,15 @@ public class MillRules : IMillRules
         model.UpdateField(from, FieldState.Empty);
         model.UpdateField(to, player);
         
-        if(model.CheckForMill(to)) {
-            canRemove = player;
+        if(model.CheckForMill(to, player)) {
+            if(model.ExistFreeStones(CalcOpponent(player)))
+            {
+                canRemove = player;
+            }
+            else
+            {
+                UnityEngine.Debug.Log("mill formed, but no free enemy stones to remove");
+            }
             return MoveResult.MillFormed;
         }
 
@@ -78,7 +90,7 @@ public class MillRules : IMillRules
     /// <param name="player">Player executing the action.</param>
     public MoveResult RemoveStone(IMillModel model, int fieldKey, FieldState player)
     {
-        if(model.GameBoard[fieldKey].state == FieldState.Empty || model.GameBoard[fieldKey].state == player || model.CheckForMill(fieldKey))
+        if(model.GameBoard[fieldKey].state == FieldState.Empty || model.GameBoard[fieldKey].state == player || model.CheckForMill(fieldKey, player))
         {
             return MoveResult.Invalid;
         }
@@ -107,5 +119,18 @@ public class MillRules : IMillRules
     {
         // TODO cant remove if all opponent stones are in mills
         return canRemove == player;
+    }
+
+    public FieldState CalcOpponent(FieldState player)
+    {
+        if(player == FieldState.Player)
+        {
+            return FieldState.Enemy;
+        }
+        else if(player == FieldState.Enemy)
+        {
+            return FieldState.Player;
+        }
+        return FieldState.Empty;
     }
 }

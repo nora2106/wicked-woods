@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 public interface IMillModel
@@ -8,15 +9,28 @@ public interface IMillModel
     void UpdateField(int key, FieldState player);
     bool AreNeighbors(int key1, int key2);
     List<int> GetFieldsByState(FieldState state);
-    bool CheckForMill(int key);
+    bool CheckForMill(int key, FieldState player);
+    
+    /// <summary>
+    /// Get fields that can be moved from.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// /// <returns>All field keys with at least one empty neighbor.</returns>
     List<int> GetMovableFields(FieldState state);
     Dictionary<int, int[]> GetAlmostMills(FieldState state);
     List<int> GetPossibleMillFields(FieldState state);
+        
+    /// <summary>
+    /// Get fields that could form a mill but are blocked by an opponent's stone.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>All field keys that are the last missing stone for a mill.</returns>
     List<int> GetBlockedMillFields(FieldState state);
     List<int> GetNeighbors(int key);
     List<int[]> GetMillsByPlayer(FieldState player);
     Dictionary<FieldState, int> AvailableStones { get; set; }
     int CalcMoveDistance(int from, int to);
+    bool ExistFreeStones(FieldState player);
 }
 
 public class BoardNode
@@ -109,7 +123,7 @@ public class MillModel : IMillModel
         neighborNodes[22] = new List<int> { 21, 19, 23 };
         neighborNodes[23] = new List<int> { 22, 14 };
 
-        // // lookup table containing a node and its possible mills
+        // lookup table containing a node and its possible mills
         millsByNode = new Dictionary<int, List<int[]>>();
 
         availableStones = new Dictionary<FieldState, int>
@@ -143,34 +157,31 @@ public class MillModel : IMillModel
         return neighborNodes[key];
     }
 
-    public bool CheckForMill(int key)
+    public bool CheckForMill(int key, FieldState player)
     {
         // get all possible mills
         var possibleMills = millsByNode[key];
 
-        foreach (var mill in possibleMills)
-        {
-            if (IsMill(mill))
-            {
-                return true;
-                // TODO notify controller
-                // controller sends mill to view
-            }
-        }
-        return false;
-
-        // check if all nodes of a mill have the same state
-        bool IsMill(int[] mill)
+        bool CheckAllNodes(int[] mill)
         {
             foreach (int node in mill)
             {
-                if (GameBoard[node].state != gameBoard[key].state)
+                if (GameBoard[node].state != player)
                 {
                     return false;
                 }
             }
             return true;
         }
+
+        foreach (var mill in possibleMills)
+        {
+            if (CheckAllNodes(mill))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public bool AreNeighbors(int key1, int key2)
@@ -198,11 +209,6 @@ public class MillModel : IMillModel
         return list;
     }
 
-    /// <summary>
-    /// Get fields that can be moved from.
-    /// </summary>
-    /// <param name="state">The required field state.</param>
-    /// /// <returns>All field keys with at least one empty neighbor.</returns>
     public List<int> GetMovableFields(FieldState state)
     {
         List<int> list = new List<int>();
@@ -282,11 +288,6 @@ public class MillModel : IMillModel
         return list;
     }
 
-    /// <summary>
-    /// Get fields that could form a mill but are blocked by an opponent's stone.
-    /// </summary>
-    /// <param name="state">The required field state.</param>
-    /// <returns>All field keys that are the last missing stone for a mill.</returns>
     public List<int> GetBlockedMillFields(FieldState state)
     {
         List<int> list = new List<int>();
@@ -362,23 +363,40 @@ public class MillModel : IMillModel
     public List<int[]> GetMillsByPlayer(FieldState player)
     {
         List<int[]> mills = new List<int[]>();
-        
-        foreach(var possibleMill in mills)
+
+        foreach (var possibleMill in mills)
         {
             bool full = true;
-            foreach(int field in possibleMill)
+            foreach (int field in possibleMill)
             {
-                if(gameBoard[field].state != player)
+                if (gameBoard[field].state != player)
                 {
                     full = false;
                 }
             }
-            if(full)
+            if (full)
             {
                 mills.Add(possibleMill);
             }
         }
 
         return mills;
+    }
+
+    /// <summary>
+    /// Check if any non-mill stones of a certain player exist.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>True if free stones exist, false if not.</returns>
+    public bool ExistFreeStones(FieldState player)
+    {
+        foreach (var field in GetFieldsByState(player))
+        {
+            if (CheckForMill(field, player))
+            {
+                return true;
+            }
+        }
+        return true;
     }
 }

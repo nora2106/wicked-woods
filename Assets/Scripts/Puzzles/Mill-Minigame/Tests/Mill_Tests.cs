@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 using UnityEngine;
 public class TestBoardBuilder
 {
@@ -100,6 +101,44 @@ public class BaseEnemyMoves
         Assert.That(model.GameBoard[fieldPair[0]].state, Is.Not.EqualTo(FieldState.Empty));
         Assert.That(model.GameBoard[fieldPair[1]].state, Is.Not.EqualTo(FieldState.Enemy));
     }
+
+    [Test]
+    // remove enemy stone in the next turn after forming a mill
+    public void EnemyRemoveStone()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+        var enemy = new EnemyController(model, rules, FieldState.Enemy, FieldState.Player);
+        model.UpdateField(9, FieldState.Player);
+        model.UpdateField(1, FieldState.Player);
+        model.UpdateField(2, FieldState.Player);
+        
+        model.UpdateField(18, FieldState.Enemy);
+        model.UpdateField(19, FieldState.Enemy);
+        rules.PlaceStone(model, 20, FieldState.Enemy);
+        enemy.TakeTurn();
+        
+        Assert.That(model.GetFieldsByState(FieldState.Player).Count, Is.EqualTo(2));
+    }
+
+    
+    [Test]
+    // don't remove stone after mill if all player stones are in a mill
+    public void RemovingStoneImpossible()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+        model.UpdateField(9, FieldState.Player);
+        model.UpdateField(0, FieldState.Player);
+        model.UpdateField(21, FieldState.Player);
+        
+        model.UpdateField(18, FieldState.Enemy);
+        model.UpdateField(19, FieldState.Enemy);
+        var result = rules.PlaceStone(model, 20, FieldState.Enemy);
+        
+        Assert.That(result, Is.EqualTo(MoveResult.MillFormed));
+        Assert.That(model.GetFieldsByState(FieldState.Player).Count, Is.EqualTo(3));
+    }
 }
 
 [TestFixture]
@@ -130,13 +169,17 @@ public class CalcEnemyMoves
         var rules = new MillRules();
         var enemy = new EnemyController(model, rules);
 
-        model.UpdateField(19, FieldState.Enemy);
-        model.UpdateField(16, FieldState.Enemy);
-        model.UpdateField(23, FieldState.Enemy);
+        model.UpdateField(1, FieldState.Player);
+       
+        model.UpdateField(9, FieldState.Enemy);
+        model.UpdateField(10, FieldState.Enemy);
+        model.UpdateField(6, FieldState.Enemy);
 
         int[] fieldPair = enemy.CalcMoveStone();
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
         
+        Debug.Log(fieldPair[0]);
+        Debug.Log(fieldPair[1]);
         Assert.That(model.GameBoard[fieldPair[1]].state, Is.EqualTo(FieldState.Enemy));
         Assert.That(result, Is.EqualTo(MoveResult.MillFormed));
     }
@@ -166,14 +209,14 @@ public class CalcEnemyMoves
         var rules = new MillRules();
         var enemy = new EnemyController(model, rules);
 
-        model.UpdateField(21, FieldState.Player);
-        model.UpdateField(22, FieldState.Player);
+        model.UpdateField(0, FieldState.Player);
+        model.UpdateField(1, FieldState.Player);
         model.UpdateField(14, FieldState.Enemy);
 
         int[] fieldPair = enemy.CalcMoveStone();
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
 
-        Assert.That(model.GameBoard[23].state, Is.EqualTo(FieldState.Enemy));
+        Assert.That(model.GameBoard[2].state, Is.EqualTo(FieldState.Enemy));
     }
 
     [Test]

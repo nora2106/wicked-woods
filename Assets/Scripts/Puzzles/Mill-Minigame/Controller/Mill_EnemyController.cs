@@ -64,98 +64,36 @@ public class EnemyController
     /// <returns>Keys of chosen and target field.</returns>
     public int[] CalcMoveStone()
     {
-        var possibleMillFields = model.GetPossibleMillFields(myState);
-        var possibleOppMillFields = model.GetPossibleMillFields(opponentState);
-        Dictionary<int, int[]> possibleMoves = new();
+        var almostMills = model.GetAlmostMills(myState);
+        var almostOppMills = model.GetAlmostMills(opponentState);
 
-        // TODO maybe auslagern?
-        // selects the move with the fewest necessary moves based on a list of target nodes
-        void GetMinMoveCount(FieldState state, List<int> fieldset)
+        // if possible, complete own mill
+        foreach (int field in almostMills.Keys)
         {
-            int minMoveCount = int.MaxValue;
-            int[] startTarget = new int[2];
-            // get move distance to all possible mill fields
-            foreach (int target in fieldset)
-            {
-                foreach (int start in model.GetFieldsByState(state))
-                {
-                    int dist = model.CalcMoveDistance(start, target);
-                    // save if first or smaller than current value
-                    if (dist < minMoveCount && start != target)
-                    {
-                        minMoveCount = dist;
-                        startTarget[0] = start;
-                        startTarget[1] = target;
-                    }
-                }
-            }
-            if (minMoveCount != int.MaxValue && !possibleMoves.Keys.Contains(minMoveCount))
-            {
-                possibleMoves.Add(minMoveCount, startTarget);
-            }
-        }
-
-        // first: calculate and store actions with smallest distance to close mill and prevent enemy mill
-        GetMinMoveCount(myState, possibleMillFields);
-        GetMinMoveCount(opponentState, possibleOppMillFields);
-
-        // TODO calculate moves to block enemy mill
-        var fullOppMills = model.GetMillsByPlayer(opponentState);
-        List<int> fieldsToBlock = new();
-
-        foreach (var mill in fullOppMills)
-        {
-            foreach (int field in mill)
-            {
-                foreach (int neighbor in model.GetNeighbors(field))
-                {
-                    if (model.GameBoard[field].state == FieldState.Empty)
-                    {
-                        fieldsToBlock.Add(neighbor);
-                    }
-                }
-            }
-        }
-
-        GetMinMoveCount(opponentState, fieldsToBlock);
-
-        // choose action with least moves required
-        int minMoveCount = int.MaxValue;
-        foreach (var pair in possibleMoves)
-        {
-            if (pair.Key < minMoveCount)
-            {
-                minMoveCount = pair.Key;
-
-                // stop calculating if an action only requires one move
-                if (pair.Key == 1)
-                {
-                    UnityEngine.Debug.Log("chose to either build or prevent a mill");
-                    return possibleMoves[minMoveCount];
-                }
-            }
-        }
-
-        // TODO also allow actions with more than 1 move? or trash idea and change to only allow actions with one move
-        if (minMoveCount > 1)
-        {
-            UnityEngine.Debug.Log("chose to either build or prevent a mill");
-            return possibleMoves[minMoveCount];
-        }
-
-        // backup: return random fieldset
-        foreach (int field in model.GetFieldsByState(myState))
-        {
+            // TODO calculate shortest path to field from all stones that are not in this almost mill
             foreach (int neighbor in model.GetNeighbors(field))
             {
-                if (model.GameBoard[neighbor].state == FieldState.Empty)
+                if (model.GameBoard[neighbor].state == myState && !almostMills[field].Contains(neighbor))
                 {
-                    UnityEngine.Debug.Log("chose backup random field");
-                    return new int[2] { field, neighbor };
+                    return new int[2] { neighbor, field };
                 }
             }
         }
 
+        // if possible, prevent enemy mill
+        foreach (int field in almostOppMills.Keys)
+        {
+            // TODO calculate shortest path to field from all stones that are not in almost mills
+            foreach (int neighbor in model.GetNeighbors(field))
+            {
+                if (model.GameBoard[neighbor].state == myState && !almostOppMills[field].Contains(neighbor))
+                {
+                    return new int[2] { neighbor, field };
+                }
+            }
+        }
+
+        // TODO add backup (after testing)
         return new int[2];
     }
 
@@ -180,8 +118,8 @@ public class EnemyController
         }
 
         // enable possible mill by looking for blocked mills (row containing 2 enemy stones and 1 player stone)
-        var possibleMillFields = model.GetBlockedMillFields(myState);
-        foreach (int field in possibleMillFields)
+        var blockedFields = model.GetBlockedMillFields(myState);
+        foreach (int field in blockedFields)
         {
             if (model.GameBoard[field].state == opponentState)
             {
