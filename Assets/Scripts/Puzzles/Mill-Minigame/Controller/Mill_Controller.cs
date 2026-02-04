@@ -121,6 +121,7 @@ public class MillController : IMillController
     /// </summary>
     private void SwitchTurn()
     {
+        // TODO implement draw after x moves without any mill
         playerTurn = !playerTurn;
 
         if (!playerTurn)
@@ -159,8 +160,10 @@ public class MillController : IMillController
 
     /// <summary>
     /// Ends the current game.
+    /// Declares win, loss or draw based on winner param.
+    /// <param name="winner">The game's winner, Empty in case of draw.</param>
     /// </summary>
-    public void StopGame()
+    public void StopGame(FieldState winner)
     {
     }
 }

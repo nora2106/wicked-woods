@@ -9,8 +9,8 @@ public class TestBoardBuilder
     public static IMillModel BoardAfterSetup()
     {
         var board = new MillModel();
-        int[] playerFields = new int[]{0, 2, 21, 23, 18, 20, 3, 14, 7};
-        int[] enemyFields = new int[]{1, 9, 22, 5, 10, 4, 13, 19, 6};
+        int[] playerFields = new int[] { 0, 2, 21, 23, 18, 20, 3, 14, 7 };
+        int[] enemyFields = new int[] { 1, 9, 22, 5, 10, 4, 13, 19, 6 };
         for (int i = 0; i < playerFields.Length; i++)
         {
             board.UpdateField(playerFields[i], FieldState.Player);
@@ -33,7 +33,7 @@ public class BaseEnemyMoves
         var model = new MillModel();
         var rules = new MillRules();
         var enemy = new EnemyController(model, rules);
-        
+
         // add some player and enemy stones
         model.UpdateField(0, FieldState.Player);
         model.UpdateField(1, FieldState.Enemy);
@@ -52,7 +52,7 @@ public class BaseEnemyMoves
     {
         var model = new MillModel();
         var rules = new MillRules();
-        
+
         // add some player and enemy stones
         model.UpdateField(0, FieldState.Player);
         model.UpdateField(1, FieldState.Enemy);
@@ -87,14 +87,14 @@ public class BaseEnemyMoves
     {
         var model = TestBoardBuilder.BoardAfterSetup();
         var rules = new MillRules();
-        var enemy = new EnemyController(model,rules);
+        var enemy = new EnemyController(model, rules);
 
         // add some player and enemy stones
         model.UpdateField(0, FieldState.Player);
         model.UpdateField(1, FieldState.Enemy);
         model.UpdateField(6, FieldState.Player);
 
-        int[] fieldPair = new int[]{1, 0};
+        int[] fieldPair = new int[] { 1, 0 };
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
 
         Assert.That(result, Is.EqualTo(MoveResult.Invalid));
@@ -112,16 +112,16 @@ public class BaseEnemyMoves
         model.UpdateField(9, FieldState.Player);
         model.UpdateField(1, FieldState.Player);
         model.UpdateField(2, FieldState.Player);
-        
+
         model.UpdateField(18, FieldState.Enemy);
         model.UpdateField(19, FieldState.Enemy);
         rules.PlaceStone(model, 20, FieldState.Enemy);
         enemy.TakeTurn();
-        
+
         Assert.That(model.GetFieldsByState(FieldState.Player).Count, Is.EqualTo(2));
     }
 
-    
+
     [Test]
     // don't remove stone after mill if all player stones are in a mill
     public void RemovingStoneImpossible()
@@ -131,11 +131,11 @@ public class BaseEnemyMoves
         model.UpdateField(9, FieldState.Player);
         model.UpdateField(0, FieldState.Player);
         model.UpdateField(21, FieldState.Player);
-        
+
         model.UpdateField(18, FieldState.Enemy);
         model.UpdateField(19, FieldState.Enemy);
         var result = rules.PlaceStone(model, 20, FieldState.Enemy);
-        
+
         Assert.That(result, Is.EqualTo(MoveResult.MillFormed));
         Assert.That(model.GetFieldsByState(FieldState.Player).Count, Is.EqualTo(3));
     }
@@ -170,16 +170,14 @@ public class CalcEnemyMoves
         var enemy = new EnemyController(model, rules);
 
         model.UpdateField(1, FieldState.Player);
-       
+
         model.UpdateField(9, FieldState.Enemy);
         model.UpdateField(10, FieldState.Enemy);
         model.UpdateField(6, FieldState.Enemy);
 
         int[] fieldPair = enemy.CalcMoveStone();
         var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
-        
-        Debug.Log(fieldPair[0]);
-        Debug.Log(fieldPair[1]);
+
         Assert.That(model.GameBoard[fieldPair[1]].state, Is.EqualTo(FieldState.Enemy));
         Assert.That(result, Is.EqualTo(MoveResult.MillFormed));
     }
@@ -196,7 +194,7 @@ public class CalcEnemyMoves
         model.UpdateField(22, FieldState.Player);
 
         int target = enemy.CalcPlaceStone();
-        var result = rules.PlaceStone(model, target, FieldState.Enemy);
+        rules.PlaceStone(model, target, FieldState.Enemy);
 
         Assert.That(model.GameBoard[23].state, Is.EqualTo(FieldState.Enemy));
     }
@@ -214,7 +212,7 @@ public class CalcEnemyMoves
         model.UpdateField(14, FieldState.Enemy);
 
         int[] fieldPair = enemy.CalcMoveStone();
-        var result = rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
+        rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
 
         Assert.That(model.GameBoard[2].state, Is.EqualTo(FieldState.Enemy));
     }
@@ -224,7 +222,6 @@ public class CalcEnemyMoves
     public void MoveDistance()
     {
         var model = new MillModel();
-        var rules = new MillRules();
         int moveCount = model.CalcMoveDistance(21, 0);
 
         Assert.That(moveCount, Is.EqualTo(2));
@@ -235,7 +232,6 @@ public class CalcEnemyMoves
     public void MoveDistanceWithObstacles()
     {
         var model = new MillModel();
-        var rules = new MillRules();
 
         model.UpdateField(9, FieldState.Player);
         int moveCount = model.CalcMoveDistance(21, 0);
@@ -247,13 +243,26 @@ public class CalcEnemyMoves
     public void MoveDistancePathImpossible()
     {
         var model = new MillModel();
-        var rules = new MillRules();
-        
+
         model.UpdateField(9, FieldState.Player);
         model.UpdateField(1, FieldState.Player);
         int moveCount = model.CalcMoveDistance(21, 0);
 
         Assert.That(moveCount, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void PlaceStoneOnOppositeEdge()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+        var enemy = new EnemyController(model, rules);
+
+        model.UpdateField(3, FieldState.Player);
+        model.UpdateField(18, FieldState.Enemy);
+        
+        int target = enemy.CalcPlaceStone();
+        Assert.That(target, Is.EqualTo(5));
     }
 }
 

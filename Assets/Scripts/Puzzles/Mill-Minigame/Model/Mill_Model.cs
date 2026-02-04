@@ -10,16 +10,30 @@ public interface IMillModel
     bool AreNeighbors(int key1, int key2);
     List<int> GetFieldsByState(FieldState state);
     bool CheckForMill(int key, FieldState player);
-    
+
+    int[][] GetPossibleMills();
+
     /// <summary>
     /// Get fields that can be moved from.
     /// </summary>
     /// <param name="state">The required field state.</param>
     /// /// <returns>All field keys with at least one empty neighbor.</returns>
     List<int> GetMovableFields(FieldState state);
+
+    /// <summary>
+    /// Get possible mills that are only missing one stone.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>Dictionary containing empty field and its full row fields.</returns>
     Dictionary<int, int[]> GetAlmostMills(FieldState state);
+
+    /// <summary>
+    /// Get fields that could form a mill within the next move.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>All field keys that are the last missing stone for a mill.</returns>
     List<int> GetPossibleMillFields(FieldState state);
-        
+
     /// <summary>
     /// Get fields that could form a mill but are blocked by an opponent's stone.
     /// </summary>
@@ -29,8 +43,23 @@ public interface IMillModel
     List<int> GetNeighbors(int key);
     List<int[]> GetMillsByPlayer(FieldState player);
     Dictionary<FieldState, int> AvailableStones { get; set; }
+
+    /// <summary>
+    /// Get distance in moves between two fields.
+    /// </summary>
+    /// <param name="from">Start field ID.</param>
+    /// <param name="to">Target field ID.</param>
+    /// <returns>Move count. 0 if move is not possible.</returns>
     int CalcMoveDistance(int from, int to);
+
+    /// <summary>
+    /// Check if any non-mill stones of a certain player exist.
+    /// </summary>
+    /// <param name="player">The player.</param>
+    /// <returns>True if free stones exist, false if not.</returns>
     bool ExistFreeStones(FieldState player);
+
+    bool HasOpenMills(FieldState player);
 }
 
 public class BoardNode
@@ -86,11 +115,9 @@ public class MillModel : IMillModel
         InitializeBoard();
     }
 
-    // update field and check for any mills surrounding the updated field
     public void UpdateField(int key, FieldState state)
     {
         GameBoard[key].SetState(state);
-        // CheckForMill(key, state);
     }
 
     // create gameboard model
@@ -157,6 +184,8 @@ public class MillModel : IMillModel
         return neighborNodes[key];
     }
 
+    public int[][] GetPossibleMills() { return mills; }
+
     public bool CheckForMill(int key, FieldState player)
     {
         // get all possible mills
@@ -222,11 +251,6 @@ public class MillModel : IMillModel
         return list;
     }
 
-    /// <summary>
-    /// Get possible mills that are only missing one stone.
-    /// </summary>
-    /// <param name="state">The required field state.</param>
-    /// <returns>Dictionary containing empty field and its full row fields.</returns>
     public Dictionary<int, int[]> GetAlmostMills(FieldState state)
     {
         Dictionary<int, int[]> dict = new Dictionary<int, int[]>();
@@ -257,11 +281,6 @@ public class MillModel : IMillModel
         return dict;
     }
 
-    /// <summary>
-    /// Get fields that could form a mill within the next move.
-    /// </summary>
-    /// <param name="state">The required field state.</param>
-    /// <returns>All field keys that are the last missing stone for a mill.</returns>
     public List<int> GetPossibleMillFields(FieldState state)
     {
         List<int> list = new List<int>();
@@ -314,12 +333,6 @@ public class MillModel : IMillModel
         return list;
     }
 
-    /// <summary>
-    /// Get distance in moves between two fields.
-    /// </summary>
-    /// <param name="from">Start field ID.</param>
-    /// <param name="to">Target field ID.</param>
-    /// <returns>Move count. 0 if move is not possible.</returns>
     public int CalcMoveDistance(int from, int to)
     {
         List<int> currentLayer = new List<int> { from };
@@ -383,11 +396,6 @@ public class MillModel : IMillModel
         return mills;
     }
 
-    /// <summary>
-    /// Check if any non-mill stones of a certain player exist.
-    /// </summary>
-    /// <param name="player">The player.</param>
-    /// <returns>True if free stones exist, false if not.</returns>
     public bool ExistFreeStones(FieldState player)
     {
         foreach (var field in GetFieldsByState(player))
@@ -398,5 +406,18 @@ public class MillModel : IMillModel
             }
         }
         return true;
+    }
+
+    public bool HasOpenMills(FieldState player)
+    {
+        foreach (var mill in GetAlmostMills(player))
+        {
+            int emptyField = mill.Value.First(m => gameBoard[m].state == FieldState.Empty);
+            if (GetNeighbors(emptyField).Any(n => gameBoard[n].state == player))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

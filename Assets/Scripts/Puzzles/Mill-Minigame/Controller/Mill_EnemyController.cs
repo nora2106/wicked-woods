@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UnityEditor;
 public class EnemyController
 {
     private readonly IMillModel model;
@@ -8,7 +10,8 @@ public class EnemyController
     private readonly FieldState myState;
     private readonly FieldState opponentState;
 
-    private readonly List<int> strategicPoints = new List<int>() { 15, 17, 6, 8, 21, 23, 0, 2 };
+    // list containing all edge nodes of the 3 squares (strategically important)
+    private readonly List<int[]> edgePoints = new List<int[]>() { new int[4] { 21, 23, 0, 2 }, new int[4] { 18, 20, 3, 5 }, new int[4] { 15, 17, 6, 3 } };
     public EnemyController(IMillModel model, IMillRules rules, FieldState myState = FieldState.Enemy, FieldState opponentState = FieldState.Player)
     {
         this.model = model;
@@ -25,6 +28,12 @@ public class EnemyController
     {
         var possibleMillFields = model.GetPossibleMillFields(myState);
         var possibleOppMillFields = model.GetPossibleMillFields(opponentState);
+
+        // place first stone opposite to player stone
+        if (model.AvailableStones[opponentState] == 8 && model.AvailableStones[myState] == 9)
+        {
+            int firstStone = model.GetFieldsByState(opponentState)[0];
+        }
 
         // if possible, complete own mill
         foreach (int field in possibleMillFields)
@@ -44,9 +53,34 @@ public class EnemyController
             }
         }
 
-        // occupy strategically smart fields
-        // TODO sort strategic point by effectivity (most possible mill, no opponent stone blocking)
-        foreach (int field in strategicPoints)
+        // if opponent occupies an edge point - select opposite edge
+        foreach (int field in model.GetFieldsByState(opponentState))
+        {
+            if (edgePoints.Any(l => l.Contains(field)))
+            {
+                // get row opponent field is in
+                int[] row = edgePoints.First(l => l.Contains(field));
+                foreach (int node in row)
+                {
+                    if (model.CalcMoveDistance(field, node) == 2 && model.GameBoard[node].state == FieldState.Empty)
+                    {
+                        return node;
+                    }
+                }
+            }
+        }
+
+        // place in any row with at least one stone and no opponent stone
+        foreach(var mill in model.GetPossibleMills())
+        {
+            if(mill.Any(n => model.GameBoard[n].state == myState) && !mill.Any(n => model.GameBoard[n].state == opponentState))
+            {
+                return mill.First(n => model.GameBoard[n].state == FieldState.Empty);
+            }
+        }
+
+        // fallback: occupy strategically smart fields if possible
+        foreach (int field in edgePoints[0])
         {
             if (model.GameBoard[field].state == FieldState.Empty)
             {
@@ -54,7 +88,7 @@ public class EnemyController
             }
         }
 
-        // fallback: random empty field   
+        // final fallback: first empty field   
         return model.GetFieldsByState(FieldState.Empty)[0];
     }
 
@@ -67,7 +101,7 @@ public class EnemyController
         var almostMills = model.GetAlmostMills(myState);
         var almostOppMills = model.GetAlmostMills(opponentState);
 
-        // if possible, complete own mill
+        // if possible, close own mill
         foreach (int field in almostMills.Keys)
         {
             // TODO calculate shortest path to field from all stones that are not in this almost mill
@@ -80,7 +114,22 @@ public class EnemyController
             }
         }
 
-        // if possible, prevent enemy mill
+        // if closed mill and no open opponent mill: open mill
+        if(model.GetMillsByPlayer(myState).Count > 0 && !model.HasOpenMills(opponentState))
+        {
+            foreach(var mill in model.GetMillsByPlayer(myState))
+            {
+                foreach(int field in mill)
+                {
+                    if(model.GetNeighbors(field).Any(n => model.GameBoard[n].state == FieldState.Empty))
+                    {
+                        return new int[2]{field, model.GetNeighbors(field).First(n => model.GameBoard[n].state == FieldState.Empty)};
+                    }
+                }
+            }
+        }
+
+        // if possible, prevent opponent mill
         foreach (int field in almostOppMills.Keys)
         {
             // TODO calculate shortest path to field from all stones that are not in almost mills
