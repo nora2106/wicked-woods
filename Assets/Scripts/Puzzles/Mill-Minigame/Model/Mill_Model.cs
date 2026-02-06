@@ -1,6 +1,17 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+
+public struct FieldDistance
+{
+    public int field;
+    public int dist;
+
+    public FieldDistance(int field, int dist)
+    {
+        this.field = field;
+        this.dist = dist;
+    }
+}
 
 public interface IMillModel
 {
@@ -51,6 +62,14 @@ public interface IMillModel
     /// <param name="to">Target field ID.</param>
     /// <returns>Move count. 0 if move is not possible.</returns>
     int CalcMoveDistance(int from, int to);
+
+    /// <summary>
+    /// Calculate the shortest distance out of multiple fields to a target field.
+    /// </summary>
+    /// <param name="target">Target field.</param>
+    /// <param name="fields">Array of (movable!) player fields.</param>
+    /// <returns>A FieldDistance object.</returns>
+    FieldDistance CalcShortestPath(int target, List<int> field);
 
     /// <summary>
     /// Check if any non-mill stones of a certain player exist.
@@ -419,5 +438,22 @@ public class MillModel : IMillModel
             }
         }
         return false;
+    }
+
+    public FieldDistance CalcShortestPath(int target, List<int> fields)
+    {
+        int field = 0;
+        int minDistance = int.MaxValue;
+        foreach(int f in fields)
+        {
+            int dist = CalcMoveDistance(f, target);
+            if( dist < minDistance)
+            {
+                field = f;
+                minDistance = dist;
+            }
+        }
+        
+        return new FieldDistance(field, minDistance);
     }
 }

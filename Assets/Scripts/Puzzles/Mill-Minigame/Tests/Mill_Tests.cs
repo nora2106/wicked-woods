@@ -264,6 +264,22 @@ public class CalcEnemyMoves
         int target = enemy.CalcPlaceStone();
         Assert.That(target, Is.EqualTo(5));
     }
+
+    [Test]
+    public void TestFindShortestPath()
+    {
+        var model = new MillModel();
+
+        model.UpdateField(9, FieldState.Player);
+        model.UpdateField(0, FieldState.Enemy);
+        model.UpdateField(14, FieldState.Enemy);
+
+        int target = 21;
+        var movableFields = model.GetMovableFields(FieldState.Enemy);
+        FieldDistance fd = model.CalcShortestPath(target,movableFields);
+        Assert.That(fd.field, Is.EqualTo(14));
+        Assert.That(fd.dist, Is.EqualTo(model.CalcMoveDistance(fd.field, target)));
+    }
 }
 
 [TestFixture]

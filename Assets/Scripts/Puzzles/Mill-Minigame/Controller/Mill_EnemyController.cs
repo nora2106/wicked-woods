@@ -71,9 +71,9 @@ public class EnemyController
         }
 
         // place in any row with at least one stone and no opponent stone
-        foreach(var mill in model.GetPossibleMills())
+        foreach (var mill in model.GetPossibleMills())
         {
-            if(mill.Any(n => model.GameBoard[n].state == myState) && !mill.Any(n => model.GameBoard[n].state == opponentState))
+            if (mill.Any(n => model.GameBoard[n].state == myState) && !mill.Any(n => model.GameBoard[n].state == opponentState))
             {
                 return mill.First(n => model.GameBoard[n].state == FieldState.Empty);
             }
@@ -100,30 +100,42 @@ public class EnemyController
     {
         var almostMills = model.GetAlmostMills(myState);
         var almostOppMills = model.GetAlmostMills(opponentState);
+        FieldDistance minMove = new(0, int.MaxValue);
+        int target = 0;
+        // movable fields
+        List<int> movableFields = model.GetMovableFields(myState);
+
+        // get fields that are currently blocking an enemy mill
+        //var blockingFields = new List<int>();
 
         // if possible, close own mill
         foreach (int field in almostMills.Keys)
         {
-            // TODO calculate shortest path to field from all stones that are not in this almost mill
-            foreach (int neighbor in model.GetNeighbors(field))
+            // calculate shortest path to field from all stones that are not in any almost mill
+            List<int> availableFields = movableFields.Where(f => !almostMills[field].Contains(f)).ToList();
+            var closeMillMove = model.CalcShortestPath(field, availableFields);
+            if (closeMillMove.dist < minMove.dist)
             {
-                if (model.GameBoard[neighbor].state == myState && !almostMills[field].Contains(neighbor))
-                {
-                    return new int[2] { neighbor, field };
-                }
+                minMove = closeMillMove;
+                target = field;
             }
         }
 
-        // if closed mill and no open opponent mill: open mill
-        if(model.GetMillsByPlayer(myState).Count > 0 && !model.HasOpenMills(opponentState))
+        if (minMove.dist == 1)
         {
-            foreach(var mill in model.GetMillsByPlayer(myState))
+            return new int[2] { minMove.field, target };
+        }
+
+        // if closed mill and no open opponent mill: open mill
+        if (model.GetMillsByPlayer(myState).Count > 0 && !model.HasOpenMills(opponentState))
+        {
+            foreach (var mill in model.GetMillsByPlayer(myState))
             {
-                foreach(int field in mill)
+                foreach (int field in mill)
                 {
-                    if(model.GetNeighbors(field).Any(n => model.GameBoard[n].state == FieldState.Empty))
+                    if (model.GetNeighbors(field).Any(n => model.GameBoard[n].state == FieldState.Empty))
                     {
-                        return new int[2]{field, model.GetNeighbors(field).First(n => model.GameBoard[n].state == FieldState.Empty)};
+                        return new int[2] { field, model.GetNeighbors(field).First(n => model.GameBoard[n].state == FieldState.Empty) };
                     }
                 }
             }
@@ -142,8 +154,10 @@ public class EnemyController
             }
         }
 
-        // TODO add backup (after testing)
-        return new int[2];
+        // backup: get first possible fieldpair
+        UnityEngine.Debug.Log("backup: random field");
+        int backupField = movableFields[0];
+        return new int[] { backupField, model.GetNeighbors(backupField)[0] };
     }
 
     /// <summary>
