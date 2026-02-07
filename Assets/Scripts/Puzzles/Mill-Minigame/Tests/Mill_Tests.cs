@@ -213,6 +213,8 @@ public class CalcEnemyMoves
 
         int[] fieldPair = enemy.CalcMoveStone();
         rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
+        Debug.Log("from: " + fieldPair[0]);
+        Debug.Log("to: " + fieldPair[1]);
 
         Assert.That(model.GameBoard[2].state, Is.EqualTo(FieldState.Enemy));
     }
@@ -222,7 +224,7 @@ public class CalcEnemyMoves
     public void MoveDistance()
     {
         var model = new MillModel();
-        int moveCount = model.CalcMoveDistance(21, 0);
+        int moveCount = model.CalcMoveDistance(21, 0).dist;
 
         Assert.That(moveCount, Is.EqualTo(2));
     }
@@ -234,7 +236,7 @@ public class CalcEnemyMoves
         var model = new MillModel();
 
         model.UpdateField(9, FieldState.Player);
-        int moveCount = model.CalcMoveDistance(21, 0);
+        int moveCount = model.CalcMoveDistance(21, 0).dist;
         Assert.That(moveCount, Is.EqualTo(6));
     }
 
@@ -246,9 +248,9 @@ public class CalcEnemyMoves
 
         model.UpdateField(9, FieldState.Player);
         model.UpdateField(1, FieldState.Player);
-        int moveCount = model.CalcMoveDistance(21, 0);
+        int moveCount = model.CalcMoveDistance(21, 0).dist;
 
-        Assert.That(moveCount, Is.EqualTo(0));
+        Assert.That(moveCount, Is.EqualTo(int.MaxValue));
     }
 
     [Test]
@@ -278,13 +280,72 @@ public class CalcEnemyMoves
         var movableFields = model.GetMovableFields(FieldState.Enemy);
         FieldDistance fd = model.CalcShortestPath(target,movableFields);
         Assert.That(fd.field, Is.EqualTo(14));
-        Assert.That(fd.dist, Is.EqualTo(model.CalcMoveDistance(fd.field, target)));
+        Assert.That(fd.dist, Is.EqualTo(model.CalcMoveDistance(fd.field, target).dist));
     }
 }
 
 [TestFixture]
 public class TestGames
 {
+    [Test]
+    // player loses because none if his stones are movable
+    public void TestMovementImpossible()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+
+        rules.PlaceStone(model, 21, FieldState.Player);
+        rules.PlaceStone(model, 23, FieldState.Player);
+        rules.PlaceStone(model, 0, FieldState.Player);
+        rules.PlaceStone(model, 2, FieldState.Player);
+        model.AvailableStones[FieldState.Player] = 0;
+        
+        rules.PlaceStone(model, 9, FieldState.Enemy);
+        rules.PlaceStone(model, 22, FieldState.Enemy);
+        rules.PlaceStone(model, 14, FieldState.Enemy);
+        rules.PlaceStone(model, 1, FieldState.Enemy);
+        model.AvailableStones[FieldState.Enemy] = 0;
+
+        Assert.That(rules.HasEnoughStones(model, FieldState.Player), Is.EqualTo(false));
+        Assert.That(rules.HasEnoughStones(model, FieldState.Enemy), Is.EqualTo(true));
+    }
+
+        [Test]
+    // player loses because he has less than 3 stones
+    public void TestLoss()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+
+        rules.PlaceStone(model, 15, FieldState.Player);
+        rules.PlaceStone(model, 17, FieldState.Player);
+        model.AvailableStones[FieldState.Player] = 0;
+        
+        rules.PlaceStone(model, 9, FieldState.Enemy);
+        rules.PlaceStone(model, 22, FieldState.Enemy);
+        rules.PlaceStone(model, 14, FieldState.Enemy);
+        rules.PlaceStone(model, 1, FieldState.Enemy);
+        model.AvailableStones[FieldState.Enemy] = 0;
+
+        Assert.That(rules.HasEnoughStones(model, FieldState.Player), Is.EqualTo(false));
+        Assert.That(rules.HasEnoughStones(model, FieldState.Enemy), Is.EqualTo(true));
+    }
+
+    [Test]
+    public void TestDraw()
+    {
+        var model = new MillModel();
+        var rules = new MillRules();
+
+        rules.PlaceStone(model, 15, FieldState.Player);
+        while(model.DrawCount < 20)
+        {
+            int field = model.GetFieldsByState(FieldState.Player)[0];
+            rules.MoveStone(model, field, model.GetNeighbors(field)[0], FieldState.Player);
+        }
+        Assert.That(model.DrawCount, Is.EqualTo(20));
+    }
+    
     [Test]
     public void TestSetupPhase()
     {

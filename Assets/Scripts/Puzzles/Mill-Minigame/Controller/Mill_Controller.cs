@@ -50,7 +50,7 @@ public class MillController : IMillController
 
         if (rules.CanRemoveStone(model, FieldState.Player))
         {
-            var result = rules.RemoveStone(model, e.Key, FieldState.Player);
+            var result = rules.RemoveStone(model, e.Key, FieldState.Enemy);
             switch (result)
             {
                 case MoveResult.Invalid:
@@ -76,7 +76,7 @@ public class MillController : IMillController
                     break;
             }
         }
-        
+
         else if (rules.CanMoveStone(model, FieldState.Player))
         {
             // select stone to move
@@ -121,6 +121,20 @@ public class MillController : IMillController
     /// </summary>
     private void SwitchTurn()
     {
+        // check for any loss or draw
+        // TODO implement warnings 
+        if(model.DrawCount > 20)
+        {
+            StopGame(FieldState.Empty);
+        }
+        else if(!rules.HasEnoughStones(model, FieldState.Enemy))
+        {
+            StopGame(FieldState.Player);
+        }
+        else if(!rules.HasEnoughStones(model, FieldState.Player))
+        {
+            StopGame(FieldState.Enemy);
+        }
         // TODO implement draw after x moves without any mill
         playerTurn = !playerTurn;
 
@@ -138,7 +152,7 @@ public class MillController : IMillController
     {
         await Task.Delay(new TimeSpan(0, 0, 2));
         view.UpdateBoard(model.GameBoard);
-        if(rules.CanRemoveStone(model, FieldState.Enemy))
+        if (rules.CanRemoveStone(model, FieldState.Enemy))
         {
             enemy.TakeTurn();
             ExecuteEnemyMove();
@@ -165,5 +179,18 @@ public class MillController : IMillController
     /// </summary>
     public void StopGame(FieldState winner)
     {
+        playerTurn = false;
+        switch (winner)
+        {
+            case FieldState.Enemy:
+                UnityEngine.Debug.Log("You lost.");
+                break;
+            case FieldState.Player:
+                UnityEngine.Debug.Log("You won.");
+                break;
+            case FieldState.Empty:
+                UnityEngine.Debug.Log("Draw.");
+                break;
+        }
     }
 }

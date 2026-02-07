@@ -29,12 +29,6 @@ public class EnemyController
         var possibleMillFields = model.GetPossibleMillFields(myState);
         var possibleOppMillFields = model.GetPossibleMillFields(opponentState);
 
-        // place first stone opposite to player stone
-        if (model.AvailableStones[opponentState] == 8 && model.AvailableStones[myState] == 9)
-        {
-            int firstStone = model.GetFieldsByState(opponentState)[0];
-        }
-
         // if possible, complete own mill
         foreach (int field in possibleMillFields)
         {
@@ -62,7 +56,8 @@ public class EnemyController
                 int[] row = edgePoints.First(l => l.Contains(field));
                 foreach (int node in row)
                 {
-                    if (model.CalcMoveDistance(field, node) == 2 && model.GameBoard[node].state == FieldState.Empty)
+                    // FIXME
+                    if (model.CalcMoveDistance(field, node).dist == 2 && model.GameBoard[node].state == FieldState.Empty)
                     {
                         return node;
                     }
@@ -102,10 +97,9 @@ public class EnemyController
         var almostOppMills = model.GetAlmostMills(opponentState);
         FieldDistance minMove = new(0, int.MaxValue);
         int target = 0;
-        // movable fields
         List<int> movableFields = model.GetMovableFields(myState);
 
-        // get fields that are currently blocking an enemy mill
+        // TODO get fields that are currently blocking an enemy mill and possibly not move those?
         //var blockingFields = new List<int>();
 
         // if possible, close own mill
@@ -113,14 +107,14 @@ public class EnemyController
         {
             // calculate shortest path to field from all stones that are not in any almost mill
             List<int> availableFields = movableFields.Where(f => !almostMills[field].Contains(f)).ToList();
-            var closeMillMove = model.CalcShortestPath(field, availableFields);
-            if (closeMillMove.dist < minMove.dist)
+            var move = model.CalcShortestPath(field, availableFields);
+            if (move.dist < minMove.dist)
             {
-                minMove = closeMillMove;
-                target = field;
+                minMove = move;
+                target = model.CalcMoveDistance(move.field, field).field;
             }
         }
-
+        // stop calculating if mill can be closed in 1 turn
         if (minMove.dist == 1)
         {
             return new int[2] { minMove.field, target };
@@ -144,14 +138,20 @@ public class EnemyController
         // if possible, prevent opponent mill
         foreach (int field in almostOppMills.Keys)
         {
-            // TODO calculate shortest path to field from all stones that are not in almost mills
-            foreach (int neighbor in model.GetNeighbors(field))
+            // calculate shortest path to field from all stones that are not in any almost mill
+            List<int> availableFields = movableFields.Where(f => !almostOppMills[field].Contains(f)).ToList();
+            var move = model.CalcShortestPath(field, availableFields);
+            if (move.dist < minMove.dist)
             {
-                if (model.GameBoard[neighbor].state == myState && !almostOppMills[field].Contains(neighbor))
-                {
-                    return new int[2] { neighbor, field };
-                }
+                minMove = move;
+                target = model.CalcMoveDistance(move.field, field).field;
             }
+        }
+
+        // choose move with the shortest distance until goal reached
+        if (target != 0)
+        {
+            return new int[2] { minMove.field, target };
         }
 
         // backup: get first possible fieldpair
@@ -198,7 +198,7 @@ public class EnemyController
     {
         if (rules.CanRemoveStone(model, myState))
         {
-            rules.RemoveStone(model, CalcRemoveStone(), myState);
+            rules.RemoveStone(model, CalcRemoveStone(), opponentState);
         }
         else if (rules.CanPlaceStone(model, myState))
         {

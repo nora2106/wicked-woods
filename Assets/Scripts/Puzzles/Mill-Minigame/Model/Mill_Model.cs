@@ -21,6 +21,7 @@ public interface IMillModel
     bool AreNeighbors(int key1, int key2);
     List<int> GetFieldsByState(FieldState state);
     bool CheckForMill(int key, FieldState player);
+    int DrawCount { get; set; }
 
     int[][] GetPossibleMills();
 
@@ -60,8 +61,8 @@ public interface IMillModel
     /// </summary>
     /// <param name="from">Start field ID.</param>
     /// <param name="to">Target field ID.</param>
-    /// <returns>Move count. 0 if move is not possible.</returns>
-    int CalcMoveDistance(int from, int to);
+    /// <returns>FieldDistance object containing the distance and the next field to move to.</returns>
+    FieldDistance CalcMoveDistance(int from, int to);
 
     /// <summary>
     /// Calculate the shortest distance out of multiple fields to a target field.
@@ -107,6 +108,8 @@ public class MillModel : IMillModel
     public Dictionary<int, BoardNode> GameBoard { get => gameBoard; set => gameBoard = value; }
     public Dictionary<FieldState, int> AvailableStones { get => availableStones; set => availableStones = value; }
     public List<int>[] neighborNodes;
+    private int drawCount = 0;
+    public int DrawCount { get => drawCount; set => drawCount = value; }
 
     // all possible mills, each containing 3 node IDs
     static readonly int[][] mills =
@@ -300,6 +303,7 @@ public class MillModel : IMillModel
         return dict;
     }
 
+    // TODO deprecated - replace usage by GetAlmostMills()
     public List<int> GetPossibleMillFields(FieldState state)
     {
         List<int> list = new List<int>();
@@ -352,11 +356,12 @@ public class MillModel : IMillModel
         return list;
     }
 
-    public int CalcMoveDistance(int from, int to)
+    public FieldDistance CalcMoveDistance(int from, int to)
     {
         List<int> currentLayer = new List<int> { from };
         List<int> nextLayer = new List<int>();
         List<int> visitedNodes = new List<int>() { from };
+        Dictionary<int, int> parent = new();
         int distance = 0;
 
         while (currentLayer.Count > 0)
@@ -365,7 +370,7 @@ public class MillModel : IMillModel
             {
                 if (node == to)
                 {
-                    return distance;
+                    return new FieldDistance(GetFirstStep(from, to, parent), distance);
                 }
 
                 foreach (int neighbor in neighborNodes[node])
@@ -374,6 +379,7 @@ public class MillModel : IMillModel
                     {
                         nextLayer.Add(neighbor);
                         visitedNodes.Add(neighbor);
+                        parent[neighbor] = node;
                     }
                 }
             }
@@ -383,7 +389,18 @@ public class MillModel : IMillModel
             distance++;
         }
 
-        return 0;
+        return new FieldDistance(-1, int.MaxValue);
+    }
+
+    private int GetFirstStep(int from, int to, Dictionary<int, int> parent)
+    {
+        UnityEngine.Debug.Log("from " + from + " to " + to);
+        int current = to;
+        while(parent[current] != from)
+        {
+            current = parent[current];
+        }
+        return current;
     }
 
     /// <summary>
@@ -444,16 +461,16 @@ public class MillModel : IMillModel
     {
         int field = 0;
         int minDistance = int.MaxValue;
-        foreach(int f in fields)
+        foreach (int f in fields)
         {
-            int dist = CalcMoveDistance(f, target);
-            if( dist < minDistance)
+            int dist = CalcMoveDistance(f, target).dist;
+            if (dist < minDistance)
             {
                 field = f;
                 minDistance = dist;
             }
         }
-        
+
         return new FieldDistance(field, minDistance);
     }
 }

@@ -1,12 +1,15 @@
+using UnityEngine;
+
 public interface IMillRules
 {
-     MoveResult PlaceStone(IMillModel model, int fieldKey, FieldState player);
-     MoveResult MoveStone(IMillModel model, int from, int to, FieldState player);
-     MoveResult RemoveStone(IMillModel model, int fieldKey, FieldState player);
+    MoveResult PlaceStone(IMillModel model, int fieldKey, FieldState player);
+    MoveResult MoveStone(IMillModel model, int from, int to, FieldState player);
+    MoveResult RemoveStone(IMillModel model, int fieldKey, FieldState player);
     bool CanPlaceStone(IMillModel model, FieldState player);
     bool CanMoveStone(IMillModel model, FieldState player);
     bool CanFly(IMillModel model, FieldState player);
     bool CanRemoveStone(IMillModel model, FieldState player);
+    bool HasEnoughStones(IMillModel model, FieldState player);
 }
 
 public enum MoveResult
@@ -29,15 +32,16 @@ public class MillRules : IMillRules
     /// <param name="player">Current player - new field state.</param>
     public MoveResult PlaceStone(IMillModel model, int fieldKey, FieldState player)
     {
-        if(model.GameBoard[fieldKey].state != FieldState.Empty)
+        if (model.GameBoard[fieldKey].state != FieldState.Empty)
         {
             return MoveResult.Invalid;
         }
 
         model.UpdateField(fieldKey, player);
         model.AvailableStones[player]--;
-        
-        if(model.CheckForMill(fieldKey, player)) {
+
+        if (model.CheckForMill(fieldKey, player))
+        {
             canRemove = player;
             return MoveResult.MillFormed;
         }
@@ -54,21 +58,23 @@ public class MillRules : IMillRules
     /// <param name="player">Current player - new field state.</param>
     public MoveResult MoveStone(IMillModel model, int from, int to, FieldState player)
     {
-        if(model.GameBoard[to].state != FieldState.Empty)
+        if (model.GameBoard[to].state != FieldState.Empty)
         {
             return MoveResult.Invalid;
         }
 
-        else if(!model.GameBoard[from].neighbors.Contains(to) && !CanFly(model, player))
+        else if (!model.GameBoard[from].neighbors.Contains(to) && !CanFly(model, player))
         {
             return MoveResult.Invalid;
         }
 
         model.UpdateField(from, FieldState.Empty);
         model.UpdateField(to, player);
-        
-        if(model.CheckForMill(to, player)) {
-            if(model.ExistFreeStones(CalcOpponent(player)))
+        model.DrawCount++;
+
+        if (model.CheckForMill(to, player))
+        {
+            if (model.ExistFreeStones(CalcOpponent(player)))
             {
                 canRemove = player;
             }
@@ -76,6 +82,7 @@ public class MillRules : IMillRules
             {
                 UnityEngine.Debug.Log("mill formed, but no free enemy stones to remove");
             }
+            model.DrawCount = 0;
             return MoveResult.MillFormed;
         }
 
@@ -87,10 +94,10 @@ public class MillRules : IMillRules
     /// </summary>
     /// <param name="model">Instance of the model interface.</param>
     /// <param name="fieldKey">Index of the selected field.</param>
-    /// <param name="player">Player executing the action.</param>
-    public MoveResult RemoveStone(IMillModel model, int fieldKey, FieldState player)
+    /// <param name="opponent">The opponent's state.</param>
+    public MoveResult RemoveStone(IMillModel model, int fieldKey, FieldState opponent)
     {
-        if(model.GameBoard[fieldKey].state == FieldState.Empty || model.GameBoard[fieldKey].state == player || model.CheckForMill(fieldKey, player))
+        if (model.GameBoard[fieldKey].state != opponent || model.CheckForMill(fieldKey, opponent))
         {
             return MoveResult.Invalid;
         }
@@ -107,12 +114,12 @@ public class MillRules : IMillRules
 
     public bool CanMoveStone(IMillModel model, FieldState player)
     {
-        return model.GetFieldsByState(player).Count > 3 && model.AvailableStones[player] <= 0;
+        return model.GetFieldsByState(player).Count > 3 && model.AvailableStones[player] <= 0 && model.GetMovableFields(player).Count > 0;
     }
 
     public bool CanFly(IMillModel model, FieldState player)
     {
-        return model.GetFieldsByState(player).Count <= 3;
+        return model.GetFieldsByState(player).Count == 3;
     }
 
     public bool CanRemoveStone(IMillModel model, FieldState player)
@@ -120,13 +127,18 @@ public class MillRules : IMillRules
         return canRemove == player;
     }
 
+    public bool HasEnoughStones(IMillModel model, FieldState player)
+    {
+        return CanMoveStone(model, player) || CanRemoveStone(model, player) || CanFly(model, player) || CanPlaceStone(model, player);
+    }
+
     public FieldState CalcOpponent(FieldState player)
     {
-        if(player == FieldState.Player)
+        if (player == FieldState.Player)
         {
             return FieldState.Enemy;
         }
-        else if(player == FieldState.Enemy)
+        else if (player == FieldState.Enemy)
         {
             return FieldState.Player;
         }
