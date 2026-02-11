@@ -53,6 +53,12 @@ public interface IMillModel
     /// <returns>All field keys that are the last missing stone for a mill.</returns>
     List<int> GetBlockedMillFields(FieldState state);
     List<int> GetNeighbors(int key);
+
+    /// <summary>
+    /// Get all currently closed mills by player.
+    /// </summary>
+    /// <param name="state">The required field state.</param>
+    /// <returns>List containing the mill field arrays.</returns>
     List<int[]> GetMillsByPlayer(FieldState player);
     Dictionary<FieldState, int> AvailableStones { get; set; }
 
@@ -394,61 +400,54 @@ public class MillModel : IMillModel
 
     private int GetFirstStep(int from, int to, Dictionary<int, int> parent)
     {
-        UnityEngine.Debug.Log("from " + from + " to " + to);
         int current = to;
-        while(parent[current] != from)
+        try
         {
-            current = parent[current];
+            while (parent[current] != from)
+            {
+                current = parent[current];
+            }
         }
+        catch(KeyNotFoundException)
+        {
+            UnityEngine.Debug.Log("exception in from: " + from + " and to: " + to);
+        }
+
         return current;
     }
 
-    /// <summary>
-    /// Get distance in moves between two fields.
-    /// </summary>
-    /// <param name="from">Start field ID.</param>
-    /// <param name="to">Target field ID.</param>
-    /// <returns>Move count. 0 if move is not possible.</returns>
     public List<int[]> GetMillsByPlayer(FieldState player)
     {
-        List<int[]> mills = new List<int[]>();
+        List<int[]> playerMills = new List<int[]>();
 
         foreach (var possibleMill in mills)
         {
-            bool full = true;
-            foreach (int field in possibleMill)
+            if (possibleMill.All(f => gameBoard[f].state == player))
             {
-                if (gameBoard[field].state != player)
-                {
-                    full = false;
-                }
-            }
-            if (full)
-            {
-                mills.Add(possibleMill);
+                playerMills.Add(possibleMill);
             }
         }
 
-        return mills;
+        return playerMills;
     }
 
     public bool ExistFreeStones(FieldState player)
     {
         foreach (var field in GetFieldsByState(player))
         {
-            if (CheckForMill(field, player))
+            if (!CheckForMill(field, player))
             {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
     public bool HasOpenMills(FieldState player)
     {
         foreach (var mill in GetAlmostMills(player))
         {
-            int emptyField = mill.Value.First(m => gameBoard[m].state == FieldState.Empty);
+            int emptyField = mill.Key;
             if (GetNeighbors(emptyField).Any(n => gameBoard[n].state == player))
             {
                 return true;

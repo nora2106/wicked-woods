@@ -77,7 +77,7 @@ public class MillController : IMillController
             }
         }
 
-        else if (rules.CanMoveStone(model, FieldState.Player))
+        else if (rules.CanMoveStone(model, FieldState.Player) || rules.CanFly(model, FieldState.Player))
         {
             // select stone to move
             if (e.State == FieldState.Player)
@@ -111,7 +111,7 @@ public class MillController : IMillController
                 return;
             }
         }
-
+  
         view.UpdateBoard(model.GameBoard);
         SwitchTurn();
     }

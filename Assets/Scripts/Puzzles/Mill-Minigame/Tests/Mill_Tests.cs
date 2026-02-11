@@ -139,6 +139,67 @@ public class BaseEnemyMoves
         Assert.That(result, Is.EqualTo(MoveResult.MillFormed));
         Assert.That(model.GetFieldsByState(FieldState.Player).Count, Is.EqualTo(3));
     }
+
+    [Test]
+    public void TestCountFullMills()
+    {
+        var model = new MillModel();
+        model.UpdateField(0, FieldState.Player);
+        model.UpdateField(1, FieldState.Player);
+        model.UpdateField(2, FieldState.Player);
+        model.UpdateField(14, FieldState.Player);
+        model.UpdateField(23, FieldState.Player);
+
+        Assert.That(model.GetMillsByPlayer(FieldState.Player).Count, Is.EqualTo(2));
+    }
+
+    [Test]
+    public void TestDetectOpenMills()
+    {
+        var model = new MillModel();
+        model.UpdateField(4, FieldState.Player);
+        model.UpdateField(13, FieldState.Player);
+        model.UpdateField(20, FieldState.Player);
+
+        model.UpdateField(23, FieldState.Enemy);
+        model.UpdateField(22, FieldState.Enemy);
+        model.UpdateField(21, FieldState.Enemy);
+
+        Assert.That(model.HasOpenMills(FieldState.Player), Is.EqualTo(true));
+        Assert.That(model.HasOpenMills(FieldState.Enemy), Is.EqualTo(false));
+    }
+
+    [Test]
+    public void TestGetFreeFields()
+    {
+        var model = new MillModel();
+        model.UpdateField(23, FieldState.Enemy);
+        model.UpdateField(22, FieldState.Enemy);
+        model.UpdateField(21, FieldState.Enemy);
+
+        model.UpdateField(4, FieldState.Player);
+        model.UpdateField(13, FieldState.Player);
+        model.UpdateField(20, FieldState.Player);
+        model.UpdateField(5, FieldState.Player);
+        model.UpdateField(1, FieldState.Player);
+        model.UpdateField(9, FieldState.Player);
+
+        var freeFields = model.GetFieldsByState(FieldState.Player);
+        foreach (var mill in model.GetMillsByPlayer(FieldState.Player))
+        {
+            foreach (int field in mill)
+            {
+                if (freeFields.Contains(field))
+                {
+                    freeFields.Remove(field);
+                }
+            }
+        }
+
+        Assert.That(model.ExistFreeStones(FieldState.Enemy), Is.EqualTo(false));
+        Assert.That(model.ExistFreeStones(FieldState.Player), Is.EqualTo(true));
+        Assert.That(freeFields.Count, Is.EqualTo(3));
+    }
 }
 
 [TestFixture]
@@ -213,8 +274,6 @@ public class CalcEnemyMoves
 
         int[] fieldPair = enemy.CalcMoveStone();
         rules.MoveStone(model, fieldPair[0], fieldPair[1], FieldState.Enemy);
-        Debug.Log("from: " + fieldPair[0]);
-        Debug.Log("to: " + fieldPair[1]);
 
         Assert.That(model.GameBoard[2].state, Is.EqualTo(FieldState.Enemy));
     }
@@ -258,11 +317,11 @@ public class CalcEnemyMoves
     {
         var model = new MillModel();
         var rules = new MillRules();
-        var enemy = new EnemyController(model, rules);
+        var enemy = new EnemyController(model, rules, FieldState.Enemy);
 
         model.UpdateField(3, FieldState.Player);
         model.UpdateField(18, FieldState.Enemy);
-        
+
         int target = enemy.CalcPlaceStone();
         Assert.That(target, Is.EqualTo(5));
     }
@@ -278,7 +337,7 @@ public class CalcEnemyMoves
 
         int target = 21;
         var movableFields = model.GetMovableFields(FieldState.Enemy);
-        FieldDistance fd = model.CalcShortestPath(target,movableFields);
+        FieldDistance fd = model.CalcShortestPath(target, movableFields);
         Assert.That(fd.field, Is.EqualTo(14));
         Assert.That(fd.dist, Is.EqualTo(model.CalcMoveDistance(fd.field, target).dist));
     }
@@ -299,7 +358,7 @@ public class TestGames
         rules.PlaceStone(model, 0, FieldState.Player);
         rules.PlaceStone(model, 2, FieldState.Player);
         model.AvailableStones[FieldState.Player] = 0;
-        
+
         rules.PlaceStone(model, 9, FieldState.Enemy);
         rules.PlaceStone(model, 22, FieldState.Enemy);
         rules.PlaceStone(model, 14, FieldState.Enemy);
@@ -310,7 +369,7 @@ public class TestGames
         Assert.That(rules.HasEnoughStones(model, FieldState.Enemy), Is.EqualTo(true));
     }
 
-        [Test]
+    [Test]
     // player loses because he has less than 3 stones
     public void TestLoss()
     {
@@ -320,7 +379,7 @@ public class TestGames
         rules.PlaceStone(model, 15, FieldState.Player);
         rules.PlaceStone(model, 17, FieldState.Player);
         model.AvailableStones[FieldState.Player] = 0;
-        
+
         rules.PlaceStone(model, 9, FieldState.Enemy);
         rules.PlaceStone(model, 22, FieldState.Enemy);
         rules.PlaceStone(model, 14, FieldState.Enemy);
@@ -338,14 +397,14 @@ public class TestGames
         var rules = new MillRules();
 
         rules.PlaceStone(model, 15, FieldState.Player);
-        while(model.DrawCount < 20)
+        while (model.DrawCount < 20)
         {
             int field = model.GetFieldsByState(FieldState.Player)[0];
             rules.MoveStone(model, field, model.GetNeighbors(field)[0], FieldState.Player);
         }
         Assert.That(model.DrawCount, Is.EqualTo(20));
     }
-    
+
     [Test]
     public void TestSetupPhase()
     {

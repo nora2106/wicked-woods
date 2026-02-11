@@ -1,4 +1,3 @@
-using UnityEngine;
 
 public interface IMillRules
 {
@@ -34,6 +33,7 @@ public class MillRules : IMillRules
     {
         if (model.GameBoard[fieldKey].state != FieldState.Empty)
         {
+            UnityEngine.Debug.Log(player + ", not valid to place stone here.");
             return MoveResult.Invalid;
         }
 
@@ -60,11 +60,13 @@ public class MillRules : IMillRules
     {
         if (model.GameBoard[to].state != FieldState.Empty)
         {
+            UnityEngine.Debug.Log(player + ", invalid: field not empty: " + to);
             return MoveResult.Invalid;
         }
 
         else if (!model.GameBoard[from].neighbors.Contains(to) && !CanFly(model, player))
         {
+            UnityEngine.Debug.Log(player + ", invalid: field not neighbor.");
             return MoveResult.Invalid;
         }
 
@@ -99,6 +101,7 @@ public class MillRules : IMillRules
     {
         if (model.GameBoard[fieldKey].state != opponent || model.CheckForMill(fieldKey, opponent))
         {
+            UnityEngine.Debug.Log("not valid to remove stone " + fieldKey + " from " + opponent);
             return MoveResult.Invalid;
         }
 
