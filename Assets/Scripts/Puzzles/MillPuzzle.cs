@@ -1,13 +1,9 @@
-using System;
-using JetBrains.Annotations;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class MillPuzzle : PuzzleManager
 {
-    public GameObject pointPrefab;
-    public float spacing = 1.452f;
+    public MillViewConfig config;
+    
     public override bool CheckIfSolved()
     {
         throw new System.NotImplementedException();
@@ -42,7 +38,7 @@ public class MillPuzzle : PuzzleManager
         var controllerFactory = new MillControllerFactory(model, view, rules);
         var controller = controllerFactory.Controller;
         
-        view.InitializeBoard(pointPrefab, spacing);
+        view.InitializeBoard(config);
         controller.StartGame();
     }
 }

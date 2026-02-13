@@ -12,7 +12,7 @@ public enum Phase
     Setup,
     Move,
     Remove,
-    GameOver,
+    Fly,
 }
 
 public class MillController : IMillController
@@ -21,8 +21,8 @@ public class MillController : IMillController
     private readonly IMillView view;
     private readonly IMillRules rules;
     private readonly EnemyController enemy;
-    private int maxStones = 18;
     private bool playerTurn;
+    private Phase phase = Phase.Setup;
     private PointClickedEventArgs selectedField = null;
 
     public MillController(IMillModel model, IMillView view, IMillRules rules)
@@ -54,6 +54,7 @@ public class MillController : IMillController
             switch (result)
             {
                 case MoveResult.Invalid:
+                    view.DisplayText("Das hat nicht funktioniert - entweder du hast ein falsches Feld ausgewählt oder dein Gegner hat keine freien Steine.");
                     return;
                 case MoveResult.MillFormed:
                     return;
@@ -70,7 +71,8 @@ public class MillController : IMillController
                 case MoveResult.Invalid:
                     return;
                 case MoveResult.MillFormed:
-                    view.UpdateBoard(model.GameBoard);
+                    view.UpdateBoard(model);
+                    view.DisplayText("Du hast eine Mühle geschlossen! Klicke auf einen gegnerischen Stein, um ihn zu schlagen.");
                     return;
                 case MoveResult.Ok:
                     break;
@@ -84,7 +86,6 @@ public class MillController : IMillController
             {
                 selectedField = e;
                 view.UpdateField(e.Key, FieldState.Selected);
-                UnityEngine.Debug.Log("click on any empty neighboring field to move selected stone.");
                 return;
             }
             // select field to move to
@@ -96,7 +97,7 @@ public class MillController : IMillController
                     case MoveResult.Invalid:
                         return;
                     case MoveResult.MillFormed:
-                        view.UpdateBoard(model.GameBoard);
+                        view.UpdateBoard(model);
                         selectedField = null;
                         return;
                     case MoveResult.Ok:
@@ -111,8 +112,8 @@ public class MillController : IMillController
                 return;
             }
         }
-  
-        view.UpdateBoard(model.GameBoard);
+
+        view.UpdateBoard(model);
         SwitchTurn();
     }
 
@@ -121,21 +122,34 @@ public class MillController : IMillController
     /// </summary>
     private void SwitchTurn()
     {
+        if (phase == Phase.Setup && rules.CanMoveStone(model, FieldState.Player))
+        {
+            view.DisplayText("Klicke auf einen deiner Steine und danach ein benachbartes leeres Feld, um ihn zu bewegen.");
+            phase = Phase.Move;
+        }
+        if (rules.CanFly(model, FieldState.Player))
+        {
+            view.DisplayText("Du hast nur noch 3 Steine - du kannst jetzt fliegen und deine Steine an beliebige Felder bewegen, nicht nur benachbarte.");
+        }
+
+        if (rules.CanFly(model, FieldState.Enemy))
+        {
+            view.DisplayText("Dein Gegner hat nur noch 3 Steine - er kann jetzt fliegen und deine Steine an beliebige Felder bewegen, nicht nur benachbarte.");
+        }
         // check for any loss or draw
         // TODO implement warnings 
-        if(model.DrawCount > 20)
+        if (model.DrawCount > 20)
         {
             StopGame(FieldState.Empty);
         }
-        else if(!rules.HasEnoughStones(model, FieldState.Enemy))
+        else if (!rules.HasEnoughStones(model, FieldState.Enemy))
         {
             StopGame(FieldState.Player);
         }
-        else if(!rules.HasEnoughStones(model, FieldState.Player))
+        else if (!rules.HasEnoughStones(model, FieldState.Player))
         {
             StopGame(FieldState.Enemy);
         }
-        // TODO implement draw after x moves without any mill
         playerTurn = !playerTurn;
 
         if (!playerTurn)
@@ -151,7 +165,7 @@ public class MillController : IMillController
     private async void ExecuteEnemyMove()
     {
         await Task.Delay(new TimeSpan(0, 0, 2));
-        view.UpdateBoard(model.GameBoard);
+        view.UpdateBoard(model);
         if (rules.CanRemoveStone(model, FieldState.Enemy))
         {
             enemy.TakeTurn();
@@ -183,13 +197,13 @@ public class MillController : IMillController
         switch (winner)
         {
             case FieldState.Enemy:
-                UnityEngine.Debug.Log("You lost.");
+                view.DisplayText("Du hast verloren :(");
                 break;
             case FieldState.Player:
-                UnityEngine.Debug.Log("You won.");
+                view.DisplayText("Du hast gewonnen! Yippie ^w^");
                 break;
             case FieldState.Empty:
-                UnityEngine.Debug.Log("Draw.");
+                view.DisplayText("Mehr als 20 Züge ohne eine Mühle... Ich glaube, das gewinnt keiner mehr. Gleichstand.");
                 break;
         }
     }

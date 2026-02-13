@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class PointClickedEventArgs : EventArgs
 {
-    public int Key {get;}
-    public FieldState State {get;}
+    public int Key { get; }
+    public FieldState State { get; }
 
     public PointClickedEventArgs(int key, FieldState state)
     {
@@ -14,13 +14,26 @@ public class PointClickedEventArgs : EventArgs
     }
 }
 
+[Serializable]
+public struct MillViewConfig
+{
+    public GameObject pointPrefab;
+    public float spacing;
+    public GameObject whiteChipPrefab;
+    public GameObject blackChipPrefab;
+    public Transform playerPos;
+    public Transform enemyPos;
+    public TextMeshProUGUI displayText;
+}
+
 public interface IMillView
 {
-    Dictionary<int, Vector2> GameBoard { get;}
-	event EventHandler<PointClickedEventArgs> OnBoardChanged;    
-    void InitializeBoard(GameObject pointPrefab, float spacing);
+    Dictionary<int, Vector2> GameBoard { get; }
+    event EventHandler<PointClickedEventArgs> OnBoardChanged;
+    void InitializeBoard(MillViewConfig config);
     void UpdateField(int key, FieldState state);
-    void UpdateBoard(Dictionary<int, BoardNode> board);
+    void UpdateBoard(IMillModel model);
+    void DisplayText (string text);
 }
 
 public class MillView : MonoBehaviour, IMillView
@@ -55,11 +68,12 @@ public class MillView : MonoBehaviour, IMillView
         {23, new Vector2(6, 6)},
     };
     public BoardPoint[] boardPoints;
-	public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) => {};
-    public string gamemode;
-    // game modes: setup phase, move phase, select
-    public string Gamemode{get{return gamemode;}set{Gamemode = value;}}
-    public BoardPoint selectedPoint;
+    private GameObject blackChipPrefab;
+    private GameObject whiteChipPrefab;
+    private Transform playerStonePos;
+    private Transform enemyStonePos;
+    private TextMeshProUGUI displayText;
+    public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) => { };
 
     // update field visually
     public void UpdateField(int key, FieldState state)
@@ -67,31 +81,83 @@ public class MillView : MonoBehaviour, IMillView
         boardPoints[key].SetState(state);
     }
 
-    public void InitializeBoard(GameObject pointPrefab, float spacing)
+    public void InitializeBoard(MillViewConfig config)
     {
-        if(GameBoard.Count == 0)
+        if (GameBoard.Count == 0)
         {
             return;
         }
+
+        whiteChipPrefab = config.whiteChipPrefab;
+        blackChipPrefab = config.blackChipPrefab;
+        playerStonePos = config.playerPos;
+        enemyStonePos = config.enemyPos;
+        displayText = config.displayText;
         boardPoints = new BoardPoint[GameBoard.Count];
+
         // create board points based on board positions and assign physical position
         for (int i = 0; i < GameBoard.Count; i++)
         {
-            var obj = Instantiate(pointPrefab, GetWorldPosition(GameBoard[i], spacing), Quaternion.identity);
+            var obj = Instantiate(config.pointPrefab, GetWorldPosition(GameBoard[i], config.spacing), Quaternion.identity);
             obj.GetComponent<BoardPoint>().Init(i, this);
             boardPoints[i] = obj.GetComponent<BoardPoint>();
         }
+
+        // create available stones as children of position objects
+        for (int i = 0; i < 9; i++)
+        {
+            Vector3 pos1 = playerStonePos.position + Vector3.down * (i * .7f);
+            var obj1 = Instantiate(whiteChipPrefab, pos1, Quaternion.identity);
+            obj1.transform.parent = playerStonePos;
+
+            Vector3 pos2 = enemyStonePos.position + Vector3.down * (i * .7f);
+            var obj2 = Instantiate(blackChipPrefab, pos2, Quaternion.identity);
+            obj2.transform.parent = enemyStonePos;
+        }
     }
 
-    public void UpdateBoard(Dictionary<int, BoardNode> board)
+    public void UpdateBoard(IMillModel model)
     {
         for (int i = 0; i < GameBoard.Count; i++)
         {
-            if(boardPoints[i].state != board[i].state)
+            if (boardPoints[i].state != model.GameBoard[i].state)
             {
-                boardPoints[i].SetState(board[i].state);
+                UpdateBoardPoint(boardPoints[i], model.GameBoard[i].state);
             }
         }
+
+        if (playerStonePos.childCount > model.AvailableStones[FieldState.Player])
+        {
+            Destroy(playerStonePos.GetChild(playerStonePos.childCount - 1).gameObject);
+        }
+
+        if (enemyStonePos.childCount > model.AvailableStones[FieldState.Enemy])
+        {
+            Destroy(enemyStonePos.GetChild(enemyStonePos.childCount - 1).gameObject);
+        }
+    }
+
+    // TODO add stone movement and remove animation
+    private void UpdateBoardPoint(BoardPoint field, FieldState newState)
+    {
+        // create new stone if field is empty
+        if (field.state == FieldState.Empty)
+        {
+            GameObject prefab = whiteChipPrefab;
+            if (newState == FieldState.Enemy)
+            {
+                prefab = blackChipPrefab;
+            }
+
+            var obj = Instantiate(prefab, field.transform.position, Quaternion.identity);
+            obj.transform.parent = field.transform;
+        }
+        // remove existing stone
+        else if (field.transform.childCount > 0 && newState == FieldState.Empty)
+        {
+            Destroy(field.transform.GetChild(0).gameObject);
+        }
+        field.state = newState;
     }
 
     public void HandleBoardInteraction(BoardPoint sender)
@@ -107,8 +173,13 @@ public class MillView : MonoBehaviour, IMillView
         int cols = 6;
         float boardWidth = cols * spacing;
         float boardHeight = rows * spacing;
-        Vector3 origin = new Vector3(-boardWidth / 2f, -boardHeight / 2f, 0);
-        Vector3 position = new Vector3(origin.x + (pos.x * spacing), origin.y + (pos.y * spacing), 0);
+        Vector3 origin = new(-boardWidth / 2f, -boardHeight / 2f, 0);
+        Vector3 position = new(origin.x + (pos.x * spacing), origin.y + (pos.y * spacing), 0);
         return position;
+    }
+
+    public void DisplayText(string text)
+    {
+        displayText.text = text;
     }
 }
