@@ -122,7 +122,7 @@ public class MillRules : IMillRules
 
     public bool CanFly(IMillModel model, FieldState player)
     {
-        return model.GetFieldsByState(player).Count == 3;
+        return model.GetFieldsByState(player).Count == 3 && model.AvailableStones[player] == 0;
     }
 
     public bool CanRemoveStone(IMillModel model, FieldState player)

@@ -98,6 +98,7 @@ public class MillController : IMillController
                         return;
                     case MoveResult.MillFormed:
                         view.UpdateBoard(model);
+                        view.DisplayText("Du hast eine Mühle geschlossen! Klicke auf einen gegnerischen Stein, um ihn zu schlagen.");
                         selectedField = null;
                         return;
                     case MoveResult.Ok:
@@ -154,8 +155,13 @@ public class MillController : IMillController
 
         if (!playerTurn)
         {
+            view.UpdateTurnText("Dein Gegner ist dran.");
             enemy.TakeTurn();
             ExecuteEnemyMove();
+        }
+        else
+        {
+            view.UpdateTurnText("Du bist dran!");
         }
     }
 

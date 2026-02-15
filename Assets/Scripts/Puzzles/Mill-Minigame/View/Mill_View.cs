@@ -24,6 +24,7 @@ public struct MillViewConfig
     public Transform playerPos;
     public Transform enemyPos;
     public TextMeshProUGUI displayText;
+    public TextMeshProUGUI turnText;
 }
 
 public interface IMillView
@@ -34,6 +35,7 @@ public interface IMillView
     void UpdateField(int key, FieldState state);
     void UpdateBoard(IMillModel model);
     void DisplayText (string text);
+    void UpdateTurnText (string text);
 }
 
 public class MillView : MonoBehaviour, IMillView
@@ -73,6 +75,7 @@ public class MillView : MonoBehaviour, IMillView
     private Transform playerStonePos;
     private Transform enemyStonePos;
     private TextMeshProUGUI displayText;
+    private TextMeshProUGUI turnText;
     public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) => { };
 
     // update field visually
@@ -93,6 +96,7 @@ public class MillView : MonoBehaviour, IMillView
         playerStonePos = config.playerPos;
         enemyStonePos = config.enemyPos;
         displayText = config.displayText;
+        turnText = config.turnText;
         boardPoints = new BoardPoint[GameBoard.Count];
 
         // create board points based on board positions and assign physical position
@@ -181,5 +185,10 @@ public class MillView : MonoBehaviour, IMillView
     public void DisplayText(string text)
     {
         displayText.text = text;
+    }
+
+    public void UpdateTurnText(string text)
+    {
+        turnText.text = text;
     }
 }

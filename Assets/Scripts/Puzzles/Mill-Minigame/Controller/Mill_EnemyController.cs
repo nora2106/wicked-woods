@@ -201,7 +201,7 @@ public class EnemyController
         {
             foreach (var neighbor in model.GetNeighbors(field))
             {
-                if (model.GameBoard[neighbor].state == opponentState)
+                if (model.GameBoard[neighbor].state == opponentState && freeFields.Contains(field))
                 {
                     return neighbor;
                 }
@@ -212,7 +212,7 @@ public class EnemyController
         var blockedFields = model.GetBlockedMillFields(myState);
         foreach (int field in blockedFields)
         {
-            if (model.GameBoard[field].state == opponentState)
+            if (model.GameBoard[field].state == opponentState && freeFields.Contains(field))
             {
                 return field;
             }
