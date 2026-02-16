@@ -187,10 +187,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   solved: 0
   id: kitchen_doorPuzzle
-  resets: 0
+  resets: 1
   OnPuzzleSolved:
     m_PersistentCalls:
       m_Calls: []
+  CloseAfterSolve: 0
 --- !u!1 &42723646
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,11 +507,12 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: housedoor
   objName: 
+  disabled: 0
   detail: {fileID: 14528301}
   newSprite: {fileID: 0}
   showItem: {fileID: 0}
   closeOnSecondClick: 0
-  destroyOnPuzzleComplete: 0
+  destroyOnPuzzleComplete: 1
   references:
     version: 2
     RefIds: []
@@ -521,12 +523,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 61756462}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c261226a89bf3e041bca4cd0ec133fd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locked: 0
+  locked: 1
   localizedName:
     m_TableReference:
       m_TableCollectionName: GUID:3bed199fb66d8994ea0c36602b9438dd
@@ -548,6 +550,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 1
   nextScene: Street
   references:
     version: 2
@@ -885,6 +888,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 270
   correct: 0
   references:
@@ -1160,6 +1164,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 180
   correct: 0
   references:
@@ -1701,6 +1706,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   detail: {fileID: 585166513}
   newSprite: {fileID: 0}
   showItem: {fileID: 0}
@@ -2056,6 +2062,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -2223,6 +2230,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -2646,6 +2654,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -2813,6 +2822,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 180
   correct: 0
   references:
@@ -3176,6 +3186,7 @@ MonoBehaviour:
   OnPuzzleSolved:
     m_PersistentCalls:
       m_Calls: []
+  CloseAfterSolve: 0
   item: {fileID: 5918996191391342286}
 --- !u!1 &1054369103
 GameObject:
@@ -3339,6 +3350,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -3506,6 +3518,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -3795,6 +3808,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 270
   correct: 0
   references:
@@ -3962,6 +3976,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -4507,6 +4522,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -5343,6 +5359,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -5696,6 +5713,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:
@@ -5936,6 +5954,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 270
   correct: 0
   references:
@@ -6262,6 +6281,7 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: 
   objName: 
+  disabled: 0
   correctRotation: 90
   correct: 0
   references:

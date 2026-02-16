@@ -60,7 +60,8 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
         SetupAll();
-        player.GetComponent<MoveCharacter>().SetPosition(save.data.playerPosition);
+        // FIXME this line throws an error only in kitchen scene
+        //player.GetComponent<MoveCharacter>().SetPosition(save.data.playerPosition);
     }
 
     public void Setup()
