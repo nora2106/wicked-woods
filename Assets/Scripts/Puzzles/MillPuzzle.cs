@@ -3,7 +3,6 @@ using UnityEngine;
 public class MillPuzzle : PuzzleManager
 {
     public MillViewConfig config;
-    public int stoneCount = 9;
 
     public override bool CheckIfSolved()
     {
@@ -39,8 +38,8 @@ public class MillPuzzle : PuzzleManager
         var controllerFactory = new MillControllerFactory(model, view, rules);
         var controller = controllerFactory.Controller;
 
-        model.AvailableStones[FieldState.Player] = stoneCount;
-        model.AvailableStones[FieldState.Enemy] = stoneCount;
+        model.AvailableStones[FieldState.Player] = config.stoneCount;
+        model.AvailableStones[FieldState.Enemy] = config.stoneCount;
         view.InitializeBoard(config);
         controller.StartGame();
     }

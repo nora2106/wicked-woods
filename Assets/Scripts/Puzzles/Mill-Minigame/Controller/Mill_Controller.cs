@@ -85,7 +85,7 @@ public class MillController : IMillController
             if (e.State == FieldState.Player)
             {
                 selectedField = e;
-                view.UpdateField(e.Key, FieldState.Selected);
+                view.SelectField(e.Key);
                 return;
             }
             // select field to move to

@@ -67,5 +67,6 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "wicked-woods.slnx"
+    "dotnet.defaultSolution": "wicked-woods.slnx",
+    "dotnet.preferCSharpExtension": true
 }

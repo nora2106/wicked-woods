@@ -25,6 +25,7 @@ public struct MillViewConfig
     public Transform enemyPos;
     public TextMeshProUGUI displayText;
     public TextMeshProUGUI turnText;
+    public int stoneCount;
 }
 
 public interface IMillView
@@ -32,10 +33,10 @@ public interface IMillView
     Dictionary<int, Vector2> GameBoard { get; }
     event EventHandler<PointClickedEventArgs> OnBoardChanged;
     void InitializeBoard(MillViewConfig config);
-    void UpdateField(int key, FieldState state);
     void UpdateBoard(IMillModel model);
-    void DisplayText (string text);
-    void UpdateTurnText (string text);
+    void DisplayText(string text);
+    void UpdateTurnText(string text);
+    void SelectField(int key);
 }
 
 public class MillView : MonoBehaviour, IMillView
@@ -78,19 +79,8 @@ public class MillView : MonoBehaviour, IMillView
     private TextMeshProUGUI turnText;
     public event EventHandler<PointClickedEventArgs> OnBoardChanged = (sender, e) => { };
 
-    // update field visually
-    public void UpdateField(int key, FieldState state)
-    {
-        boardPoints[key].SetState(state);
-    }
-
     public void InitializeBoard(MillViewConfig config)
     {
-        if (GameBoard.Count == 0)
-        {
-            return;
-        }
-
         whiteChipPrefab = config.whiteChipPrefab;
         blackChipPrefab = config.blackChipPrefab;
         playerStonePos = config.playerPos;
@@ -108,7 +98,7 @@ public class MillView : MonoBehaviour, IMillView
         }
 
         // create available stones as children of position objects
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < config.stoneCount; i++)
         {
             Vector3 pos1 = playerStonePos.position + Vector3.down * (i * .7f);
             var obj1 = Instantiate(whiteChipPrefab, pos1, Quaternion.identity);
@@ -122,6 +112,7 @@ public class MillView : MonoBehaviour, IMillView
 
     public void UpdateBoard(IMillModel model)
     {
+        // update field states
         for (int i = 0; i < GameBoard.Count; i++)
         {
             if (boardPoints[i].state != model.GameBoard[i].state)
@@ -130,6 +121,7 @@ public class MillView : MonoBehaviour, IMillView
             }
         }
 
+        // update available stones
         if (playerStonePos.childCount > model.AvailableStones[FieldState.Player])
         {
             Destroy(playerStonePos.GetChild(playerStonePos.childCount - 1).gameObject);
@@ -141,11 +133,17 @@ public class MillView : MonoBehaviour, IMillView
         }
     }
 
-    // TODO add stone movement and remove animation
+    // TODO add stone movement and removal animation
     private void UpdateBoardPoint(BoardPoint field, FieldState newState)
     {
+        // deselect selected field
+        if (field.state == FieldState.Selected)
+        {
+            field.SetState(FieldState.Empty);
+        }
+        
         // create new stone if field is empty
-        if (field.state == FieldState.Empty)
+        if (field.state == FieldState.Empty && newState != FieldState.Empty)
         {
             GameObject prefab = whiteChipPrefab;
             if (newState == FieldState.Enemy)
@@ -156,12 +154,19 @@ public class MillView : MonoBehaviour, IMillView
             var obj = Instantiate(prefab, field.transform.position, Quaternion.identity);
             obj.transform.parent = field.transform;
         }
+
         // remove existing stone
         else if (field.transform.childCount > 0 && newState == FieldState.Empty)
         {
             Destroy(field.transform.GetChild(0).gameObject);
         }
+        
         field.state = newState;
+    }
+
+    public void SelectField(int key)
+    {
+        boardPoints[key].SetState(FieldState.Selected);
     }
 
     public void HandleBoardInteraction(BoardPoint sender)

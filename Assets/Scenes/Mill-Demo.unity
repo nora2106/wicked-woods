@@ -1024,7 +1024,7 @@ MonoBehaviour:
     enemyPos: {fileID: 1693756699}
     displayText: {fileID: 326341564}
     turnText: {fileID: 1902100767}
-  stoneCount: 4
+    stoneCount: 9
 --- !u!4 &2087389872
 Transform:
   m_ObjectHideFlags: 0
