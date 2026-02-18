@@ -100,10 +100,10 @@ public class EnemyController
         var almostOppMills = model.GetAlmostMills(opponentState);
         FieldDistance minMove = new(0, int.MaxValue);
         int target = 0;
-        List<int> movableFields = model.GetMovableFields(myState);
 
-        // TODO get fields that are currently blocking an enemy mill and possibly not move those?
-        //var blockingFields = new List<int>();
+        // get all movable fields that aren't blocking opponent mill
+        UnityEngine.Debug.Log("blocked fields: " + model.GetBlockedMillFields(opponentState, myState).Count);
+        List<int> movableFields = model.GetMovableFields(myState).FindAll(f => !model.GetBlockedMillFields(opponentState, myState).Contains(f));
 
         // if possible, close own mill
         foreach (int field in almostMills.Keys)
@@ -114,9 +114,11 @@ public class EnemyController
                 return new int[2] { f, field };
             }
 
-            // calculate shortest path to field from all stones that are not in any almost mill
-            List<int> availableFields = movableFields.Where(f => !almostMills[field].Contains(f)).ToList();
-            var move = model.CalcShortestPath(field, availableFields);
+            // remove almost mill fields from movable fields
+            movableFields = movableFields.Where(f => !almostMills[field].Contains(f)).ToList();
+
+            // calculate shortest path to field from all movable stones
+            var move = model.CalcShortestPath(field, movableFields);
             var tempTarget = model.CalcMoveDistance(move.field, field).field;
             if (move.dist < minMove.dist && model.GameBoard[tempTarget].state == FieldState.Empty)
             {
@@ -127,6 +129,7 @@ public class EnemyController
         // stop calculating if mill can be closed in 1 turn
         if (minMove.dist == 1)
         {
+            UnityEngine.Debug.Log("complete mill");
             return new int[2] { minMove.field, target };
         }
 
@@ -145,23 +148,23 @@ public class EnemyController
             }
         }
 
-        // if possible, prevent opponent mill
-        // TODO only prevent in 1 move
+        // if possible in one move, prevent opponent mill
         foreach (int field in almostOppMills.Keys)
         {
             if (rules.CanFly(model, myState))
             {
                 return new int[2] { model.GetFieldsByState(myState)[0], field };
             }
-            // calculate shortest path to field from all stones that are not in any almost mill
-            List<int> availableFields = movableFields.Where(f => !almostOppMills[field].Contains(f)).ToList();
-            var move = model.CalcShortestPath(field, availableFields);
-            var tempTarget = model.CalcMoveDistance(move.field, field).field;
-            if (move.dist < minMove.dist && model.GameBoard[tempTarget].state == FieldState.Empty)
+            else if (model.GetNeighbors(field).Any(f => model.GameBoard[f].state == myState))
             {
-                minMove = move;
-                target = tempTarget;
+                return new int[2] { model.GetNeighbors(field).First(f => model.GameBoard[f].state == myState), field };
             }
+        }
+
+        // TODO fly phase: try to create a mill
+        if (rules.CanFly(model, myState))
+        {
+
         }
 
         // TODO implement blocking enemy mills
@@ -169,14 +172,31 @@ public class EnemyController
         // choose move with the shortest distance until goal reached
         if (target != 0)
         {
+            UnityEngine.Debug.Log("try to complete mill");
             return new int[2] { minMove.field, target };
         }
 
+        // move stone to a row that contains no enemy stones
+        foreach (int field in movableFields)
+        {
+            var emptyNeighbors = model.GetNeighbors(field).FindAll(n => model.GameBoard[n].state == FieldState.Empty);
+            foreach (int n in emptyNeighbors)
+            {
+                if (model.GetPossibleMills()[n].All(f => model.GameBoard[f].state != opponentState))
+                {
+                    return new int[2] { field, n };
+                }
+            }
+        }
+
         // backup: get first possible fieldpair
-        // TODO dont use blocking stones and make random
-        int backupField = movableFields.First(f => model.GetNeighbors(f).Any(n => model.GameBoard[n].state == FieldState.Empty));
+        int backupField = model.GetMovableFields(myState).First(f => model.GetNeighbors(f).Any(n => model.GameBoard[n].state == FieldState.Empty));
+        if (movableFields.Count > 0)
+        {
+            backupField = movableFields.First(f => model.GetNeighbors(f).Any(n => model.GameBoard[n].state == FieldState.Empty));
+        }
         UnityEngine.Debug.Log("backup: random field: " + backupField);
-        return new int[] { backupField, model.GetNeighbors(backupField).First(n => model.GameBoard[n].state == FieldState.Empty ) };
+        return new int[] { backupField, model.GetNeighbors(backupField).First(n => model.GameBoard[n].state == FieldState.Empty) };
     }
 
     /// <summary>
@@ -185,42 +205,38 @@ public class EnemyController
     /// <returns>Key of the chosen field.</returns>
     public int CalcRemoveStone()
     {
-        var freeFields = model.GetFieldsByState(opponentState);
+        // fields that are not in a mill
+        var oppFields = model.GetFieldsByState(opponentState);
         foreach (var mill in model.GetMillsByPlayer(opponentState))
         {
             foreach (int field in mill)
             {
-                if (freeFields.Contains(field))
+                if (oppFields.Contains(field))
                 {
-                    freeFields.Remove(field);
+                    oppFields.Remove(field);
                 }
             }
         }
 
-        var possibleMillFieldsPlayer = model.GetPossibleMillFields(opponentState);
-        // remove stone that could form mill in the next move
-        foreach (int field in possibleMillFieldsPlayer)
+        // remove stone from almost mill
+        foreach (var field in model.GetAlmostMills(opponentState).Values)
         {
-            foreach (var neighbor in model.GetNeighbors(field))
-            {
-                if (model.GameBoard[neighbor].state == opponentState && freeFields.Contains(field))
-                {
-                    return neighbor;
-                }
-            }
+            return field.First(f => oppFields.Contains(f));
+
         }
 
         // enable possible mill by looking for blocked mills (row containing 2 enemy stones and 1 player stone)
-        var blockedFields = model.GetBlockedMillFields(myState);
+        var blockedFields = model.GetBlockedMillFields(myState, opponentState);
         foreach (int field in blockedFields)
         {
-            if (model.GameBoard[field].state == opponentState && freeFields.Contains(field))
+            if (model.GameBoard[field].state == opponentState && oppFields.Contains(field))
             {
                 return field;
             }
         }
 
-        return freeFields[0];
+        UnityEngine.Debug.Log("remove random field");
+        return oppFields[0];
     }
 
     public void TakeTurn()

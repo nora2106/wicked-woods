@@ -49,9 +49,10 @@ public interface IMillModel
     /// <summary>
     /// Get fields that could form a mill but are blocked by an opponent's stone.
     /// </summary>
-    /// <param name="state">The required field state.</param>
+    /// <param name="myState">Player forming the mill.</param>
+    /// <param name="opponentState">Player blocking the mill.</param>
     /// <returns>All field keys that are the last missing stone for a mill.</returns>
-    List<int> GetBlockedMillFields(FieldState state);
+    List<int> GetBlockedMillFields(FieldState myState, FieldState opponentState);
     List<int> GetNeighbors(int key);
 
     /// <summary>
@@ -336,7 +337,7 @@ public class MillModel : IMillModel
         return list;
     }
 
-    public List<int> GetBlockedMillFields(FieldState state)
+    public List<int> GetBlockedMillFields(FieldState myState, FieldState opponentState)
     {
         List<int> list = new List<int>();
         foreach (var mill in mills)
@@ -345,11 +346,11 @@ public class MillModel : IMillModel
             List<int> blockedNodes = new List<int>();
             foreach (int node in mill)
             {
-                if (gameBoard[node].state == state)
+                if (gameBoard[node].state == myState)
                 {
                     fullNodes.Add(node);
                 }
-                else if (gameBoard[node].state == FieldState.Player)
+                else if (gameBoard[node].state == opponentState)
                 {
                     blockedNodes.Add(node);
                 }

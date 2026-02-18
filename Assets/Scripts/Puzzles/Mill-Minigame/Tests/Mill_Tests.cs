@@ -200,6 +200,17 @@ public class BaseEnemyMoves
         Assert.That(model.ExistFreeStones(FieldState.Player), Is.EqualTo(true));
         Assert.That(freeFields.Count, Is.EqualTo(3));
     }
+
+    public void TestGetBlockingFields()
+    {
+        var model = new MillModel();
+        model.UpdateField(23, FieldState.Enemy);
+        model.UpdateField(22, FieldState.Enemy);
+        model.UpdateField(21, FieldState.Player);
+
+        Assert.That(model.GetBlockedMillFields(FieldState.Enemy, FieldState.Player).Count, Is.EqualTo(1));
+        Assert.That(model.GetBlockedMillFields(FieldState.Enemy, FieldState.Player)[0], Is.EqualTo(21));
+    }
 }
 
 [TestFixture]
