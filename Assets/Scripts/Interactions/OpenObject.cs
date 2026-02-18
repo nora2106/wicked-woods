@@ -69,7 +69,7 @@ public class OpenObject : UsableObject, IInteractionCommand
             showItem.SetActive(true);
         }
         // detail view has puzzle
-        if (detail.GetComponent<PuzzleManager>())
+        if (detail != null && detail.GetComponent<PuzzleManager>())
         {
             detail.GetComponent<PuzzleManager>().OnPuzzleSolved.AddListener(HandlePuzzleComplete);
         }

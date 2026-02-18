@@ -137,11 +137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.99
+      value: -4.6
       objectReference: {fileID: 0}
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.59
+      value: -3.3
       objectReference: {fileID: 0}
     - target: {fileID: 8159442710715365059, guid: a09ea2c7c2c591941924cfc888f724e0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -345,10 +345,12 @@ MonoBehaviour:
   targetPos: {x: -5.9, y: -3.5}
   id: 
   objName: 
+  disabled: 0
   detail: {fileID: 0}
   newSprite: {fileID: 1153408983566159769, guid: fb7954cf386a2194fbb082e5f4824597, type: 3}
   showItem: {fileID: 1704767803}
   closeOnSecondClick: 1
+  destroyOnPuzzleComplete: 0
   references:
     version: 2
     RefIds: []
@@ -440,7 +442,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeBtn: {fileID: 1330020614}
-  obj: {fileID: 0}
+  onClose:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &135464236
 Transform:
   m_ObjectHideFlags: 0
@@ -705,10 +709,12 @@ MonoBehaviour:
   targetPos: {x: 0, y: 0}
   id: childroom_chest
   objName: 
+  disabled: 0
   detail: {fileID: 135464234}
   newSprite: {fileID: 0}
   showItem: {fileID: 0}
   closeOnSecondClick: 0
+  destroyOnPuzzleComplete: 0
   references:
     version: 2
     RefIds: []
@@ -968,13 +974,15 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  targetPos: {x: 0, y: 0}
+  targetPos: {x: 1, y: -1.7}
   id: 
   objName: 
+  disabled: 0
   detail: {fileID: 0}
   newSprite: {fileID: -6648069124525892096, guid: 67e6aa029623b634c8cfbf55d64d0e81, type: 3}
   showItem: {fileID: 0}
   closeOnSecondClick: 1
+  destroyOnPuzzleComplete: 0
   references:
     version: 2
     RefIds: []
@@ -1422,10 +1430,12 @@ MonoBehaviour:
   targetPos: {x: -5.9, y: -3.5}
   id: 
   objName: 
+  disabled: 0
   detail: {fileID: 0}
   newSprite: {fileID: 8693008039564885744, guid: 6623314ebff852b43a58dbc99c9013c8, type: 3}
   showItem: {fileID: 0}
   closeOnSecondClick: 1
+  destroyOnPuzzleComplete: 0
   references:
     version: 2
     RefIds: []
@@ -1696,9 +1706,10 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  targetPos: {x: 0, y: 0}
+  targetPos: {x: -4.6, y: -3.3}
   id: childroom_door
   objName: 
+  disabled: 0
   nextScene: Hallway
   references:
     version: 2
