@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class PuzzleManager : MonoBehaviour, ISetup
 {
@@ -8,6 +9,8 @@ public abstract class PuzzleManager : MonoBehaviour, ISetup
     public string id;
     public bool resets;
     protected GameManager gm;
+    public UnityEvent OnPuzzleSolved;
+    public bool CloseAfterSolve;
 
     public void Setup()
     {
@@ -44,6 +47,7 @@ public abstract class PuzzleManager : MonoBehaviour, ISetup
             {
                 gm.save.data.solvedPuzzles.Add(id);
             }
+            OnPuzzleSolved.Invoke();
             Success();
         }
     }

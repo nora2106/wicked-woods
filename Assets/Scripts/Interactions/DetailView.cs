@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 //opens the detail view of an interactable object
 public class DetailView : MonoBehaviour
 {
     public Button closeBtn;
-    public GameObject obj;
     private GameManager gm;
+    public UnityEvent onClose;
     
     void Start()
     {
@@ -25,8 +24,6 @@ public class DetailView : MonoBehaviour
     public void Close() {
         transform.gameObject.SetActive(false);
         gm.CloseOverlay();
-        if(obj && obj.GetComponent<OpenObject>()) {
-            obj.GetComponent<OpenObject>().Close();
-        }
+        onClose.Invoke();
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -15,6 +14,7 @@ public abstract class UsableObject : MonoBehaviour, ISetup
     [HideInInspector] public string id;
     [HideInInspector] public string objName;
     protected GameManager gm;
+    public bool disabled;
 
     protected void Start()
     {
@@ -31,6 +31,10 @@ public abstract class UsableObject : MonoBehaviour, ISetup
     }
 
     private void OnMouseDown() {
+        if(disabled)
+        {
+            return;
+        }
         if (!EventSystem.current.IsPointerOverGameObject())
         {
             if (!locked)

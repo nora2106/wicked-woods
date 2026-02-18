@@ -12,21 +12,28 @@ public class OpenObject : UsableObject, IInteractionCommand
     public bool closeOnSecondClick;
     private bool isOpen = false;
     private Sprite baseSprite;
+    private DetailView detailView;
+    public bool destroyOnPuzzleComplete = false;
 
     new void Start()
     {
         base.Start();
         baseSprite = GetComponent<SpriteRenderer>().sprite;
-        if(locked) {
+        if (locked)
+        {
             gameObject.tag = "inspect";
         }
-        if(gameObject.GetComponent<ItemInteraction>())
+        if (gameObject.GetComponent<ItemInteraction>())
         {
             id = gameObject.GetComponent<ItemInteraction>().interactionData.objectID;
         }
         if (showItem != null)
         {
             showItem.SetActive(false);
+        }
+        if (detail != null)
+        {
+            detailView = detail.GetComponent<DetailView>();
         }
     }
 
@@ -41,16 +48,17 @@ public class OpenObject : UsableObject, IInteractionCommand
     }
 
     // function is called after movement is completed
-    public void Execute ()
+    public void Execute()
     {
-        if(isOpen)
+        if (isOpen && closeOnSecondClick)
         {
             Close();
             return;
         }
-        if(detail != null)
+        if (detailView != null)
         {
-            detail.GetComponent<DetailView>().Open();
+            detailView.onClose.AddListener(Close);
+            detailView.Open();
         }
         if (newSprite != null)
         {
@@ -60,14 +68,16 @@ public class OpenObject : UsableObject, IInteractionCommand
         {
             showItem.SetActive(true);
         }
+        // detail view has puzzle
+        if (detail.GetComponent<PuzzleManager>())
+        {
+            detail.GetComponent<PuzzleManager>().OnPuzzleSolved.AddListener(HandlePuzzleComplete);
+        }
         isOpen = true;
     }
 
-    public void Close() {
-        if(!closeOnSecondClick)
-        {
-            return;
-        }
+    public void Close()
+    {
         isOpen = false;
         if (newSprite != null)
         {
@@ -76,6 +86,30 @@ public class OpenObject : UsableObject, IInteractionCommand
         if (showItem != null)
         {
             showItem.SetActive(false);
+        }
+        if (detailView != null)
+        {
+            detailView.onClose.RemoveListener(Close);
+        }
+    }
+
+    // handles puzzle completion if detail view is a puzzle
+    void HandlePuzzleComplete()
+    {
+        detail.GetComponent<PuzzleManager>().OnPuzzleSolved.RemoveListener(HandlePuzzleComplete);
+        
+        if (destroyOnPuzzleComplete)
+        {
+            // door-specific cleanup - enable door behaviour
+            if (gameObject.GetComponent<DoorObject>())
+            {
+                gameObject.GetComponent<DoorObject>().disabled = false;
+                if (gameObject.transform.childCount > 0)
+                {
+                    Destroy(gameObject.transform.GetChild(0).gameObject);
+                }
+            }
+            Destroy(gameObject.GetComponent<OpenObject>());
         }
     }
 }
