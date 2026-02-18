@@ -146,6 +146,7 @@ public class EnemyController
         }
 
         // if possible, prevent opponent mill
+        // TODO only prevent in 1 move
         foreach (int field in almostOppMills.Keys)
         {
             if (rules.CanFly(model, myState))
@@ -172,6 +173,7 @@ public class EnemyController
         }
 
         // backup: get first possible fieldpair
+        // TODO dont use blocking stones and make random
         int backupField = movableFields.First(f => model.GetNeighbors(f).Any(n => model.GameBoard[n].state == FieldState.Empty));
         UnityEngine.Debug.Log("backup: random field: " + backupField);
         return new int[] { backupField, model.GetNeighbors(backupField).First(n => model.GameBoard[n].state == FieldState.Empty ) };
