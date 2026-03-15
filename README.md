@@ -1,3 +1,5 @@
+# Update
+Moved to Codeberg: https://codeberg.org/ankylosaurus/wicked-woods
 # Description
 Point-and-click adventure game about a child exploring a mystical town and forest in 19th-century eastern europe trying to find their missing sister.
 
