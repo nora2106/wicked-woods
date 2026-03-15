@@ -25,6 +25,9 @@
 
 # VS
 .idea/
+*.csproj
+*.sln
+*.slnx
 .vs/
 .vscode/
 .vsconfig
